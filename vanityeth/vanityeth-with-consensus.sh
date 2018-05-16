@@ -20,7 +20,7 @@ if [[ -f $vanityResult ]]; then
 	echo "(private key inside "$vanityResult")"
 
 	if [[ $publicAddress = "0x"$vanityPattern* ]]; then
-		echo "Pattern "$vanityPattern" found in "$publicAddress >> $consensusFile
+		echo "Pattern "$vanityPattern" found">> $consensusFile
 		echo $publicAddressLength >> $consensusFile
 	fi
 else
