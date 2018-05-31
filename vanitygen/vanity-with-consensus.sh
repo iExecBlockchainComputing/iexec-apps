@@ -1,7 +1,7 @@
 #!/bin/bash
 
-vanityResult=stdout.txt
-consensusFile=consensus.iexec
+vanityResult=/iexec/keypair.txt
+consensusFile=/iexec/consensus.iexec
 
 vanitygen $@ >> $vanityResult
 cat $vanityResult
