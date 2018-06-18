@@ -18,3 +18,4 @@ COPY ./entrypoint.sh entrypoint.sh
 #RUN wget https://raw.githubusercontent.com/Hugogerva/xmrig-docker-script/master/entrypoint.sh
 RUN mv /entrypoint.sh /usr/local/bin/ep.sh
 RUN chmod +x /usr/local/bin/ep.sh
+ENTRYPOINT ["sh","-c","/usr/local/bin/ep.sh"]
