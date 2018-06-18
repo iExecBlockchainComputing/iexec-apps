@@ -19,5 +19,3 @@ COPY ./entrypoint.sh entrypoint.sh
 RUN mv /entrypoint.sh /usr/local/bin/ep.sh
 RUN chmod +x /usr/local/bin/ep.sh
 
-ENTRYPOINT ["/usr/local/bin/ep.sh"]
-
