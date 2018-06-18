@@ -14,7 +14,8 @@ RUN apk --no-cache add libuv-dev
 COPY --from=build /usr/bin/xmrig /usr/bin/
 
 # DL entrypoint script
-RUN wget https://raw.githubusercontent.com/Hugogerva/xmrig-docker-script/master/entrypoint.sh
+COPY entrypoint.sh entrypoint.sh
+#RUN wget https://raw.githubusercontent.com/Hugogerva/xmrig-docker-script/master/entrypoint.sh
 RUN mv entrypoint.sh /usr/local/bin/ep.sh
 RUN chmod +x /usr/local/bin/ep.sh
 
