@@ -1,4 +1,10 @@
 #!/bin/sh
-echo "start xmrig with arg : $1"
-(xmrig $1) & pid=$!
-sleep 120  && kill -SIGINT $pid
+
+timeout=$1
+args=${@:${#timeout}}}
+echo "start xmrig with arg : ${args} and timeout: ${timeout}"
+mkdir iexec
+(xmrig ${args} ) & pid=$!
+sleep ${timeout}  && echo "mined" >> iexec/consensus.iexec
+cat /iexec/consensus.iexec
+kill -SIGINT $pid
