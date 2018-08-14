@@ -18,6 +18,9 @@ gptPath="gpt"
 # Command line handling
 ############################################
 
+
+
+
 if [ "$#" -ne 3 ]; then
     echo "Illegal number of parameters. Must be 3 => 1:graphXmlURL,2:parameterFileURL,3:inputDatasetURL "
     exit 1
@@ -106,6 +109,7 @@ fi
 
 mkdir -p /iexec/
 
+
 mkdir -p /input
 mv input.zip /input
 
@@ -129,3 +133,16 @@ for F in $(ls -1d /input/S2*.SAFE); do
   targetFile="/iexec/output/$(removeExtension "$(basename ${F})").dim"
   ${gptPath} graphXml.xml -e -p parameters.properties -t ${targetFile} ${sourceFile}
 done
+
+#generate /iexec/consensus.iexec
+rm -f /iexec/consensus.iexec
+touch /iexec/consensus.iexec
+
+
+cat graphXml.xml >> /iexec/consensus.iexec
+cat parameters.properties >> /iexec/consensus.iexec
+echo $inputDatasetURL >> /iexec/consensus.iexec
+
+nbFiles=$(find /iexec/output -type f | wc -l)
+echo "outputs files number : " >> /iexec/consensus.iexec
+echo $nbFiles >> /iexec/consensus.iexec
