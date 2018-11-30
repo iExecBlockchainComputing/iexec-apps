@@ -4,7 +4,7 @@ vanityDefaultResultFile=VanityEth-log-*.txt
 vanityResult=/iexec/keypair.txt
 consensusFile=/iexec/consensus.iexec
 
-vanityPattern=$@
+vanityPattern=$1
 
 rm -f $vanityDefaultResultFile $vanityResult $consensusFile
 
@@ -25,6 +25,7 @@ if [[ -f $vanityResult ]]; then
 	fi
 else
 	echo "Bad input params"
+	echo "Bad input params" >> $consensusFile
 fi
 
 
