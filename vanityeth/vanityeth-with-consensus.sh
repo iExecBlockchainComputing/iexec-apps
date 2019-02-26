@@ -1,8 +1,8 @@
 #!/bin/bash
 
 vanityDefaultResultFile=VanityEth-log-*.txt
-vanityResult=/iexec/keypair.txt
-consensusFile=/iexec/consensus.iexec
+vanityResult=/iexec_out/keypair.txt
+consensusFile=/iexec_out/consensus.iexec
 
 vanityPattern=$1
 
