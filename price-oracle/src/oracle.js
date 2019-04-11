@@ -25,13 +25,19 @@ new Promise(function (resolve, reject) {
 })
 .then(data => {
 	var results = JSON.parse(data.toString());
+
+	if (results.error !== undefined)
+	{
+		throw new Error(results.error);
+	}
+
 	var timestamp = new Date(results.time).getTime();
 	var details   = [ results.asset_id_base, results.asset_id_quote, power].join("-")
 	var value     = Math.round(results.rate * 10**power)
 
 	if (isNaN(timestamp) || isNaN(value) || results.asset_id_base  == "" || results.asset_id_quote == "")
 	{
-		throw new Error("invalid results " + JSON.stringify({query, results}));
+		throw new Error("Error: invalid results " + JSON.stringify({query, results}));
 	}
 
 	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [timestamp, details, value]);
@@ -39,7 +45,7 @@ new Promise(function (resolve, reject) {
 	fs.writeFile(rootfolder+'callback.iexec',  iexeccallback , (err) => {});
 	fs.writeFile(rootfolder+'consensus.iexec', iexecconsensus, (err) => {});
 
-	console.log("success:", timestamp, details, value);
+	console.log("Success:", timestamp, details, value);
 })
 .catch(error => {
 	fs.writeFile(
@@ -53,5 +59,5 @@ new Promise(function (resolve, reject) {
 		(err) => {}
 	);
 
-	console.log("Error:", error.toString());
+	console.log(error.toString());
 });
