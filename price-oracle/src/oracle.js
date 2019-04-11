@@ -23,27 +23,35 @@ new Promise(function (resolve, reject) {
 	request.on('error', reject);
 	request.end();
 })
-	.then(data => {
-		var results = JSON.parse(data.toString());
-		var date    = new Date(results.time).getTime();
-		var details = [ results.asset_id_base, results.asset_id_quote, power].join("-")
-		var value   = Math.round(results.rate * 10**power)
-		console.log(date, details, value)
+.then(data => {
+	var results = JSON.parse(data.toString());
+	var timestamp = new Date(results.time).getTime();
+	var details   = [ results.asset_id_base, results.asset_id_quote, power].join("-")
+	var value     = Math.round(results.rate * 10**power)
 
-		var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [date, details, value]);
-		var iexecconsensus = ethers.utils.keccak256(iexeccallback);
-		fs.writeFile(rootfolder+'callback.iexec',  iexeccallback , (err) => {});
-		fs.writeFile(rootfolder+'consensus.iexec', iexecconsensus, (err) => {});
-	})
-	.catch(error => {
-		fs.writeFile(
-			rootfolder+'error.txt',
-			error.toString(),
-			(err) => {}
-		);
-		fs.writeFile(
-			rootfolder+'consensus.iexec',
-			ethers.utils.solidityKeccak256(['string'],[error.toString()]),
-			(err) => {}
-		);
-	});
+	if (isNaN(timestamp) || isNaN(value) || results.asset_id_base  == "" || results.asset_id_quote == "")
+	{
+		throw new Error("invalid results " + JSON.stringify({query, results}));
+	}
+
+	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [timestamp, details, value]);
+	var iexecconsensus = ethers.utils.keccak256(iexeccallback);
+	fs.writeFile(rootfolder+'callback.iexec',  iexeccallback , (err) => {});
+	fs.writeFile(rootfolder+'consensus.iexec', iexecconsensus, (err) => {});
+
+	console.log("success:", timestamp, details, value);
+})
+.catch(error => {
+	fs.writeFile(
+		rootfolder+'error.txt',
+		error.toString(),
+		(err) => {}
+	);
+	fs.writeFile(
+		rootfolder+'consensus.iexec',
+		ethers.utils.solidityKeccak256(['string'],[error.toString()]),
+		(err) => {}
+	);
+
+	console.log("Error:", error.toString());
+});
