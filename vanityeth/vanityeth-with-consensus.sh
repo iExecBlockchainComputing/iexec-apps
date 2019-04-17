@@ -2,7 +2,7 @@
 
 vanityDefaultResultFile=VanityEth-log-*.txt
 vanityResult=/iexec_out/keypair.txt
-consensusFile=/iexec_out/consensus.iexec
+consensusFile=/iexec_out/determinism.iexec
 
 vanityPattern=$1
 

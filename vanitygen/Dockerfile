@@ -11,3 +11,5 @@ COPY vanity-with-consensus.sh /vanity-with-consensus.sh
 RUN chmod +x /vanity-with-consensus.sh
 
 ENTRYPOINT ["/vanity-with-consensus.sh"]
+
+# docker image build -t iexechub/vanitygen:1.0.2 .

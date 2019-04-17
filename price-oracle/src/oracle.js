@@ -9,6 +9,7 @@ const fs      = require('fs');
 
 const [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2);
 const rootfolder = "/iexec_out/"
+const determinismFileName 	= 'determinism.iexec'
 
 const query = {
 	method: 'GET',
@@ -43,7 +44,7 @@ new Promise(function (resolve, reject) {
 	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [timestamp, details, value]);
 	var iexecconsensus = ethers.utils.keccak256(iexeccallback);
 	fs.writeFile(rootfolder+'callback.iexec',  iexeccallback , (err) => {});
-	fs.writeFile(rootfolder+'consensus.iexec', iexecconsensus, (err) => {});
+	fs.writeFile(rootfolder+determinismFileName, iexecconsensus, (err) => {});
 
 	console.log("Success:", timestamp, details, value);
 })
@@ -54,7 +55,7 @@ new Promise(function (resolve, reject) {
 		(err) => {}
 	);
 	fs.writeFile(
-		rootfolder+'consensus.iexec',
+		rootfolder+determinismFileName,
 		ethers.utils.solidityKeccak256(['string'],[error.toString()]),
 		(err) => {}
 	);

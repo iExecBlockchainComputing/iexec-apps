@@ -8,3 +8,5 @@ RUN npm install -g vanity-eth --unsafe
 COPY vanityeth-with-consensus.sh /vanityeth-with-consensus.sh
 RUN chmod +x /vanityeth-with-consensus.sh
 ENTRYPOINT ["/vanityeth-with-consensus.sh"]
+
+# docker image build -t iexechub/vanityeth:1.1.1 .
