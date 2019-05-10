@@ -1,0 +1,11 @@
+*
+{
+	margin:  0;
+	padding: 0;
+}
+p
+{
+	position:   absolute;
+	text-align: center;
+	transform:  translate(-50%,-50%);
+}
