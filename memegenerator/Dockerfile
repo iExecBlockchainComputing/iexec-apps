@@ -1,8 +1,8 @@
-FROM python:3.6-slim-stretch
+FROM ubuntu:18.04
 
 RUN apt-get update -y
-RUN apt-get install -y --fix-missing wkhtmltopdf xvfb zip libxrender-dev
-RUN pip install imgkit
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-pip xvfb wkhtmltopdf zip
+RUN pip3 install imgkit
 
 COPY src /src
 COPY entrypoint.sh /entrypoint.sh
