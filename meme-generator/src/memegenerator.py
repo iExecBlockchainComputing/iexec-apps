@@ -1,13 +1,14 @@
 #!/bin/python
 
+import html
 import imgkit
 import json
 import sys
 
 options = json.load(open('/dataset/options.json', 'r'))
-args = json.loads(''.join(sys.argv[1:]))
+args = json.loads(' '.join(sys.argv[1:]))
 text = [ '' for i in range(32) ]
-text[0:len(args)] = args
+text[0:len(args)] = [ html.escape(x).replace('\n', '<br/>') for x in args ]
 
 with open('/src/base.html', 'r') as infile:
 	body = infile.read().format(img='/dataset/template.png', text=text)
