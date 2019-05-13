@@ -21,6 +21,6 @@ docker run                                   \
 	-v $PWD/iexec_out:/iexec_out               \
 	-e DATASET_FILENAME='TrumpBillSigning.zip' \
 	iexechub/meme-generator:0.0.1              \
-	"[\"iExec V3 is awesome. I know them well. It's a great team with a great product.\",\"All in RLC\"]"
+	"[\"iExec V3 is amazing. I know them well. It's a great team with a great product.\",\"All in RLC\"]"
 
 mv iexec_out/result.jpg 3.jpg
