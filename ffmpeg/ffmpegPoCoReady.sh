@@ -5,6 +5,7 @@ chmod 755 /tmp/ffmpeg.log
 
 nohup /bin/ffmpeg $@ > /tmp/ffmpeg.log 2>&1
 
-mkdir -p /iexec/
-cat /tmp/ffmpeg.log  > /iexec/stdout.log
-cat /tmp/ffmpeg.log | grep video >> /iexec/consensus.iexec
+mkdir -p /iexec_out/
+mkdir -p /iexec_in/
+cat /tmp/ffmpeg.log  > /iexec_out/stdout.log
+cat /tmp/ffmpeg.log | grep video >> /iexec_out/determinism.iexec
