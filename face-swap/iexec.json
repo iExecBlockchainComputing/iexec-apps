@@ -1,5 +1,5 @@
 {
-  "description": "Swap two faces with this app. You should provide two JPG images URL such as \"https://somewhere.io/img1.jpg https://somewhere.io/img2.jpg\". If successful, an output.jpg file with <image2> face on <image1> head will be produced. If you don't provide theses two image URLs, two other default images will be swap.",
+  "description": "Swap two faces with this app. You should provide two JPG image URL such as \"https://somewhere.io/img1.jpg https://somewhere.io/img2.jpg\". If successful, an output.jpg file with <image2> face on <image1> head will be produced. If you don't provide theses two image URLs, two other default images will be swap.",
   "license": "MIT",
   "author": "James Toussaint",
   "social": {
