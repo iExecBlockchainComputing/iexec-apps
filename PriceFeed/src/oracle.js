@@ -2,14 +2,18 @@ const https   = require('https');
 const ethers  = require('ethers');
 const fs      = require('fs');
 
+const root                = '/iexec_out';
+const determinismFilePath = `${root}/determinism.iexec`;
+const callbackFilePath    = `${root}/callback.iexec`;
+const errorFilePath       = `${root}/error.iexec`;
+
+var [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2);
+if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
+
 // const asset_id_base  = "BTC"
 // const asset_id_quote = "USD"
 // const power          = 9
-// const time = new Date().toISOString();
-
-const [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2);
-const rootfolder = "/iexec_out/"
-const determinismFileName 	= 'determinism.iexec'
+// const time           = new Date().toISOString();
 
 const query = {
 	method: 'GET',
@@ -43,19 +47,19 @@ new Promise(function (resolve, reject) {
 
 	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [timestamp, details, value]);
 	var iexecconsensus = ethers.utils.keccak256(iexeccallback);
-	fs.writeFile(rootfolder+'callback.iexec',  iexeccallback , (err) => {});
-	fs.writeFile(rootfolder+determinismFileName, iexecconsensus, (err) => {});
+	fs.writeFile(callbackFilePath,    iexeccallback , (err) => {});
+	fs.writeFile(determinismFilePath, iexecconsensus, (err) => {});
 
 	console.log("Success:", timestamp, details, value);
 })
 .catch(error => {
 	fs.writeFile(
-		rootfolder+'error.txt',
+		errorFilePath,
 		error.toString(),
 		(err) => {}
 	);
 	fs.writeFile(
-		rootfolder+determinismFileName,
+		determinismFilePath,
 		ethers.utils.solidityKeccak256(['string'],[error.toString()]),
 		(err) => {}
 	);
