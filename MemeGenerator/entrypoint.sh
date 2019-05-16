@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mkdir /dataset
-unzip /iexec_in/$DATASET_FILENAME -d /dataset
-python3 src/memegenerator.py $@
-rm -r /dataset
+mkdir $PWD/dataset
+unzip $PWD/iexec_in/$DATASET_FILENAME -d $PWD/dataset
+python3 $PWD/src/memegenerator.py $@
+rm -r $PWD/dataset

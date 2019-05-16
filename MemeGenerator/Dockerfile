@@ -10,9 +10,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	zip
 RUN pip3 install imgkit
 
-
 COPY src /src
 COPY entrypoint.sh /entrypoint.sh
+COPY ressources/*.ttf /usr/share/fonts/truetype/.
 
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
