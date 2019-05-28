@@ -15,17 +15,20 @@ if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
 // const power          = 9
 // const time           = new Date().toISOString();
 
+const fragment = time ? `?time=${time}` : ``;
 const query = {
 	method: 'GET',
 	port:   443,
 	host:   'rest.coinapi.io',
-	path:   `/v1/exchangerate/${asset_id_base}/${asset_id_quote}?time=${time}`,
-	headers: {'X-CoinAPI-Key': '69CC0AA9-1E4D-4E41-806F-8C3642729B88'},
+	path:   `/v1/exchangerate/${asset_id_base}/${asset_id_quote}${fragment}`,
+	// headers: {'X-CoinAPI-Key': '69CC0AA9-1E4D-4E41-806F-8C3642729B88'},
 	// headers: {'X-CoinAPI-Key': 'D2C881D6-0BBF-4EFE-A572-AE6DB379D43E'},
+	headers: {'X-CoinAPI-Key': 'FB7B2516-70A1-42D8-8702-292F29F19768'},
 };
 
 new Promise(function (resolve, reject) {
 	var request = https.request(query, res => {
+		console.log(`statusCode: ${res.statusCode}`);
 		if (res.statusCode != 200)
 		{
 			reject(`[HTTP ERROR]\nstatusCode: ${res.statusCode}\nheaders: ${JSON.stringify(res.headers)}`);
