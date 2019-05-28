@@ -21,10 +21,17 @@ const query = {
 	host:   'rest.coinapi.io',
 	path:   `/v1/exchangerate/${asset_id_base}/${asset_id_quote}?time=${time}`,
 	headers: {'X-CoinAPI-Key': '69CC0AA9-1E4D-4E41-806F-8C3642729B88'},
+	// headers: {'X-CoinAPI-Key': 'D2C881D6-0BBF-4EFE-A572-AE6DB379D43E'},
 };
 
 new Promise(function (resolve, reject) {
-	var request = https.request(query, function (response) { response.on("data", resolve) });
+	var request = https.request(query, res => {
+		if (res.statusCode != 200)
+		{
+			reject(`[HTTP ERROR]\nstatusCode: ${res.statusCode}\nheaders: ${JSON.stringify(res.headers)}`);
+		}
+		res.on("data", resolve);
+	});
 	request.on('error', reject);
 	request.end();
 })
