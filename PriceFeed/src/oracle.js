@@ -19,8 +19,9 @@ if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
 // const power          = 9
 // const time           = new Date().toISOString();
 
-const params   = { time };
-const fragment = Object.keys(params).filter(key => params[key]).map(key => `${key}=${params[key]}`).join('&');
+const fragment = Object.entries({
+	time,
+}).filter(([k,v]) => v).map(([k,v]) => `${k}=${v}`).join('&');
 
 const query = {
 	method: 'GET',
@@ -50,8 +51,8 @@ new Promise(function (resolve, reject) {
 	}
 
 	var timestamp = new Date(results.time).getTime();
-	var details   = [ results.asset_id_base, results.asset_id_quote, power].join("-")
-	var value     = Math.round(results.rate * 10**power)
+	var details   = [ results.asset_id_base, results.asset_id_quote, power].join("-");
+	var value     = Math.round(results.rate * 10**power);
 
 	if (isNaN(timestamp) || isNaN(value) || results.asset_id_base  == "" || results.asset_id_quote == "")
 	{
