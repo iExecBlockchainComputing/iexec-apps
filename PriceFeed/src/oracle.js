@@ -2,10 +2,14 @@ const https   = require('https');
 const ethers  = require('ethers');
 const fs      = require('fs');
 
-const root                = '/iexec_out';
+const root                = 'iexec_out';
 const determinismFilePath = `${root}/determinism.iexec`;
 const callbackFilePath    = `${root}/callback.iexec`;
 const errorFilePath       = `${root}/error.iexec`;
+
+const DEFAULT_APIKEY = '69CC0AA9-1E4D-4E41-806F-8C3642729B88';
+// const DEFAULT_APIKEY = 'D2C881D6-0BBF-4EFE-A572-AE6DB379D43E';
+// const DEFAULT_APIKEY = 'FB7B2516-70A1-42D8-8702-292F29F19768';
 
 var [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2);
 if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
@@ -15,20 +19,19 @@ if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
 // const power          = 9
 // const time           = new Date().toISOString();
 
-const fragment = time ? `?time=${time}` : ``;
+const params   = { time };
+const fragment = Object.keys(params).filter(key => params[key]).map(key => `${key}=${params[key]}`).join('&');
+
 const query = {
 	method: 'GET',
 	port:   443,
 	host:   'rest.coinapi.io',
-	path:   `/v1/exchangerate/${asset_id_base}/${asset_id_quote}${fragment}`,
-	// headers: {'X-CoinAPI-Key': '69CC0AA9-1E4D-4E41-806F-8C3642729B88'},
-	// headers: {'X-CoinAPI-Key': 'D2C881D6-0BBF-4EFE-A572-AE6DB379D43E'},
-	headers: {'X-CoinAPI-Key': 'FB7B2516-70A1-42D8-8702-292F29F19768'},
+	path:   `/v1/exchangerate/${asset_id_base}/${asset_id_quote}?${fragment}`,
+	headers: { 'X-CoinAPI-Key': process.env.APIKEY || DEFAULT_APIKEY },
 };
 
 new Promise(function (resolve, reject) {
 	var request = https.request(query, res => {
-		console.log(`statusCode: ${res.statusCode}`);
 		if (res.statusCode != 200)
 		{
 			reject(`[HTTP ERROR]\nstatusCode: ${res.statusCode}\nheaders: ${JSON.stringify(res.headers)}`);
@@ -73,6 +76,5 @@ new Promise(function (resolve, reject) {
 		ethers.utils.solidityKeccak256(['string'],[error.toString()]),
 		(err) => {}
 	);
-
 	console.log(error.toString());
 });
