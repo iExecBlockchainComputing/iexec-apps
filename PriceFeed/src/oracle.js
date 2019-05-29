@@ -7,6 +7,8 @@ const determinismFilePath = `${root}/determinism.iexec`;
 const callbackFilePath    = `${root}/callback.iexec`;
 const errorFilePath       = `${root}/error.iexec`;
 
+const WAIT_MIN       = parseInt(process.env.WAIT_MIN) || 0; // in ms
+const WAIT_MAX       = parseInt(process.env.WAIT_MAX) || 0; // in ms
 const DEFAULT_APIKEY = '69CC0AA9-1E4D-4E41-806F-8C3642729B88';
 // const DEFAULT_APIKEY = 'D2C881D6-0BBF-4EFE-A572-AE6DB379D43E';
 // const DEFAULT_APIKEY = 'FB7B2516-70A1-42D8-8702-292F29F19768';
@@ -31,7 +33,16 @@ const query = {
 	headers: { 'X-CoinAPI-Key': process.env.APIKEY || DEFAULT_APIKEY },
 };
 
-new Promise(function (resolve, reject) {
+const delay = (WAIT_MAX-WAIT_MIN) * Math.random() + WAIT_MIN;
+
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+new Promise(async (resolve, reject) => {
+
+	console.log(`- Waiting for ${delay} ms.`);
+	await sleep(delay);
+
+	console.log('- Calling API');
 	var data = "";
 	var request = https.request(query, res => {
 		res.on('data', (chunk) => {
@@ -40,6 +51,7 @@ new Promise(function (resolve, reject) {
 		res.on('end', () => {
 			if (data)
 			{
+				console.log('- Got data');
 				resolve(data);
 			}
 			else
@@ -60,7 +72,7 @@ new Promise(function (resolve, reject) {
 	}
 
 	var timestamp = new Date(results.time).getTime();
-	var details   = [ results.asset_id_base, results.asset_id_quote, power].join("-");
+	var details   = [ results.asset_id_base, results.asset_id_quote, power].join('-');
 	var value     = Math.round(results.rate * 10**power);
 
 	if (isNaN(timestamp) || isNaN(value) || results.asset_id_base  == "" || results.asset_id_quote == "")
@@ -73,7 +85,7 @@ new Promise(function (resolve, reject) {
 	fs.writeFile(callbackFilePath,    iexeccallback , (err) => {});
 	fs.writeFile(determinismFilePath, iexecconsensus, (err) => {});
 
-	console.log("Success:", timestamp, details, value);
+	console.log(`- Success: ${timestamp} ${details} ${value}`);
 })
 .catch(error => {
 	fs.writeFile(
