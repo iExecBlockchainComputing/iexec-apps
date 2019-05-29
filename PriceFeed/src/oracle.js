@@ -38,13 +38,13 @@ new Promise(function (resolve, reject) {
 			data += chunk;
 		});
 		res.on('end', () => {
-			if (res.statusCode == 200)
+			if (data)
 			{
 				resolve(data);
 			}
 			else
 			{
-				reject(`[HTTP ERROR]\nstatusCode: ${res.statusCode}\ndata: ${data}`);
+				reject(`[HTTP ERROR]\nstatusCode: ${res.statusCode}`);
 			}
 		});
 	});
