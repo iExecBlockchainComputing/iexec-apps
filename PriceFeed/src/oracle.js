@@ -32,12 +32,21 @@ const query = {
 };
 
 new Promise(function (resolve, reject) {
+	var data = "";
 	var request = https.request(query, res => {
-		if (res.statusCode != 200)
-		{
-			reject(`[HTTP ERROR]\nstatusCode: ${res.statusCode}\nheaders: ${JSON.stringify(res.headers)}`);
-		}
-		res.on("data", resolve);
+		res.on('data', (chunk) => {
+			data += chunk;
+		});
+		res.on('end', () => {
+			if (res.statusCode == 200)
+			{
+				resolve(data);
+			}
+			else
+			{
+				reject(`[HTTP ERROR]\nstatusCode: ${res.statusCode}\ndata: ${data}`);
+			}
+		});
 	});
 	request.on('error', reject);
 	request.end();
