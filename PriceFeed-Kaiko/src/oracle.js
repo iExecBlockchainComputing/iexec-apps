@@ -36,7 +36,6 @@ Math.average = (input) => {
 /*****************************************************************************
  *                                 ARGUMENTS                                 *
  *****************************************************************************/
-
 var [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2);
 if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
 
@@ -48,7 +47,6 @@ if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
 /*****************************************************************************
  *                                HTTP QUERY                                 *
  *****************************************************************************/
-
 const fragment = Object.entries({
 	// 'interval': '1m',
 	'start_time': time,

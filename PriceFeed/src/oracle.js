@@ -7,52 +7,102 @@ const determinismFilePath = `${root}/determinism.iexec`;
 const callbackFilePath    = `${root}/callback.iexec`;
 const errorFilePath       = `${root}/error.iexec`;
 
-const WAIT_MIN       = parseInt(process.env.WAIT_MIN) || 0; // in ms
-const WAIT_MAX       = parseInt(process.env.WAIT_MAX) || 0; // in ms
-const DEFAULT_APIKEY = '69CC0AA9-1E4D-4E41-806F-8C3642729B88';
-// const DEFAULT_APIKEY = 'D2C881D6-0BBF-4EFE-A572-AE6DB379D43E';
-// const DEFAULT_APIKEY = 'FB7B2516-70A1-42D8-8702-292F29F19768';
+/*****************************************************************************
+ *                                  CONFIG                                   *
+ *****************************************************************************/
 
-var [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2);
-if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
+// coin api key
+const APIKEY = '69CC0AA9-1E4D-4E41-806F-8C3642729B88';
+// const APIKEY = 'D2C881D6-0BBF-4EFE-A572-AE6DB379D43E';
+// const APIKEY = 'FB7B2516-70A1-42D8-8702-292F29F19768';
 
-// const asset_id_base  = "BTC"
-// const asset_id_quote = "USD"
-// const power          = 9
-// const time           = new Date().toISOString();
+// --- version 0: using an aggregate ---
+const VERSION = 0;
 
-const fragment = Object.entries({
-	time,
-}).filter(([k,v]) => v).map(([k,v]) => `${k}=${v}`).join('&');
+// --- version 1: using trade history ---
+// const VERSION = 1;
+// const EXCHANGE = 'BITSTAMP';
+// const EXCHANGE = 'BINANCE';
+
+// random delay
+const WAIT_MIN = parseInt(process.env.WAIT_MIN) || 0; // in ms
+const WAIT_MAX = parseInt(process.env.WAIT_MAX) || 0; // in ms
+
+/*****************************************************************************
+ *                                   TOOLS                                   *
+ *****************************************************************************/
+const sleep = (ms) => {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/*****************************************************************************
+ *                                 ARGUMENTS                                 *
+ *****************************************************************************/
+
+var [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2).map(s => s.toUpperCase());
+
+if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000); } // evm timestamp
+else if (time)          { time = new Date(time);                } // any other format
+else                    { time = new Date();                    } // not value → now
+
+/*****************************************************************************
+ *                                HTTP QUERY                                 *
+ *****************************************************************************/
+let path = undefined;
+
+switch (VERSION)
+{
+	case 0:
+	{
+		const fragment = Object.entries({
+			'time': time.toISOString(),
+		}).filter(([k,v]) => v).map(([k,v]) => `${k}=${v}`).join('&');
+
+		path = `/v1/exchangerate/${asset_id_base}/${asset_id_quote}?${fragment}`;
+		break;
+	}
+	case 1:
+	{
+		const time_start = new Date(time.getTime() - 60*1000); // T - 60s
+		const time_end   = new Date(time.getTime() +  0*1000); // T +  0s
+
+		const fragment = Object.entries({
+			'time_start': time_start.toISOString(),
+			'time_end':   time_end.toISOString(),
+		}).filter(([k,v]) => v).map(([k,v]) => `${k}=${v}`).join('&');
+
+		path = `/v1/trades/${EXCHANGE}_SPOT_${asset_id_base}_${asset_id_quote}/history?${fragment}`;
+		break;
+	}
+}
 
 const query = {
 	method: 'GET',
 	port:   443,
 	host:   'rest.coinapi.io',
-	path:   `/v1/exchangerate/${asset_id_base}/${asset_id_quote}?${fragment}`,
-	headers: { 'X-CoinAPI-Key': process.env.APIKEY || DEFAULT_APIKEY },
+	path:   path,
+	headers: { 'X-CoinAPI-Key': process.env.APIKEY || APIKEY },
 };
 
-const delay = (WAIT_MAX-WAIT_MIN) * Math.random() + WAIT_MIN;
-
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
+/*****************************************************************************
+ *                                  EXECUTE                                  *
+ *****************************************************************************/
 new Promise(async (resolve, reject) => {
 
+	const delay = (WAIT_MAX-WAIT_MIN) * Math.random() + WAIT_MIN;
 	console.log(`- Waiting for ${delay} ms.`);
 	await sleep(delay);
 
 	console.log('- Calling API');
-	var data = "";
-	var request = https.request(query, res => {
+	let chunks = [];
+	let request = https.request(query, res => {
 		res.on('data', (chunk) => {
-			data += chunk;
+			chunks.push(chunk);
 		});
 		res.on('end', () => {
-			if (data)
+			if (chunks)
 			{
-				console.log('- Got data');
-				resolve(data);
+				resolve(chunks.join(''));
 			}
 			else
 			{
@@ -64,20 +114,43 @@ new Promise(async (resolve, reject) => {
 	request.end();
 })
 .then(data => {
-	var results = JSON.parse(data.toString());
+	let results = JSON.parse(data.toString());
 
 	if (results.error !== undefined)
 	{
 		throw new Error(results.error);
 	}
 
-	var timestamp = new Date(results.time).getTime();
-	var details   = [ results.asset_id_base, results.asset_id_quote, power].join('-');
-	var value     = Math.round(results.rate * 10**power);
+	let timestamp = undefined;
+	let details   = undefined;
+	let value     = undefined;
 
-	if (isNaN(timestamp) || isNaN(value) || results.asset_id_base  == "" || results.asset_id_quote == "")
+	switch (VERSION)
 	{
-		throw new Error("Error: invalid results " + JSON.stringify({query, results}));
+		case 0:
+		{
+			timestamp = new Date(results.time).getTime();
+			details   = [ results.asset_id_base, results.asset_id_quote, power].join('-');
+			value     = Math.round(results.rate * 10**power);
+			break;
+		}
+		case 1:
+		{
+			if (results.length == 0)
+			{
+				throw new Error('missing data');
+			}
+			const price = ((w,v) => v/w)(...results.reduce((acc, trade) => [acc[0] + trade.size, acc[1] + trade.price * trade.size], [0,0]));
+			timestamp = time.getTime();
+			details   = [ asset_id_base, asset_id_quote, power].join('-');
+			value     = Math.round(price * 10**power);
+			break;
+		}
+	}
+
+	if (isNaN(timestamp) || isNaN(value))
+	{
+		throw new Error("invalid results");
 	}
 
 	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [timestamp, details, value]);
