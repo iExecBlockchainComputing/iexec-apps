@@ -100,7 +100,7 @@ new Promise(async (resolve, reject) => {
 			chunks.push(chunk);
 		});
 		res.on('end', () => {
-			if (chunks)
+			if (chunks.length)
 			{
 				resolve(chunks.join(''));
 			}
@@ -140,10 +140,10 @@ new Promise(async (resolve, reject) => {
 			{
 				throw new Error('missing data');
 			}
-			const price = ((w,v) => v/w)(...results.reduce((acc, trade) => [acc[0] + trade.size, acc[1] + trade.price * trade.size], [0,0]));
+			const average = ((w,v) => v/w)(...results.reduce((acc, trade) => [acc[0] + trade.size, acc[1] + trade.price * trade.size], [0,0]));
 			timestamp = time.getTime();
 			details   = [ asset_id_base, asset_id_quote, power].join('-');
-			value     = Math.round(price * 10**power);
+			value     = Math.round(average * 10**power);
 			break;
 		}
 	}

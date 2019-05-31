@@ -10,54 +10,58 @@ const errorFilePath       = `${root}/error.iexec`;
 /*****************************************************************************
  *                                  CONFIG                                   *
  *****************************************************************************/
-// const EXCHANGE = 'cbse'
-const EXCHANGE = 'bnce'
+
+// kaiko api key
 const APIKEY   = '';
 
+// version 0
+const VERSION = 0;
+const EXCHANGE = 'bnce'
+// const EXCHANGE = 'cbse'
+
+// random delay
 const WAIT_MIN = parseInt(process.env.WAIT_MIN) || 0; // in ms
 const WAIT_MAX = parseInt(process.env.WAIT_MAX) || 0; // in ms
 
 /*****************************************************************************
  *                                   TOOLS                                   *
  *****************************************************************************/
-process.sleep = (ms) => {
+const sleep = (ms) => {
 	return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-Math.average = (input) => {
-	this.output = 0;
-	for (this.i = 0; this.i < input.length; ++this.i)
-	{
-		this.output+=Number(input[this.i]);
-	}
-	return this.output/input.length;
 }
 
 /*****************************************************************************
  *                                 ARGUMENTS                                 *
  *****************************************************************************/
-var [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2);
-if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000).toISOString(); }
 
-// const asset_id_base  = "BTC"
-// const asset_id_quote = "USD"
-// const power          = 9
-// const time           = new Date().toISOString();
+var [ asset_id_base, asset_id_quote, power, time ] = process.argv.slice(2);
+
+if (/^\d*$/.test(time)) { time = new Date(parseInt(time)*1000); } // evm timestamp
+else if (time)          { time = new Date(time);                } // any other format
+else                    { time = new Date();                    } // not value → now
 
 /*****************************************************************************
  *                                HTTP QUERY                                 *
  *****************************************************************************/
-const fragment = Object.entries({
-	// 'interval': '1m',
-	'start_time': time,
-}).filter(([k,v]) => v).map(([k,v]) => `${k}=${v}`).join('&');
+let path = undefined;
+
+switch (VERSION)
+{
+	case 0:
+	{
+		const fragment = Object.entries({
+			'start_time': time,
+		}).filter(([k,v]) => v).map(([k,v]) => `${k}=${v}`).join('&');
+		path = `/v1/data/trades.v1/exchanges/${EXCHANGE}/spot/${asset_id_base}-${asset_id_quote}/trades?${fragment}`;
+		break;
+	}
+}
 
 const query = {
 	method: 'GET',
-	port: 443,
-	host: 'eu.market-api.kaiko.io',
-	// path: `/v1/data/trades.v1/exchanges/${EXCHANGE}/spot/${asset_id_base}-${asset_id_quote}/aggregations/vwap?${fragment}`,
-	path: `/v1/data/trades.v1/exchanges/${EXCHANGE}/spot/${asset_id_base}-${asset_id_quote}/trades?${fragment}`,
+	port:   443,
+	host:   'eu.market-api.kaiko.io',
+	path:   path,
 	headers: {
 		'Accept': 'application/json',
 		'X-Api-Key': process.env.APIKEY || APIKEY,
@@ -71,19 +75,18 @@ new Promise(async (resolve, reject) => {
 
 	const delay = (WAIT_MAX-WAIT_MIN) * Math.random() + WAIT_MIN;
 	console.log(`- Waiting for ${delay} ms.`);
-	await process.sleep(delay);
+	await sleep(delay);
 
 	console.log('- Calling API');
-	var data = "";
-	var request = https.request(query, res => {
+	let chunks = [];
+	let request = https.request(query, res => {
 		res.on('data', (chunk) => {
-			data += chunk;
+			chunks.push(chunk);
 		});
 		res.on('end', () => {
-			if (data)
+			if (chunks.length)
 			{
-				console.log('- Got data');
-				resolve(data);
+				resolve(chunks.join(''));
 			}
 			else
 			{
@@ -102,13 +105,24 @@ new Promise(async (resolve, reject) => {
 		throw new Error(results.message);
 	}
 
-	var timestamp = new Date(results.query.start_time).getTime();
-	var details   = [ results.query.instrument, power].join('-').toUpperCase();
-	var value     = Math.round(Math.average(results.data.map(t => t.price)) * 10**power);
+	let timestamp = undefined;
+	let details   = undefined;
+	let value     = undefined;
 
-	if (isNaN(timestamp) || isNaN(value) || results.asset_id_base  == "" || results.asset_id_quote == "")
+	switch (VERSION)
 	{
-		throw new Error("Error: invalid results " + JSON.stringify({query, results}));
+		case 0:
+		{
+			timestamp = new Date(results.query.start_time).getTime();
+			details   = [ results.query.instrument, power].join('-').toUpperCase();
+			value     = Math.round(Math.average(results.data.map(t => t.price)) * 10**power);
+			break;
+		}
+	}
+
+	if (isNaN(timestamp) || isNaN(value))
+	{
+		throw new Error("invalid results");
 	}
 
 	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [timestamp, details, value]);
