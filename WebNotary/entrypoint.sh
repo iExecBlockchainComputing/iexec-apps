@@ -2,12 +2,10 @@
 
 BASE=$PWD/iexec_out
 RAW=$BASE/raw
-SHASUM=$BASE/shasum.txt
 DETERMINISM=$BASE/determinism.iexec
 
-rm -r $BASE/*
+rm -rf $BASE/*
 mkdir $RAW
 cd $RAW
-wget -q $@
-find $RAW -type f -exec sha256sum {} \; > $SHASUM
-sha256sum $SHASUM > $DETERMINISM
+wget $@
+find $RAW -type f -exec sha256sum {} \; | sha256sum | cut -c1-64 > $DETERMINISM
