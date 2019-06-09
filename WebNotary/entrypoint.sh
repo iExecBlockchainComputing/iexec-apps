@@ -24,16 +24,14 @@ pullTo $RAW.copy
 if diff $RAW $RAW.copy > /dev/null;
 then
 	# configure determinism (stdout is not deterministic)
-	echo -n "0x" > $DETERMINISM
-	find $RAW -type f -exec sha256sum {} \; | sha256sum | cut -c1-64 >> $DETERMINISM
+	( echo -n "0x";	find $RAW -type f -exec sha256sum {} \; | sha256sum | cut -c1-64 ) > $DETERMINISM
 	# rm copy
 	rm -rf $RAW.copy
 else
 	# error
 	echo "ERROR: result is not deterministic" > $ERROR
 	# deterministic value
-	echo -n "0x" > $DETERMINISM
-	cat $ERROR | sha256sum | cut -c1-64 >> $DETERMINISM
+	( echo -n "0x"; cat $ERROR | sha256sum | cut -c1-64 ) >> $DETERMINISM
 	# rm all data
 	rm -rf $RAW $RAW.copy
 fi
