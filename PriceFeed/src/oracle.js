@@ -7,6 +7,18 @@ const determinismFilePath = `${root}/determinism.iexec`;
 const callbackFilePath    = `${root}/callback.iexec`;
 const errorFilePath       = `${root}/error.iexec`;
 
+
+/*****************************************************************************
+ *                                   TOOLS                                   *
+ *****************************************************************************/
+const sleep = (ms) => {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const cat = (path) => {
+	try { return fs.readFileSync(path).toString(); } catch { return null; }
+}
+
 /*****************************************************************************
  *                                  CONFIG                                   *
  *****************************************************************************/
@@ -27,13 +39,6 @@ const VERSION = 0;
 // random delay
 const WAIT_MIN = parseInt(process.env.WAIT_MIN) || 0; // in ms
 const WAIT_MAX = parseInt(process.env.WAIT_MAX) || 0; // in ms
-
-/*****************************************************************************
- *                                   TOOLS                                   *
- *****************************************************************************/
-const sleep = (ms) => {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 /*****************************************************************************
  *                                 ARGUMENTS                                 *
@@ -81,7 +86,7 @@ const query = {
 	port:   443,
 	host:   'rest.coinapi.io',
 	path:   path,
-	headers: { 'X-CoinAPI-Key': process.env.APIKEY || APIKEY },
+	headers: { 'X-CoinAPI-Key': cat(`/iexec_in/${process.env.DATASET_FILENAME}`) || APIKEY },
 };
 
 /*****************************************************************************
