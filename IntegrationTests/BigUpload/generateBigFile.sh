@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #vanityDefaultResultFile=Result-log-*.txt
-resultFile=/iexec/result.txt
-consensusFile=/iexec/consensus.iexec
+resultFile=/iexec_out/result.txt
+consensusFile=/iexec_out/determinism.iexec
 
-mkdir /iexec
+mkdir /iexec_out
 rm -f $resultFile $consensusFile
 
 touch $resultFile
