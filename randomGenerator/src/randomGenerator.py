@@ -3,6 +3,7 @@
 import os
 import random
 import sha3
+import sys
 
 root                = '';
 inFolder            = '{}iexec_in/'.format(root);
@@ -14,7 +15,10 @@ datasetEnvVar       = 'IEXEC_DATASET_FILENAME';
 
 if __name__ == '__main__':
 
-	# OPTIONAL: use dataset to reseed the random → still not deterministic even with a seed
+	# Seed using the arguments → still not deterministic event with arguments
+	random.seed(" ".join(sys.argv), random.random());
+
+	# OPTIONAL: reseed using dataset to reseed the random → still not deterministic even with a dataset
 	if datasetEnvVar in os.environ:
 		try:
 			with open('{}{}'.format(inFolder, os.environ[datasetEnvVar]), 'r') as seedFile:
