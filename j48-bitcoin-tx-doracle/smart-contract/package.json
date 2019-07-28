@@ -1,0 +1,16 @@
+{
+  "name": "bitcoin-tx-doracle",
+  "version": "0.0.1",
+  "description": "Contracts and tools for the iExec based bitcoinTx Doracle",
+  "author": "j48",
+  "license": "ISC",
+  "homepage": "https://github.com/j48/iExec/apps",
+  "dependencies": {
+    "iexec-doracle-base": "^0.0.6",
+    "iexec-poco": "^3.0.35",
+    "iexec-solidity": "^0.0.7",
+    "openzeppelin-solidity": "^2.2.0",
+    "truffle": "^5.0.25",
+    "truffle-hdwallet-provider": "^1.0.12"
+  }
+}
