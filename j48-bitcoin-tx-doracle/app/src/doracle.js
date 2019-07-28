@@ -164,7 +164,7 @@ new Promise(async (resolve, reject) => {
         let apiDataID = undefined; // HexStrict, serves as smart contract SSTORE lookup id
         let apiData = undefined;
 
-        // using swith for standardization between node apps/doracles
+        // using switch for standardization between node.js apps/doracles
         switch (argFun) {
 
             case 'TXHASHAMT': {
