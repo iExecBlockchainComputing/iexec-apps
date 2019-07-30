@@ -63,11 +63,10 @@ let argVal = undefined;
 var args = process.argv.slice(2).map(s => s);
 
 switch (true) {
-
-	case !args[0]:{
-		argFun = 'FUNERROR';
-		break;
-	}
+    case !args[0]:{
+        argFun = 'FUNERROR';
+        break;
+    }
     case validFunctions.includes(args[0].toUpperCase()): {
         argFun = args[0];
         argVal = args[1];
@@ -90,7 +89,6 @@ switch (true) {
 let path = undefined;
 
 switch (argFun) {
-
     case 'TXHASHAMT': {
         if (argVal) path = `/rawtx/${argVal}`;
         break;
@@ -165,11 +163,16 @@ new Promise(async (resolve, reject) => {
         let apiData = undefined;
 
         // using switch for standardization between node.js apps/doracles
+        // add validation in switch
         switch (argFun) {
-
             case 'TXHASHAMT': {
                 let details = results.hash;
-                apiDataID = '0x' + details;
+                if (details.toLowerCase() === argVal.toLowerCase()){
+                    apiDataID = '0x' + details;
+                }else{
+                    throw `invalid results- apiDataID does not match input tx hash (${apiDataID}) -- API error`;
+                }
+                if(details) apiDataID = '0x' + details;
                 
                 let totalAmount = 0;
                 outputs = results.out; // add value of each output in tx
@@ -178,12 +181,16 @@ new Promise(async (resolve, reject) => {
                 });
 
                 let timestamp = parseInt(results.time);
+                if (1230768000 > timestamp || timestamp > 253402300799) {
+                        // 1-1-2009 < timestamp < 12-31-9999
+                        throw `invalid results- timestamp is not a reasonable epoch time-- API error`;
+                    }
 
-                // max 27 bytes (minus timestamp) between all values (when converted to hex)
+                // max 32 bytes between all values (when converted to hex)
                 // in this case only totalAmount is needed
                 apiData = [
                 {name: 'total_amount', value: totalAmount, size: 27},
-                {name: 'time', value:timestamp, size: 5}
+                {name: 'timestamp', value: timestamp, size: 5}
                 ];
 
                 break;
@@ -193,23 +200,17 @@ new Promise(async (resolve, reject) => {
         console.log(`- API data ID: ${apiDataID}`);
         console.log(`- API data: ${JSON.stringify(apiData)}`);
 
-        // data validation||conversion
+        // packing data (uint40,uint216) into 1 bytes32
+        // equal or less than 32 bytes total (27 bytes values, 5 bytes timestamp)
         let apiDataHex = '';
-   
-        if (apiDataID.toLowerCase() !== '0x' + argVal.toLowerCase()){
-            throw `invalid results- apiDataID does not match input tx hash (${apiDataID}) -- API error`;
-        }
-
-        // packing data (uint40,uint216) into 1 uint256
-		// equal or less than 32 bytes total (27 bytes values, 5 bytes timestamp)
-		apiData.forEach(function (entry) {
-  			apiDataHex += leftPadNoPrefix(entry.value, entry.size * 2);
-		});
-
-        let apiPackedData = '0x' + apiDataHex;
+        apiData.forEach(function (entry) {
+            apiDataHex += leftPadNoPrefix(entry.value, entry.size * 2);
+        });
 
         // user error check here instead of trimming to 32 bytes (64 places)
-        if (apiPackedData.length > 66) throw `invalid packed data size- data must be less than or equal to 32 bytes (${apiPackedData}) -- API error`;
+        if (apiDataHex.length > 64) throw `invalid packed data size- data must be less than or equal to 32 bytes (${apiPackedData}) -- API error`;
+
+        let apiPackedData = '0x' + apiDataHex;
 
         let abiData = [apiDataID, apiPackedData];
         let abiTypes = Array.from(abiData, x => 'bytes32');
