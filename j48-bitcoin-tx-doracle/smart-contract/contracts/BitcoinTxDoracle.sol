@@ -33,21 +33,21 @@ contract BitcoinTxDoracle is Ownable, IexecDoracle{
 	}
 
 	function decodeResults(bytes memory results)
-	public pure returns(bytes32, uint256)
-	{ return abi.decode(results, (bytes32, uint256)); }
+	public pure returns(bytes32, bytes32)
+	{ return abi.decode(results, (bytes32, bytes32)); }
 
 	function processResult(bytes32 _oracleCallID)
 	public
 	{
 		bytes32       id;
-		uint256       packedData;
+		bytes32       packedData;
 
 		// Parse results
 		(id, packedData) = decodeResults(_iexecDoracleGetVerifiedResult(_oracleCallID));
 
 		// unpack data
-		uint256   timestamp = uint256(uint40(packedData>>0));
-		uint256   amount    = uint256(uint216(packedData>>40));
+		uint256   timestamp = uint256(uint40(uint256(packedData>>0)));
+		uint256   amount    = uint256(uint216(uint256(packedData>>40)));
 
 		// Process results
 		require(txAmount[id].timestamp < timestamp, "tx-exists");
