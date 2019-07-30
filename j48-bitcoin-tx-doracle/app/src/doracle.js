@@ -212,7 +212,7 @@ new Promise(async (resolve, reject) => {
         if (apiPackedData.length > 66) throw `invalid packed data size- data must be less than or equal to 32 bytes (${apiPackedData}) -- API error`;
 
         let abiData = [apiDataID, apiPackedData];
-        let abiTypes = Array.from(abiData, x => 'uint256');
+        let abiTypes = Array.from(abiData, x => 'bytes32');
 
         console.log(`- ABI Types: ${abiTypes}\n- ABI Data: ${abiData}`);
 
