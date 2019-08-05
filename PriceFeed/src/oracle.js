@@ -16,7 +16,7 @@ const sleep = (ms) => {
 }
 
 const cat = (path) => {
-	try { return fs.readFileSync(path).toString(); } catch { return null; }
+	try { return fs.readFileSync(path).toString(); } catch (e) { return null; }
 }
 
 /*****************************************************************************
@@ -24,7 +24,8 @@ const cat = (path) => {
  *****************************************************************************/
 
 // coin api key
-const APIKEY = '69CC0AA9-1E4D-4E41-806F-8C3642729B88';
+const APIKEY = '65FFBB07-6119-4A1E-80DC-F46B4FF9EE2F';
+// const APIKEY = '69CC0AA9-1E4D-4E41-806F-8C3642729B88';
 // const APIKEY = 'D2C881D6-0BBF-4EFE-A572-AE6DB379D43E';
 // const APIKEY = 'FB7B2516-70A1-42D8-8702-292F29F19768';
 

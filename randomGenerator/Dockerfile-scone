@@ -10,6 +10,8 @@ RUN SCONE_MODE=sim pip install attrdict pysha3 python-gnupg web3
 
 RUN cp /usr/bin/python3.6 /usr/bin/python3
 
+COPY src /app
+
 RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& mkdir conf                                                       \
 	&& scone fspf create fspf.pb                                        \
@@ -35,7 +37,5 @@ RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& FINGERPRINT="$FSPF_KEY|$FSPF_TAG|$MRENCLAVE"                     \
 	&& echo $FINGERPRINT > conf/fingerprint.txt                         \
 	&& printf "\n########################################################\nMREnclave: $FINGERPRINT\n########################################################\n\n"
-
-COPY src /app
 
 ENTRYPOINT [ "python3", "/app/randomGenerator.py" ]
