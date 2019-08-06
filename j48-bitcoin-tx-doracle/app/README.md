@@ -5,7 +5,7 @@ App
 -----
 given a valid bitcoin transaction hash as input 'b6f6991d03df0e2e04dafffcd6bc418aac66049e2cd74b80f14ac86db1e3f0da'
 
-returns bitcoin transaction hash as ID (bytes32) along with transfer amount in sats and transaction timestamp (packed uint256)
+returns bitcoin transaction hash as ID (bytes32) along with transfer amount in sats and transaction timestamp (packed bytes32)
 `0xb6f6991d03df0e2e04dafffcd6bc418aac66049e2cd74b80f14ac86db1e3f0da000000000000000000000000000000000000000000000001f2ed64005d3b7183`
 
 Usage
