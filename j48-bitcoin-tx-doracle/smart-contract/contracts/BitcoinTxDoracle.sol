@@ -39,24 +39,24 @@ contract BitcoinTxDoracle is Ownable, IexecDoracle{
 	function processResult(bytes32 _oracleCallID)
 	public
 	{
-		bytes32       id;
+		bytes32       hash;
 		bytes32       packedData;
 
 		// Parse results
-		(id, packedData) = decodeResults(_iexecDoracleGetVerifiedResult(_oracleCallID));
-
-		// unpack data
-		uint256   timestamp = uint256(uint40(uint256(packedData>>0)));
-		uint256   amount    = uint256(uint216(uint256(packedData>>40)));
+		(hash, packedData) = decodeResults(_iexecDoracleGetVerifiedResult(_oracleCallID));
 
 		// Process results
-		require(txAmount[id].timestamp < timestamp, "tx-exists");
-		// there should only ever be 1 entry per tx
-		emit TxUpdated(id, _oracleCallID, amount, timestamp);
+		// unpack require data
+		uint256   timestamp = uint256(uint40(uint256(packedData>>0)));
 		
-		txAmount[id].oracleCallID = _oracleCallID;
-		txAmount[id].amount       = amount;
-		txAmount[id].timestamp    = timestamp;
+		require(txAmount[hash].timestamp < timestamp, "tx-exists");
+		// there should only ever be 1 entry per tx
+		
+		emit TxUpdated(hash, _oracleCallID, amount, timestamp);
+		
+		txAmount[hash].oracleCallID = _oracleCallID;
+		txAmount[hash].amount       = uint256(uint216(uint256(packedData>>40)));
+		txAmount[hash].timestamp    = timestamp;
 	}
 
 	}
