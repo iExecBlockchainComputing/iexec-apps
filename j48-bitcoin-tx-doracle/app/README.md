@@ -11,9 +11,6 @@ returns bitcoin transaction hash as ID (bytes32) along with transfer amount in s
 Usage
 -----
 `docker run -v /tmp/iexec_out:/iexec_out j048/app-bitcoin-tx-doracle:latest b6f6991d03df0e2e04dafffcd6bc418aac66049e2cd74b80f14ac86db1e3f0da`
-or
-`docker run -v /tmp/iexec_out:/iexec_out j048/app-bitcoin-tx-doracle:latest TXHASHAMT b6f6991d03df0e2e04dafffcd6bc418aac66049e2cd74b80f14ac86db1e3f0da`
-
 
 Smart Contract
 -----
