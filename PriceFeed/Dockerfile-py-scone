@@ -6,9 +6,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repos
     && apk --no-cache --update-cache add gcc gfortran python python-dev py-pip build-base wget freetype-dev libpng-dev \
     && apk add --no-cache --virtual .build-deps gcc musl-dev
 
-RUN SCONE_MODE=sim pip install attrdict pysha3 python-gnupg web3
+RUN SCONE_MODE=sim pip install attrdict eth-abi pysha3 python-gnupg web3
 
-RUN cp /usr/bin/python3.6 /usr/bin/python3
+RUN cp /usr/bin/python3.7 /usr/bin/python3
 
 COPY src /app
 
@@ -38,4 +38,4 @@ RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& echo $FINGERPRINT > conf/fingerprint.txt                         \
 	&& printf "\n########################################################\nMREnclave: $FINGERPRINT\n########################################################\n\n"
 
-ENTRYPOINT [ "python3", "/app/randomGenerator.py" ]
+ENTRYPOINT [ "python3", "/app/priceFeed.py" ]
