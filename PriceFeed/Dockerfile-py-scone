@@ -10,7 +10,10 @@ RUN SCONE_MODE=sim pip install attrdict eth-abi pysha3 python-gnupg web3
 
 RUN cp /usr/bin/python3.7 /usr/bin/python3
 
-COPY src /app
+COPY src/priceFeed.py /app/priceFeed.py
+COPY entrypoint-py.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
 
 RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& mkdir conf                                                       \
@@ -38,4 +41,5 @@ RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& echo $FINGERPRINT > conf/fingerprint.txt                         \
 	&& printf "\n########################################################\nMREnclave: $FINGERPRINT\n########################################################\n\n"
 
-ENTRYPOINT [ "python3", "/app/priceFeed.py" ]
+ENTRYPOINT ["/entrypoint.sh"]
+

@@ -99,7 +99,7 @@ new Promise(async (resolve, reject) => {
 	console.log(`- Waiting for ${delay} ms.`);
 	await sleep(delay);
 
-	console.log('- Calling API');
+	console.log(`- Calling API ${query.host}${query.path}`);
 	let chunks = [];
 	let request = https.request(query, res => {
 		res.on('data', (chunk) => {

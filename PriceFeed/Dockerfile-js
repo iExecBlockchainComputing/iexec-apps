@@ -2,6 +2,8 @@ FROM node:11-alpine
 
 RUN npm i https ethers fs
 
-COPY src/priceFeed.js /priceFeed.js
+COPY src/priceFeed.js /app/priceFeed.js
+COPY entrypoint-js.sh /entrypoint.sh
 
-ENTRYPOINT ["node", "/priceFeed.js"]
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
