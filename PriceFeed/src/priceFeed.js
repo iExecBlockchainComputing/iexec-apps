@@ -87,7 +87,7 @@ const query = {
 	port:   443,
 	host:   'rest.coinapi.io',
 	path:   path,
-	headers: { 'X-CoinAPI-Key': cat(`/iexec_in/${process.env.DATASET_FILENAME}`) || APIKEY },
+	headers: { 'X-CoinAPI-Key': cat(`/iexec_in/${process.env.IEXEC_DATASET_FILENAME}`) || APIKEY },
 };
 
 /*****************************************************************************

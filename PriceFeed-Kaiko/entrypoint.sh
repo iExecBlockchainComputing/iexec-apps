@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if [[ $DATASET_FILENAME ]]
+if [[ $IEXEC_DATASET_FILENAME ]]
 then
-	export APIKEY=`cat iexec_in/$DATASET_FILENAME`;
+	export APIKEY=`cat iexec_in/$IEXEC_DATASET_FILENAME`;
 fi
 
 export WAIT_MIN=0;
