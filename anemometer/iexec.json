@@ -1,0 +1,37 @@
+{
+  "description": "My iExec ressource description, must be at least 150 chars long in order to pass the validation checks. Describe your application, dataset or workerpool to your users",
+  "license": "MIT",
+  "author": "?",
+  "social": {
+    "website": "?",
+    "github": "?"
+  },
+  "logo": "logo.png",
+  "buyConf": {
+    "params": {
+      "0": ""
+    },
+    "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trust": 0,
+    "callback": "0x0000000000000000000000000000000000000000"
+  },
+  "app": {
+    "owner": "0x4E63D4052F7e5c6A516f4b48F7682653eFB63127",
+    "name": "anemometer",
+    "type": "DOCKER",
+    "multiaddr": "registry.hub.docker.com/nikhil3000/anemometer:1.0.0",
+    "checksum": "0x5bd0f44cf51d2674e3293d74ae7155915a5ffdccb7270345da6750c3415a819e",
+    "mrenclave": ""
+  },
+  "order": {
+    "apporder": {
+      "app": "0x2297D499f8C673C28A83Ee1602655D4a8800161A",
+      "appprice": 0,
+      "volume": 1000000,
+      "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "datasetrestrict": "0x0000000000000000000000000000000000000000",
+      "workerpoolrestrict": "0x0000000000000000000000000000000000000000",
+      "requesterrestrict": "0x0000000000000000000000000000000000000000"
+    }
+  }
+}

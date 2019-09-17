@@ -1,0 +1,33 @@
+interface Event
+{
+	id:                           ID!
+	blockNumber:                  Int!
+	transactionID:                Bytes!
+}
+
+type Asset @entity
+{
+	id:                           ID!
+	pairs:                        [Pair!]! @derivedFrom(field: "asset_base")
+}
+
+type Pair @entity
+{
+	id:                           ID!
+	asset_base:                   Asset!
+	asset_quote:                  Asset!
+	precision:                    Int!
+	latest:                       Quotation!
+	history:                      [Quotation!]! @derivedFrom(field: "pair")
+}
+
+type Quotation implements Event @entity
+{
+	id:                           ID!
+	blockNumber:                  Int!
+	transactionID:                Bytes!
+	pair:                         Pair!
+	value:                        BigDecimal!
+	timestamp:                    BigInt!
+	oracleCallID:                 Bytes!
+}

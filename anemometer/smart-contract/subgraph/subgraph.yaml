@@ -1,0 +1,27 @@
+specVersion: 0.0.2
+description: PriceFeedOracle
+repository: https://github.com/iExecBlockchainComputing/price-feed-doracle
+schema:
+  file: ./schema.graphql
+dataSources:
+  - name: PriceOracle
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      address: '0xeD4A0189511859427c33dCc7C85Fdd36575aE946'
+      abi: PriceOracleLegacy
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Asset
+        - Pair
+        - Quotation
+      abis:
+        - name: PriceOracleLegacy
+          file: abi/PriceOracleLegacy.json
+      eventHandlers:
+        - event: ValueChange(indexed bytes32,indexed bytes32,uint256,uint256,uint256,uint256)
+          handler: handleValueChange
+      file: ./src/priceoracle.ts
