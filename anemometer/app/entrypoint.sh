@@ -1,1 +1,2 @@
-node src/price-feed.js $@
+#!/bin/sh
+node src/anemometer.js $@

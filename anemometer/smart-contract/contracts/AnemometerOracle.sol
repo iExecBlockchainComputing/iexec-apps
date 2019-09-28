@@ -10,8 +10,10 @@ contract AnemometerOracle is Ownable, IexecDoracle
 	{
 		bytes32 oracleCallID;
 		uint256 date;
-		string value;
-		string  details;
+		string longi;
+		string  lati;
+		uint256  windSpeed; //correct to 3 decimal places
+		string weather;
 	}
 
 	mapping(bytes32 => TimedValue) public values;
@@ -20,9 +22,11 @@ contract AnemometerOracle is Ownable, IexecDoracle
 		bytes32 indexed id,
 		bytes32 indexed oracleCallID,
 		uint256 oldDate,
-		string oldValue,
+		uint256 oldWindSpeed,
+		string  oldWeather,
 		uint256 newDate,
-		string newValue
+		uint256 newWindSpeed,
+		string  newWeather 
 	);
 
 	// Use _iexecHubAddr to force use of custom iexechub, leave 0x0 for autodetect
@@ -43,26 +47,30 @@ contract AnemometerOracle is Ownable, IexecDoracle
 	}
 
 	function decodeResults(bytes memory results)
-	public pure returns(uint256, string memory, string memory)
-	{ return abi.decode(results, (uint256, string, string)); }
+	public pure returns(uint256, string memory, string memory, uint256 , string memory)
+	{ return abi.decode(results, (uint256, string , string , uint256 , string )); }
 
 	function processResult(bytes32 _oracleCallID)
 	public
 	{
 		uint256       date;
-		string memory details;
-		string memory value;
+		string memory longi;
+		string memory lati;
+		uint256       windSpeed; //correct to 3 decimal places
+		string memory weather;
 
 		// Parse results
-		(date, details, value) = decodeResults(_iexecDoracleGetVerifiedResult(_oracleCallID));
+		(date,longi, lati, windSpeed, weather) = decodeResults(_iexecDoracleGetVerifiedResult(_oracleCallID));
 
 		// Process results
-		bytes32 id = keccak256(bytes(details));
+		bytes32 id = keccak256(abi.encode(longi,lati));
 		require(values[id].date < date, "new-value-is-too-old");
-		emit ValueUpdated(id, _oracleCallID, values[id].date, values[id].value, date, value);
+		emit ValueUpdated(id, _oracleCallID, values[id].date, values[id].windSpeed,values[id].weather, date, windSpeed, weather);
 		values[id].oracleCallID = _oracleCallID;
 		values[id].date         = date;
-		values[id].value        = value;
-		values[id].details      = details;
+		values[id].longi        = longi;
+		values[id].lati      = lati;
+		values[id].windSpeed = windSpeed;
+		values[id].weather = weather;
 	}
 }

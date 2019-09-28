@@ -11,34 +11,37 @@ const errorFilePath       = `${root}/error.iexec`;
 /*****************************************************************************
  *                                  CONFIG                                   *
  *****************************************************************************/
-const APIKEY = '87a1fd74e099f170b76906e87e19e9d9';
+const DARKSKYAPIKEY = '513d51692e7207ee17fe6bdf1d1d6414';
 
 /*****************************************************************************
  *                                 ARGUMENTS                                 *
  *****************************************************************************/
 
-var [ lati , longi] = process.argv.slice(2).map(s => s);
-console.log(longi);
-console.log(lati);
+var [lati , longi, timestamp] = process.argv.slice(2).map(s => s);
+
+// var timestampInMili = new Date().getTime();
+// var timestamp = parseInt(timestampInMili/1000)
+// console.log(longi);
+// console.log(lati);
+// console.log(timestamp);
 /*****************************************************************************
  *                                HTTP QUERY                                 *
  *****************************************************************************/
 
-let path = `https://api.openweathermap.org/data/2.5/weather?lat=${lati}&lon=${longi}&APPID=${APIKEY}`;
+let url = `https://api.darksky.net/forecast/${DARKSKYAPIKEY}/${lati},${longi},${timestamp}?exclude=hourly,daily,flags`;
 
 /*****************************************************************************
  *                                  EXECUTE                                  *
  *****************************************************************************/
-axios.get(path)
+axios.get(url)
 .then(res=>{
+	// console.log(res);
 	var result = res.data;
-	var windSpeed = result.wind.speed;
-	var weather =  result.weather[0].description;
-	var timestamp = new Date().getTime();
-	var details   = [ longi, lati].join('-');
-	var value = [weather, windSpeed].join('-');
-
-	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'string'], [timestamp, details, value]);
+	var windSpeed = parseInt(result.currently.windSpeed * 1000);  //accuracy to 3 decimal points
+	var weather =  result.currently.summary;
+	console.log(windSpeed);
+	console.log(weather);
+	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'string', 'uint256' , 'string'], [timestamp, longi, lati, windSpeed, weather]);
 	var iexecconsensus = ethers.utils.keccak256(iexeccallback);
 	fs.writeFile(callbackFilePath,    iexeccallback , (err) => {});
 	fs.writeFile(determinismFilePath, iexecconsensus, (err) => {});
