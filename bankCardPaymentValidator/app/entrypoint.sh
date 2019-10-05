@@ -1,0 +1,1 @@
+node src/price-feed.js $@
