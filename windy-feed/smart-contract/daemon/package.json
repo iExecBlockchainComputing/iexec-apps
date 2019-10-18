@@ -1,0 +1,28 @@
+{
+  "name": "wind-feed-doracle",
+  "version": "1.0.0",
+  "description": "Contracts and tools for the iExec based feed DOracle",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "/build",
+    "/contracts",
+    "daemon"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "ethereumjs-util": "^6.1.0",
+    "iexec-doracle-base": "0.0.7",
+    "iexec-poco": "^3.0.35",
+    "iexec-solidity": "0.0.14",
+    "multiaddr": "^7.1.0",
+    "openzeppelin-solidity": "^2.3.0",
+    "openzeppelin-test-helpers": "^0.4.3",
+    "rlc-faucet-contract": "^1.0.8"
+  }
+}

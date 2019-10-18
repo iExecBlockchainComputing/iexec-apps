@@ -1,0 +1,25 @@
+{
+  "name": "smart-contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "/build",
+    "/contracts",
+    "daemon"
+  ],
+  "keywords": [],
+  "author": "Janus",
+  "license": "ISC",
+  "dependencies": {
+    "iexec-doracle-base": "0.0.7",
+    "iexec-poco": "^3.0.35",
+    "iexec-solidity": "0.0.14",
+    "openzeppelin-solidity": "^2.3.0",
+    "truffle": "^5.0.36",
+    "truffle-hdwallet-provider": "^1.0.17"
+  }
+}

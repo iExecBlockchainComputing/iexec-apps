@@ -1,0 +1,3 @@
+./smart-contract/build
+./smart-contract/daemon/node_modules
+./smart-contract/node_modules
