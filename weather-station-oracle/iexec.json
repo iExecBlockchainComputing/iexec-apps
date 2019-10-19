@@ -1,0 +1,35 @@
+{
+  "description": "My iExec ressource description, must be at least 150 chars long in order to pass the validation checks. Describe your application, dataset or workerpool to your users",
+  "license": "MIT",
+  "author": "?",
+  "social": {
+    "website": "?",
+    "github": "?"
+  },
+  "logo": "logo.png",
+  "buyConf": {
+    "params": "",
+    "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trust": "0",
+    "callback": "0x0000000000000000000000000000000000000000"
+  },
+  "app": {
+    "owner": "0x866A9D83B80266F2D40882b13463615eda305b08",
+    "name": "Weather-station",
+    "type": "DOCKER",
+    "multiaddr": "registry.hub.docker.com/andy92pac/weather-station:1.0.0",
+    "checksum": "0xbc500419ccb732102265753ef439bc7c53916549ee5a7567b771c5b80e24d2f3",
+    "mrenclave": ""
+  },
+  "order": {
+    "apporder": {
+      "app": "0xdffFa5f74Ba05A21C8A10E76d41f50F8A0858A5F",
+      "appprice": "0",
+      "volume": "1000000",
+      "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "datasetrestrict": "0x0000000000000000000000000000000000000000",
+      "workerpoolrestrict": "0x0000000000000000000000000000000000000000",
+      "requesterrestrict": "0x0000000000000000000000000000000000000000"
+    }
+  }
+}
