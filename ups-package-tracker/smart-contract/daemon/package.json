@@ -1,0 +1,31 @@
+{
+	"name": "price-feed-doracle",
+	"version": "0.0.1",
+	"description": "Contracts and tools for the iExec based price feed DOracle",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iExecBlockchainComputing/price-feed-doracle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iExecBlockchainComputing/price-feed-doracle.git/issues"
+  },
+  "files": [
+    "/build",
+    "/contracts",
+		"daemon"
+  ],
+  "author": "iExec",
+  "license": "ISC",
+  "homepage": "https://github.com/iExecBlockchainComputing/price-feed-doracle.git#readme",
+  "dependencies": {
+		"chai": "^4.2.0",
+    "ethereumjs-util": "^5.2.0",
+    "iexec-doracle-base": "^0.0.4",
+    "iexec-poco": "^3.0.35",
+    "iexec-solidity": "^0.0.7",
+    "multiaddr": "^6.0.6",
+    "openzeppelin-solidity": "^2.2.0",
+    "openzeppelin-test-helpers": "^0.1.5",
+    "rlc-faucet-contract": "^2.0.0"
+  }
+}

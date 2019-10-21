@@ -1,0 +1,35 @@
+{
+  "description": "UPS package tracker - simple doracle to get delivery status given a UPS username, password, and tracking number.                         ",
+  "license": "MIT",
+  "author": "?",
+  "social": {
+    "website": "?",
+    "github": "?"
+  },
+  "logo": "logo.png",
+  "buyConf": {
+    "params": "",
+    "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trust": "0",
+    "callback": "0x0000000000000000000000000000000000000000"
+  },
+  "app": {
+    "owner": "0xe4B6901be4bc68f5de8E62af44Ee1773B103c461",
+    "name": "UPS_PackageTracker",
+    "type": "DOCKER",
+    "multiaddr": "frippo40/ups-package-tracker:1.0.1",
+    "checksum": "0xba6b3d62a9bf4b3c4709067ed58706a859d870403b22e93891662fef7b74e7e2",
+    "mrenclave": ""
+  },
+  "order": {
+    "apporder": {
+      "app": "0xE944Eb8acd091232791C96B677160C7943065bC3",
+      "appprice": "0",
+      "volume": "1000000",
+      "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "datasetrestrict": "0x0000000000000000000000000000000000000000",
+      "workerpoolrestrict": "0x0000000000000000000000000000000000000000",
+      "requesterrestrict": "0x0000000000000000000000000000000000000000"
+    }
+  }
+}

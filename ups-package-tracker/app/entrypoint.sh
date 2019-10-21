@@ -1,0 +1,1 @@
+node src/package-tracker.js $@
