@@ -15,15 +15,15 @@
   },
   "app": {
     "owner": "0xe4B6901be4bc68f5de8E62af44Ee1773B103c461",
-    "name": "UPS_PackageTracker",
+    "name": "UPSPackageTracker",
     "type": "DOCKER",
-    "multiaddr": "frippo40/ups-package-tracker",
+    "multiaddr": "registry.hub.docker.com/frippo40/ups-package-tracker:1.0.2",
     "checksum": "0x78c67f7d576f2982943adbd8273d50244a2cdb082bb01c5fad4582be4b7d12cd",
     "mrenclave": ""
   },
   "order": {
     "apporder": {
-      "app": "0x430Cf5503fB1620d62Bc982B14e3Dcd393ac19d8",
+      "app": "0x8Ee07bCf22573a5D934e907E71E5127a55DAe6A0",
       "appprice": "0",
       "volume": "1000000",
       "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",

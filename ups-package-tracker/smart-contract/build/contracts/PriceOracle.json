@@ -5116,12 +5116,12 @@
         }
       },
       "links": {},
-      "address": "0xf127D47a51875D8dFb5fb85b3F6AceBCFD69dAFC",
-      "transactionHash": "0xc0f0696055ce647eac2f762be154d255bcc7f1d4fd8b555840585d3781223887"
+      "address": "0xB1c190eA224a953fB3fA1e423ddc4110362a4A01",
+      "transactionHash": "0x14420e54e2f19fd1af43468afc35492189fc72990b200420773b895fc65901ac"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-10-22T00:24:15.195Z",
+  "updatedAt": "2019-10-22T01:27:13.482Z",
   "devdoc": {
     "methods": {
       "isOwner()": {
