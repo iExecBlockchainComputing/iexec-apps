@@ -1,3 +1,4 @@
 **/iexec_in
 **/iexec_out
-**/node_modules
+ups-package-tracker/app/node_modules
+ups-package-tracker/smart-contract/node_modules
