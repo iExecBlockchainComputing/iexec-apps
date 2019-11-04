@@ -18,12 +18,12 @@
     "name": "WeatherOracle",
     "type": "DOCKER",
     "multiaddr": "registry.hub.docker.com/thomasvangurp/weather_oracle:1.0.0",
-    "checksum": "0x00f51494d7a42a3c1c43464d9f09e06b2a99968e3b978f6cd11ab3410b7bcd14",
+    "checksum": "0xcbeeaa8491196182d0160b8b60e96175ba50c19476201074dc93bd0b980d4ad0",
     "mrenclave": ""
   },
   "order": {
     "apporder": {
-      "app": "0xF0392D1500275D7e68aE25E95Ab0a134F635713b",
+      "app": "0x5f9049B4461Be705eCf75688042e3593f3E2eD42",
       "appprice": "0",
       "volume": "1000000",
       "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
