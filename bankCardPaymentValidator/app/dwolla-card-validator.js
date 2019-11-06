@@ -1,6 +1,7 @@
 const https   = require('https');
 const ethers  = require('ethers');
 const fs      = require('fs');
+require('dotenv').config();
 
 const root                = 'iexec_out';
 const determinismFilePath = `${root}/determinism.iexec`;
@@ -86,7 +87,7 @@ new Promise(async (resolve, reject) => {
     }
   } );
 
-	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [timestamp, details, value]);
+	var iexeccallback = ethers.utils.defaultAbiCoder.encode(['uint256', 'string', 'uint256'], [id, amount, value]);
 	var iexecconsensus = ethers.utils.keccak256(iexeccallback);
 	fs.writeFile(callbackFilePath,    iexeccallback , (err) => {});
 	fs.writeFile(determinismFilePath, iexecconsensus, (err) => {});
