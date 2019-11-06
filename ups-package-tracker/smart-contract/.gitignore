@@ -1,0 +1,7 @@
+node_modules
+subgraph
+subgraph-kovan
+daemon
+migrations
+contracts
+build
