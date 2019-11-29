@@ -1,0 +1,1 @@
+node src/wind-feed.js $@

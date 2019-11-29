@@ -1,0 +1,10 @@
+version: '2'
+services:
+  doracle-daemon:
+    image: 22blockchain22/iexec-doracle-daemon:latest
+    environment:
+      - DORACLE_ADDR=xxx
+      - MNEMONIC=xxxx
+      - PROVIDER=xxx
+      - REQUESTER=xxxx
+    restart: unless-stopped
