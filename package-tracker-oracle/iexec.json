@@ -1,0 +1,35 @@
+{
+  "description": "My iExec ressource description, must be at least 150 chars long in order to pass the validation checks. Describe your application, dataset or workerpool to your users",
+  "license": "MIT",
+  "author": "?",
+  "social": {
+    "website": "?",
+    "github": "?"
+  },
+  "logo": "logo.png",
+  "buyConf": {
+    "params": "",
+    "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trust": "0",
+    "callback": "0x0000000000000000000000000000000000000000"
+  },
+  "app": {
+    "owner": "0x866A9D83B80266F2D40882b13463615eda305b08",
+    "name": "LaPoste-tracker",
+    "type": "DOCKER",
+    "multiaddr": "registry.hub.docker.com/andy92pac/tracker:1.0.0",
+    "checksum": "0x016d0f7fe968243774daf8d0f6e5748c1293a98ec3eabace3e87573fa1c9269a",
+    "mrenclave": ""
+  },
+  "order": {
+    "apporder": {
+      "app": "0x7f14b4110bd07772E00F0fA3AFF2f0F3E2ccfCe0",
+      "appprice": "0",
+      "volume": "1000000",
+      "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "datasetrestrict": "0x0000000000000000000000000000000000000000",
+      "workerpoolrestrict": "0x0000000000000000000000000000000000000000",
+      "requesterrestrict": "0x0000000000000000000000000000000000000000"
+    }
+  }
+}
