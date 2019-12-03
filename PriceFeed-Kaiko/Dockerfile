@@ -40,5 +40,6 @@ RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& printf "#####################################################\n" \
 	&& printf "MREnclave: $FINGERPRINT\n"                               \
 	&& printf "#####################################################\n" \
+	&& printf "done"
 
 ENTRYPOINT [ "python3", "/app/oracle.py" ]
