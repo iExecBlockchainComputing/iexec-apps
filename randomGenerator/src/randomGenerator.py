@@ -21,12 +21,11 @@ if __name__ == '__main__':
 
 	# OPTIONAL: reseed using dataset to reseed the random → still not deterministic even with a dataset
 	try:
-		path = '{root}{file}'.format(
-			root = os.environ.get(datasetLocationEnvvar, inFolder),
-			file = os.environ.get(datasetFilenameEnvvar),
-		)
-		with open(path, 'r') as file:
-			random.seed(file.read(), random.random())
+		root = os.environ.get(datasetLocationEnvvar, inFolder),
+		file = os.environ.get(datasetFilenameEnvvar),
+		if file:
+			with open('{root}{file}'.format(root=root, file=file), 'r') as file:
+				random.seed(file.read(), random.random())
 	except FileNotFoundError:
 		pass
 
