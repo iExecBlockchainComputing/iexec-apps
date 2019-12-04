@@ -11,7 +11,8 @@ outFolder           = '{}iexec_out/'.format(root)
 callbackFilePath    = '{}callback.iexec'.format(outFolder)
 determinismFilePath = '{}determinism.iexec'.format(outFolder)
 
-datasetEnvVar       = 'IEXEC_DATASET_FILENAME'
+datasetLocationEnvvar = 'IEXEC_INPUT_FILES_FOLDER'
+datasetFilenameEnvvar = 'IEXEC_DATASET_FILENAME'
 
 if __name__ == '__main__':
 
@@ -19,17 +20,18 @@ if __name__ == '__main__':
 	random.seed(" ".join(sys.argv), random.random())
 
 	# OPTIONAL: reseed using dataset to reseed the random → still not deterministic even with a dataset
-	if datasetEnvVar in os.environ:
-		try:
-			with open('{}{}'.format(inFolder, os.environ[datasetEnvVar]), 'r') as seedFile:
-				random.seed(seedFile.read(), random.random())
-		except:
-			# TODO ERROR
-			pass
+	try:
+		path = '{root}{file}'.format(
+			root = os.environ.get(datasetLocationEnvvar, inFolder),
+			file = os.environ.get(datasetFilenameEnvvar),
+		)
+		with open(path, 'r') as file:
+			random.seed(file.read(), random.random())
+	except FileNotFoundError:
+		pass
 
 	# Generate random value and write it to the callback file
-	callback = "{:x}".format(random.getrandbits(256))
-
+	callback = '{:064x}'.format(random.getrandbits(256))
 	with open(callbackFilePath, 'w') as callbackFile:
 		callbackFile.write('0x{}'.format(callback))
 
