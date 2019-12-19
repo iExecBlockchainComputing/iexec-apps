@@ -7,7 +7,7 @@ import sys
 
 root                = ''
 inFolder            = '{}iexec_in/'.format(root)
-outFolder           = '{}iexec_out/'.format(root)
+outFolder           = '{}scone/'.format(root)
 callbackFilePath    = '{}callback.iexec'.format(outFolder)
 determinismFilePath = '{}determinism.iexec'.format(outFolder)
 
