@@ -49,15 +49,16 @@ contract TLSNotary is usingProvable {
         }
     }
 
-    /**
     function requestPost()
         public
         payable
     {
-        request(tlsNotary,
+        checkUrl("null",
                 "POST",
-                '{"json(${URLVerify.result})}'
+                "../app/tls-notary.js",
+                '{"json"}'
                 );
     }
-    **/
+    
+    
 }
