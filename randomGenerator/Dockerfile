@@ -1,4 +1,10 @@
-FROM iexechub/python-scone
+#FROM iexechub/python-scone
+FROM sconecuratedimages/iexec:python-3.6.6-alpine3.6-new-rt
+COPY --from=sconecuratedimages/iexec:cli-alpine /opt/scone/scone-cli /opt/scone/scone-cli
+COPY --from=sconecuratedimages/iexec:cli-alpine /usr/local/bin/scone /usr/local/bin/scone
+COPY --from=sconecuratedimages/iexec:cli-alpine /opt/scone/bin /opt/scone/bin
+RUN apk add bash --no-cache
+COPY signer /signer
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories \
     && apk update \
@@ -6,7 +12,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repos
     && apk --no-cache --update-cache add gcc gfortran python python-dev py-pip build-base wget freetype-dev libpng-dev \
     && apk add --no-cache --virtual .build-deps gcc musl-dev
 
-RUN SCONE_MODE=sim pip install pysha3
+RUN SCONE_MODE=sim pip install pysha3 attrdict python-gnupg web3
 
 RUN cp /usr/bin/python3.6 /usr/bin/python3
 
@@ -42,4 +48,4 @@ RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& printf "#####################################################\n" \
 	&& printf "done"
 
-ENTRYPOINT [ "python3", "/app/randomGenerator.py" ]
+ENTRYPOINT [ "python3", "/app/app.py" ]
