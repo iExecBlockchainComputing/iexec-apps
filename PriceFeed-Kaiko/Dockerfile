@@ -12,7 +12,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repos
 	&& apk add --no-cache --update-cache gcc gfortran python python-dev py-pip build-base wget freetype-dev libpng-dev \
 	&& apk add --no-cache --virtual .build-deps gcc musl-dev
 
-RUN SCONE_MODE=sim pip install eth_abi jsonpath-rw pysha3
+RUN SCONE_MODE=sim pip install eth_abi jsonpath-rw pysha3 attrdict python-gnupg web3
 
 RUN cp /usr/bin/python3.6 /usr/bin/python3
 
