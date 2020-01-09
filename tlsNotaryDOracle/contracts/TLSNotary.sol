@@ -59,6 +59,4 @@ contract TLSNotary is usingProvable {
                 '{"json"}'
                 );
     }
-    
-    
 }
