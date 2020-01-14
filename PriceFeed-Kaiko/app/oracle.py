@@ -9,15 +9,13 @@ import re
 import sha3
 import sys
 import urllib.request
+import requests
 
 root                = ''
 inFolder            = '{}iexec_in/'.format(root)
 outFolder           = '{}scone/'.format(root)
 callbackFilePath    = '{}callback.iexec'.format(outFolder)
 determinismFilePath = '{}determinism.iexec'.format(outFolder)
-
-datasetLocationEnvvar = 'IEXEC_INPUT_FILES_FOLDER'
-datasetFilenameEnvvar = 'IEXEC_DATASET_FILENAME'
 
 class Lib:
 	def parseValue(rawValue, ethType, power):
@@ -30,10 +28,10 @@ class Lib:
 		return '&'.join('{}={}'.format(k,v) for k,v in args.items())
 
 	def getAPIKey():
-		root = os.environ.get(datasetLocationEnvvar, inFolder)
-		file = os.environ.get(datasetFilenameEnvvar)
-		path = '{root}{file}'.format(root=root, file=file)
+		file = 'key.txt'
+		path = '{root}/{file}'.format(root=inFolder, file=file)
 		try:
+
 			with open(path, 'r') as file:
 				apiKey = file.read().strip()
 				if not re.search('^[0-9a-zA-Z]{1,128}$', apiKey):
@@ -46,7 +44,7 @@ class Lib:
 		return json.loads(
 			urllib.request.urlopen(
 				urllib.request.Request(
-					'https://{region}.market-api.kaiko.io/v1/data/trades.v1/{endpoint}?{params}'.format(
+					url = 'https://{region}.market-api.kaiko.io/v1/data/trades.v1/{endpoint}?{params}'.format(
 						region   = region,
 						endpoint = endpoint,
 						params   = params,
@@ -126,6 +124,8 @@ class Entrypoints:
 # Example usage:
 # pricefeed btc usd spot_direct_exchange_rate 1d 9 2019-12-01T12:00:00
 if __name__ == '__main__':
+	print("PriceFeed started")
+
 	try:
 		# EXECUTE CALL
 		(timestamp, details, value) = getattr(Entrypoints, sys.argv[1])(*sys.argv[2:])
@@ -151,3 +151,5 @@ if __name__ == '__main__':
 
 	except Exception as e:
 		print('Execution Failure: {}'.format(e))
+
+	print("PriceFeed completed")

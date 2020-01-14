@@ -1,5 +1,6 @@
 #FROM iexechub/python-scone
-FROM iexechub/sconecuratedimages-iexec:python-3.6.6-alpine3.6-new-rt
+#FROM iexechub/sconecuratedimages-iexec:python-3.6.6-alpine3.6-new-rt
+FROM sconecuratedimages/iexec:python-3.7.3-alpine-3.10
 COPY --from=iexechub/sconecuratedimages-iexec:cli-alpine /opt/scone/scone-cli /opt/scone/scone-cli
 COPY --from=iexechub/sconecuratedimages-iexec:cli-alpine /usr/local/bin/scone /usr/local/bin/scone
 COPY --from=iexechub/sconecuratedimages-iexec:cli-alpine /opt/scone/bin /opt/scone/bin
@@ -14,7 +15,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repos
 
 RUN SCONE_MODE=sim pip install eth_abi jsonpath-rw pysha3 attrdict python-gnupg web3
 
-RUN cp /usr/bin/python3.6 /usr/bin/python3
+RUN cp /usr/bin/python3.7 /usr/bin/python3
 
 COPY app /app
 
@@ -28,8 +29,8 @@ RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& scone fspf addf fspf.pb /bin                             /bin    \
 	&& scone fspf addr fspf.pb /lib    --authenticated --kernel /lib    \
 	&& scone fspf addf fspf.pb /lib                             /lib    \
-	&& scone fspf addr fspf.pb /etc    --authenticated --kernel /etc    \
-	&& scone fspf addf fspf.pb /etc                             /etc    \
+	&& scone fspf addr fspf.pb /etc/ssl --authenticated --kernel /etc/ssl       \
+	&& scone fspf addf fspf.pb /etc/ssl /etc/ssl                         \
 	&& scone fspf addr fspf.pb /sbin   --authenticated --kernel /sbin   \
 	&& scone fspf addf fspf.pb /sbin                            /sbin   \
 	&& scone fspf addr fspf.pb /signer --authenticated --kernel /signer \
@@ -48,4 +49,4 @@ RUN SCONE_MODE=sim SCONE_HASH=1 SCONE_HEAP=1G SCONE_ALPINE=1          \
 	&& printf "#####################################################\n" \
 	&& printf "done"
 
-ENTRYPOINT [ "python3", "/app/oracle.py" ]
+ENTRYPOINT unzip -o /iexec_in/$IEXEC_DATASET_FILENAME -d /iexec_in && python3 /app/oracle.py
