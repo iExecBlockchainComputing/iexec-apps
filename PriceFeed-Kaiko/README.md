@@ -2,7 +2,7 @@
 
 ## Build app, get MrEnclve, docker push, iexec app deploy, iexec order publish --app
 
-docker image build -t iexechub/trusted-kaiko-pricefeed:1.0.0 .
+```docker image build -t iexechub/trusted-kaiko-pricefeed:1.0.0 .```
 
 ```
 #####################################################
