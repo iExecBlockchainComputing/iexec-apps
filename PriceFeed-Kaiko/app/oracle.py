@@ -9,7 +9,6 @@ import re
 import sha3
 import sys
 import urllib.request
-import requests
 
 root                = ''
 inFolder            = '{}iexec_in/'.format(root)
@@ -44,7 +43,7 @@ class Lib:
 		return json.loads(
 			urllib.request.urlopen(
 				urllib.request.Request(
-					url = 'https://{region}.market-api.kaiko.io/v1/data/trades.v1/{endpoint}?{params}'.format(
+					'https://{region}.market-api.kaiko.io/v1/data/trades.v1/{endpoint}?{params}'.format(
 						region   = region,
 						endpoint = endpoint,
 						params   = params,
@@ -125,7 +124,6 @@ class Entrypoints:
 # pricefeed btc usd spot_direct_exchange_rate 1d 9 2019-12-01T12:00:00
 if __name__ == '__main__':
 	print("PriceFeed started")
-
 	try:
 		# EXECUTE CALL
 		(timestamp, details, value) = getattr(Entrypoints, sys.argv[1])(*sys.argv[2:])
