@@ -33,6 +33,7 @@ Secret: ```/home/alice/iexec/dataset/original/key.txt```
 ```
 
 Make ```dataset_key.txt.zip``` publicly available (IPFS, Raw Github)
+```https://raw.githubusercontent.com/iExecBlockchainComputing/iexec-apps/trusted-kaiko-pricefeed/PriceFeed-Kaiko/datasets/encrypted/dataset_key.txt.zip```
 
 ```
 iexec dataset push-secret 0xdataset --secret-path /home/alice/iexec/.secrets/datasets/dataset.secret --keystoredir=/home/alice/wallets --wallet-file=wallet.json --password=xx --chain kovan
