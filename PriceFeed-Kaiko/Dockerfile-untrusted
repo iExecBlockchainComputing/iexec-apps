@@ -1,0 +1,16 @@
+FROM python:3.7-alpine3.10
+
+RUN apk add bash --no-cache
+COPY signer /signer
+
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.5/community" >> /etc/apk/repositories \
+	&& apk update \
+	&& apk add --no-cache --update-cache libgcc \
+	&& apk add --no-cache --update-cache gcc gfortran python python-dev py-pip build-base wget freetype-dev libpng-dev \
+	&& apk add --no-cache --virtual .build-deps gcc musl-dev
+
+RUN SCONE_MODE=sim pip install eth_abi jsonpath-rw pysha3 attrdict python-gnupg web3
+
+COPY app /app
+
+ENTRYPOINT python3 /app/oracle.py

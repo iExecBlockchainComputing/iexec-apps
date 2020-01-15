@@ -16,9 +16,6 @@ outFolder           = '{}scone/'.format(root)
 callbackFilePath    = '{}callback.iexec'.format(outFolder)
 determinismFilePath = '{}determinism.iexec'.format(outFolder)
 
-datasetLocationEnvvar = 'IEXEC_INPUT_FILES_FOLDER'
-datasetFilenameEnvvar = 'IEXEC_DATASET_FILENAME'
-
 class Lib:
 	def parseValue(rawValue, ethType, power):
 		if re.search('^u?int[0-9]*$', ethType):
@@ -30,10 +27,10 @@ class Lib:
 		return '&'.join('{}={}'.format(k,v) for k,v in args.items())
 
 	def getAPIKey():
-		root = os.environ.get(datasetLocationEnvvar, inFolder)
-		file = os.environ.get(datasetFilenameEnvvar)
-		path = '{root}{file}'.format(root=root, file=file)
+		file = 'key.txt'
+		path = '{root}/{file}'.format(root=inFolder, file=file)
 		try:
+
 			with open(path, 'r') as file:
 				apiKey = file.read().strip()
 				if not re.search('^[0-9a-zA-Z]{1,128}$', apiKey):
@@ -126,6 +123,7 @@ class Entrypoints:
 # Example usage:
 # pricefeed btc usd spot_direct_exchange_rate 1d 9 2019-12-01T12:00:00
 if __name__ == '__main__':
+	print("PriceFeed started")
 	try:
 		# EXECUTE CALL
 		(timestamp, details, value) = getattr(Entrypoints, sys.argv[1])(*sys.argv[2:])
@@ -151,3 +149,5 @@ if __name__ == '__main__':
 
 	except Exception as e:
 		print('Execution Failure: {}'.format(e))
+
+	print("PriceFeed completed")
