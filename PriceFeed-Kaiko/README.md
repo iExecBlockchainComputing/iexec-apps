@@ -33,7 +33,7 @@ Secret: ```/home/alice/iexec/dataset/original/key.txt```
 ```
 
 Make ```dataset_key.txt.zip``` publicly available (IPFS, Raw Github)
-```https://raw.githubusercontent.com/iExecBlockchainComputing/iexec-apps/trusted-kaiko-pricefeed/PriceFeed-Kaiko/datasets/encrypted/dataset_key.txt.zip```
+```https://raw.githubusercontent.com/iExecBlockchainComputing/iexec-apps/af18b3313cf0ceebb43bd3f234a17fe8df475af0/PriceFeed-Kaiko/datasets/encrypted/dataset_key.txt.zip```
 
 ```
 iexec dataset push-secret 0xdataset --secret-path /home/alice/iexec/.secrets/datasets/dataset.secret --keystoredir=/home/alice/wallets --wallet-file=wallet.json --password=xx --chain kovan
@@ -43,3 +43,5 @@ iexec dataset push-secret 0xdataset --secret-path /home/alice/iexec/.secrets/dat
 
 * params: ```python3 /app/oracle.py pricefeed btc usd spot_direct_exchange_rate 1d 9 2020-01-01T12:00:00```
 * tag: ```0x0000000000000000000000000000000000000000000000000000000000000001```
+
+Kovan run: https://explorer.iex.ec/kovan/deal/0xcaa54a7f513dbb2fef987a4919a9741b8538d0c13813508be3b36dd5d08befdf
