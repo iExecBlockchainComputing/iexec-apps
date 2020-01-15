@@ -1,5 +1,3 @@
-#FROM iexechub/python-scone
-#FROM iexechub/sconecuratedimages-iexec:python-3.6.6-alpine3.6-new-rt
 FROM sconecuratedimages/iexec:python-3.7.3-alpine-3.10
 COPY --from=iexechub/sconecuratedimages-iexec:cli-alpine /opt/scone/scone-cli /opt/scone/scone-cli
 COPY --from=iexechub/sconecuratedimages-iexec:cli-alpine /usr/local/bin/scone /usr/local/bin/scone
