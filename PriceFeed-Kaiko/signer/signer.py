@@ -13,9 +13,9 @@ keccak256 = w3.soliditySha3
 # os.environ['taskid']      = "0x171d4a18b30912aaef6c0baa08027607b9359fe1afbe4b4b158e829acd29aa12"
 # os.environ['worker']      = "0x1cb25226FeCeE496f246DDd1D735276B2E168B5a"
 
-root            = '/home/amxx/Work/iExec/code/iexec-apps/PriceFeed-Kaiko'
-sconeDir        = '{}/scone'.format(root)
-outputDir       = '{}/iexec_out'.format(root)
+root            = '/'
+sconeDir        = '{}scone/'.format(root)
+outputDir       = '{}iexec_out/'.format(root)
 callbackFile    = 'callback.iexec'
 determinismFile = 'determinism.iexec'
 enclaveSigFile  = 'enclaveSig.iexec'
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
 	try:
 
-		with open('{path}/{file}'.format(path=sconeDir, file=callbackFile), 'r') as file:
+		with open('{path}{file}'.format(path=sconeDir, file=callbackFile), 'r') as file:
 			callback = file.read()
 
 		data = Signer(os.environ['enclave_key']).signContribution(
@@ -52,13 +52,13 @@ if __name__ == '__main__':
 			resultDigest = keccak256([ "bytes"], [ callback ])
 		)
 
-		with open('{path}/{file}'.format(path=outputDir, file=callbackFile), 'w') as file:
+		with open('{path}{file}'.format(path=outputDir, file=callbackFile), 'w') as file:
 			file.write(callback)
 
-		with open('{path}/{file}'.format(path=outputDir, file=determinismFile), 'w') as file:
+		with open('{path}{file}'.format(path=outputDir, file=determinismFile), 'w') as file:
 			file.write(data['resultDigest'])
 
-		with open('{path}/{file}'.format(path=outputDir, file=enclaveSigFile), 'w') as file:
+		with open('{path}{file}'.format(path=outputDir, file=enclaveSigFile), 'w') as file:
 			file.write(json.dumps(data))
 
 	except Exception as ex:
