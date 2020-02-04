@@ -2,11 +2,11 @@
 
 ## Build app, get MrEnclve, docker push, iexec app deploy, iexec order publish --app
 
-```docker image build -t iexechub/trusted-kaiko-pricefeed:1.0.0 .```
+```docker image build -t iexechub/trusted-kaiko-pricefeed:1.0.3 .```
 
 ```
 #####################################################
-MREnclave: 220abf28a41e5f72fc60574adb6c43785c0ee65496bfcc6f13c16b8715347955|82722198f224f234b6f890e347010983|16e7c11e75448e31c94d023e40ece7429fb17481bc62f521c8f70da9c48110a1
+MREnclave: bf10ad6cb4cdf68751da7e527775bad5b552e63c061a1cea6ac94d5842aa5f00|9dfcb39440e9159712ab0ecaa6cc9fc3|16e7c11e75448e31c94d023e40ece7429fb17481bc62f521c8f70da9c48110a1
 #####################################################
 ```
 ```
@@ -67,4 +67,3 @@ iexec order publish --dataset --wallet-file xx --chain goerli
 
 Goerli run: https://explorer.iex.ec/goerli/task/0x171d4a18b30912aaef6c0baa08027607b9359fe1afbe4b4b158e829acd29aa12
 (Kovan run: https://explorer.iex.ec/kovan/deal/0xcaa54a7f513dbb2fef987a4919a9741b8538d0c13813508be3b36dd5d08befdf)
-

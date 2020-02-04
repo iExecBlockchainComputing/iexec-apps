@@ -37,9 +37,9 @@ class Signer:
 		signature = w3.eth.account.signHash(defunct_hash_message(message), private_key=self.pk).signature
 
 		return {
-			'resultDigest': digest,
+			'result': digest, # TODO: rename to resultDigest and notify core
 			'resultHash':   hash.hex(),
-			'resultSalt':   seal.hex(), # TODO: rename and notify core
+			'resultSalt':   seal.hex(), # TODO: rename to resultSeal and notify core
 			'signature':    signature.hex(),
 		}
 
