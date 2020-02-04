@@ -24,8 +24,7 @@ enclaveSigFile  = 'enclaveSig.iexec'
 
 
 def isFile(path):
-	with pathlib.Path(path) as f:
-		return f.exists() and f.is_file()
+	return pathlib.Path(path).is_file()
 
 class Signer:
 	def __init__(self, key):
