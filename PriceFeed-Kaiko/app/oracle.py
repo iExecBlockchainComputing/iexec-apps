@@ -122,7 +122,8 @@ class Entrypoints:
 # Example usage:
 # btc usd 9 2019-12-01T12:00:00
 if __name__ == '__main__':
-	print("PriceFeed started")
+	print('PriceFeed started')
+
 	try:
 		# EXECUTE CALL
 		result = PriceFeed.run(
@@ -146,4 +147,4 @@ if __name__ == '__main__':
 	except Exception as e:
 		print('Execution Failure: {}'.format(e))
 
-	print("PriceFeed completed")
+	print('PriceFeed completed')
