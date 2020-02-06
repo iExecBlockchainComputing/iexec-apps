@@ -10,11 +10,10 @@ import sha3
 import sys
 import urllib.request
 
-root                = ''
-inFolder            = '{}iexec_in/'.format(root)
-outFolder           = '{}scone/'.format(root)
-callbackFilePath    = '{}callback.iexec'.format(outFolder)
-determinismFilePath = '{}determinism.iexec'.format(outFolder)
+root         = ''
+inFolder     = '{}iexec_in/'.format(root)
+outFolder    = '{}scone/'.format(root)
+callbackFile = 'callback.iexec'
 
 class Lib:
 	def parseValue(rawValue, ethType, power):
@@ -121,24 +120,25 @@ class Entrypoints:
 
 
 # Example usage:
-# pricefeed btc usd spot_direct_exchange_rate 1d 9 2019-12-01T12:00:00
+# btc usd 9 2019-12-01T12:00:00
 if __name__ == '__main__':
 	print("PriceFeed started")
 	try:
 		# EXECUTE CALL
-		(timestamp, details, value) = getattr(Entrypoints, sys.argv[1])(*sys.argv[2:])
+		(timestamp, details, value) = PriceFeed.run(
+			baseAsset  = sys.argv[1],
+			quoteAsset = sys.argv[2],
+			endpoint   = 'spot_direct_exchange_rate',
+			interval   = '1m',
+			power      = sys.argv[3],
+			startTime  = sys.argv[4]
+		)
 		print('- Success: {} {} {}'.format(timestamp, details, value))
 
 		# GENERATE CALLBACK
 		callback = eth_abi.encode_abi(['uint256', 'string', 'uint256'], [timestamp, details, value]).hex()
-		with open(callbackFilePath, 'w') as callbackFile:
-			callbackFile.write('0x{}'.format(callback))
-
-		# GENERATE DETERMINISM
-		determinism = sha3.keccak_256()
-		determinism.update(bytes.fromhex(callback))
-		with open(determinismFilePath, 'w') as determinismFile:
-			determinismFile.write('0x{}'.format(determinism.hexdigest()))
+		with open('{path}{file}'.format(path=outFolder, file=callbackFile), 'w') as file:
+			file.write('0x{}'.format(callback))
 
 	except AttributeError as e:
 		print('Error: Invalid appName {}'.format(sys.argv[1]))
