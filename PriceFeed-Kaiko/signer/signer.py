@@ -1,221 +1,96 @@
-import os
-import sys
-import attrdict
-import ssl
-import json
-import zipfile
-import random
-import traceback
-import gnupg
-import base64
+#!/usr/bin/python3
 
-from Crypto.Cipher import AES, PKCS1_OAEP
-from Crypto.PublicKey import RSA
+import hashlib
+import json
+import os
+import pathlib
+import traceback
+import shutil
 from web3.auto import w3
 from eth_account.messages import defunct_hash_message
-from shutil import copyfile
 
 keccak256 = w3.soliditySha3
-debug = True
 
-class DigestSigner:
-    def __init__(self, enclaveKey, worker, taskid, digest):
-        self.result     = digest;
-        self.resultHash = keccak256([ "bytes32", "bytes32" ], [ taskid, digest ])
-        self.resultSalt = keccak256([ "address", "bytes32", "bytes32" ], [ worker, taskid, digest ])
-        hash = defunct_hash_message(keccak256([ "bytes32", "bytes32" ], [ self.resultHash, self.resultSalt ]))
-        self.signature = w3.eth.account.signHash(hash, private_key=enclaveKey).signature
+# FOR DEBUGING
+# os.environ['enclave_key'] = '0x912cf4c9298141d745320abdb656c27d58778a5b2d4290186c0185ed9acda6d6'
+# os.environ['taskid']      = '0x171d4a18b30912aaef6c0baa08027607b9359fe1afbe4b4b158e829acd29aa12'
+# os.environ['worker']      = '0x1cb25226FeCeE496f246DDd1D735276B2E168B5a'
 
-    def jsonify(self):
-        return json.dumps({
-            'result':     self.result,
-            'resultHash': self.resultHash.hex(),
-            'resultSalt': self.resultSalt.hex(),
-            'signature':  self.signature.hex(),
-        })
-
-def GetPublicKey():
-    try:
-        key = open('/iexec_out/public.key', 'rb');
-        pubKeyObj = RSA.importKey(key.read())
-    except:
-        if debug:
-            print("Public key is not valid, couldn't import it!")
-            traceback.print_exc()
-        pubKeyObj = None
-
-    key.close()
-    return pubKeyObj
-
-def WriteEncryptedKey(symmetricKey, pubKeyObj):
-    print("Encrypting symmetric key")
-    try:
-        encryptor = PKCS1_OAEP.new(pubKeyObj)
-        encrypted = encryptor.encrypt(symmetricKey)
-        with open('/iexec_out/encrypted_key', 'wb+') as output:
-            output.write(encrypted)
-        if debug:
-            with open('/iexec_out/plaintext_key', 'wb+') as output:
-                output.write(symmetricKey)
-
-    except:
-        print('Error with opening key!')
-        traceback.print_exc()
-        key.close()
-
-def WriteInitializationVector(iv):
-    print("Writing iv on disk")
-    try:
-        ivfile = open('/iexec_out/iv', 'wb+')
-    except:
-        traceback.print_exc()
-        print(ex)
-    else:
-        ivfile.write(iv)
-    finally:
-        ivfile.close()
-
-def TestReadEncryptedKey():
-    try:
-        with open('/iexec_out/private.key', 'rb') as input:
-            binKey = input.read()
-            priKeyObj = RSA.importKey(binKey)
-        with open('/iexec_out/encrypted_key', 'rb') as encrypted:
-            encrypted_key = encrypted.read()
-        with open('/iexec_out/plaintext_key', 'rb') as original:
-            original_key = original.read()
-    except:
-        print('Error reading key')
-        traceback.print_exc()
-    else:
-        decryptor = PKCS1_OAEP.new(priKeyObj)
-        key = decryptor.decrypt(encrypted_key)
-        assert key == original_key, "Keys don't match"
-        return key
-
-def TestEncryptedOutput(symmetricKey):
-    try:
-        with open('/iexec_out/result.zip.aes', 'rb') as input, open('/iexec_out/iv','rb') as ivfile:
-            iv = input.read(16)
-            ivfromfile = ivfile.read()
-            assert iv == ivfromfile, "Init vector don't match"
-            encryptedOutput = input.read()
-    except:
-        print('Error reading encrypted output')
-        traceback.print_exc()
-    else:
-        decryptedOutput = DecryptOutput(encryptedOutput, symmetricKey, iv)
-        padNb = decryptedOutput[-1:]
-
-        #test padding
-        assert bytearray(decryptedOutput[-padNb[0]:]) == bytearray(padNb * padNb[0]), "Padding not right!"
-
-		#test decrypted equal to original
-        decryptedOutput = decryptedOutput[:len(decryptedOutput) - padNb[0]]
-        ZipOutput()
-        with open('/iexec_out/' + os.env['taskid'] +'_result.zip', 'rb') as input:
-            originalZip = input.read()
-            assert(decryptedOutput == originalZip)
-        with open('/iexec_out/result.test.zip', 'wb+') as output:
-            output.write(decryptedOutput)
-        zip_ref = zipfile.ZipFile('iexec_out/result.test.zip', 'r')
-        zip_ref.extractall('iexec_out')
-        zip_ref.close()
-
-def DecryptOutput(encryptedOutput, key, iv):
-    aes = AES.new(key, AES.MODE_CBC, iv)
-    return aes.decrypt(encryptedOutput)
-
-def ZipOutput():
-    zipf = zipfile.ZipFile(zippedOutputPath, 'a', zipfile.ZIP_DEFLATED)
-
-    os.chdir(zipTargetDirectory)
-
-    for root, dirs, files in os.walk('./'):
-        for file in files:
-            if file == zipFileName:
-                continue
-            print("Writing file " + file + " to zip archive.")
-            zipf.write(os.path.join(root, file))
-
-    zipf.close()
-
-def PadZippedOutput():
-    print("Padding zipped output")
-    try:
-        input = open(zippedOutputPath, 'ab')
-        zipSize = os.path.getsize(zippedOutputPath)
-        blockSize = 16
-        nb = blockSize - zipSize % blockSize
-        input.write(bytearray(bytes([nb]) * nb))
-
-    except Exception as ex:
-        traceback.print_exc()
-        print(ex)
-
-def EncryptZippedOutput(pubKeyObj):
-    try:
-        input = open(zippedOutputPath, 'rb')
-        output = open('/iexec_out/result.zip.aes', 'wb+')
-
-        #generate initalization vector for AES and prepend it to output
-        iv = os.getrandom(16)
-        output.write(iv)
-        WriteInitializationVector(iv)
-
-        #generate AES key and encrypt it/write it on disk
-        key = os.getrandom(32)
-        WriteEncryptedKey(key, pubKeyObj)
-
-        aes = AES.new(key, AES.MODE_CBC, iv)
-        buffer_size = 8192
-
-        #chunks = iter(lambda: input.read(buffer_size), '')
-        result = input.read()
-        #for chunk in chunks:
-        output.write(aes.encrypt(result))
-
-    except Exception as ex:
-        traceback.print_exc()
+root            = '/'
+sconeDir        = '{}scone/'.format(root)
+outputDir       = '{}iexec_out/'.format(root)
+callbackFile    = 'callback.iexec'
+determinismFile = 'determinism.iexec'
+enclaveSigFile  = 'enclaveSig.iexec'
 
 
-def WriteEnclaveSign(digestPath):
-    import hashlib, os
-    SHAhash = hashlib.sha3_256()
-    try:
-        input = open(digestPath, 'rb')
-        while 1:
-            # Read file in as little chunks
-            buf = input.read(4096)
-            if not buf : break
-            SHAhash.update(buf)
-        input.close()
 
-        digest     = '0x' + SHAhash.hexdigest()
-        enclaveKey = os.environ['enclave_key']
-        taskid     = os.environ['taskid']
-        worker     = os.environ['worker']
-        result     = DigestSigner(
-            enclaveKey = enclaveKey,
-            worker     = worker,
-            taskid     = taskid,
-            digest     = digest,
-        ).jsonify()
+def isFile(filename):
+	return pathlib.Path(filename).is_file()
 
-        with open('/iexec_out/enclaveSig.iexec', 'w+') as outfile:
-            outfile.write(result)
+def sha256sum(filename):
+	h  = hashlib.sha256()
+	b  = bytearray(128*1024)
+	mv = memoryview(b)
+	with open(filename, 'rb', buffering=0) as f:
+		for n in iter(lambda : f.readinto(mv), 0):
+			h.update(mv[:n])
+	return h.hexdigest()
 
-    except Exception as ex:
-        traceback.print_exc()
-        print(ex)
+def sha256sumDir(path):
+	filenames = sorted(str(filename) for filename in pathlib.Path(path).rglob('*') if isFile(filename))
+	return hashlib.sha256('\n'.join('{} {}'.format(sha256sum(filename), filename) for filename in filenames).encode()).hexdigest()
+
+class Signer:
+	def __init__(self, key):
+		self.pk = key;
+
+	def signContribution(self, worker, taskid, digest):
+		hash      = keccak256([            'bytes32', 'bytes32' ], [         taskid, digest ])
+		seal      = keccak256([ 'address', 'bytes32', 'bytes32' ], [ worker, taskid, digest ])
+		message   = keccak256([            'bytes32', 'bytes32' ], [         hash,   seal   ])
+		signature = w3.eth.account.signHash(defunct_hash_message(message), private_key=self.pk).signature
+
+		return {
+			'result':     digest, # TODO: rename to resultDigest and notify core
+			'resultHash': hash.hex(),
+			'resultSalt': seal.hex(), # TODO: rename to resultSeal and notify core
+			'signature':  signature.hex(),
+		}
+
+
 
 if __name__ == '__main__':
 
-    sconeDir  = '/scone'
-    iexecOutDir  = '/iexec_out'
-    determinismFile = 'determinism.iexec'
-    callbackFile = 'callback.iexec'
+	try:
+		# Copy everything from sconeDir to outputDir
+		shutil.copytree(sconeDir, outputDir, dirs_exist_ok=True)
 
-    WriteEnclaveSign(sconeDir + '/' + determinismFile)
+		# If callback, compute custom digest overload determinism
+		if isFile('{path}{file}'.format(path=sconeDir, file=callbackFile)):
+			with open('{path}{file}'.format(path=sconeDir, file=callbackFile), 'r') as file:
+				digest = keccak256([ 'bytes' ], [ file.read() ]).hex()
+			with open('{path}{file}'.format(path=outputDir, file=determinismFile), 'w') as file:
+				file.write(digest)
 
-    copyfile(sconeDir + '/' + callbackFile, iexecOutDir + '/' + callbackFile)
+		# Else, if determinism, get app specific digest
+		elif isFile('{path}{file}'.format(path=sconeDir, file=determinismFile)):
+			with open('{path}{file}'.format(path=sconeDir, file=determinismFile), 'r') as file:
+				digest = file.read()
+
+		# Else, compute digest from files
+		else:
+			digest = '0x{}'.format(sha256sumDir(sconeDir))
+
+		with open('{path}{file}'.format(path=outputDir, file=enclaveSigFile), 'w') as file:
+			file.write(json.dumps(
+				Signer(os.environ['enclave_key']).signContribution(
+					worker = os.environ['worker'],
+					taskid = os.environ['taskid'],
+					digest = digest
+				)
+			))
+
+	except Exception as ex:
+		traceback.print_exc()
+		print(ex)
