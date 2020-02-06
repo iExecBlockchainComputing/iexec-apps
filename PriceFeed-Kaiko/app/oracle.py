@@ -10,9 +10,9 @@ import sha3
 import sys
 import urllib.request
 
-root         = ''
-inFolder     = '{}iexec_in/'.format(root)
-outFolder    = '{}scone/'.format(root)
+root         = '/'
+inputDir     = '{}iexec_in/'.format(root)
+outputDir    = '{}scone/'.format(root)
 callbackFile = 'callback.iexec'
 
 class Lib:
@@ -27,7 +27,7 @@ class Lib:
 
 	def getAPIKey():
 		file = 'key.txt'
-		path = '{root}/{file}'.format(root=inFolder, file=file)
+		path = '{root}{file}'.format(root=inputDir, file=file)
 		try:
 
 			with open(path, 'r') as file:
@@ -125,7 +125,7 @@ if __name__ == '__main__':
 	print("PriceFeed started")
 	try:
 		# EXECUTE CALL
-		(timestamp, details, value) = PriceFeed.run(
+		result = PriceFeed.run(
 			baseAsset  = sys.argv[1],
 			quoteAsset = sys.argv[2],
 			endpoint   = 'spot_direct_exchange_rate',
@@ -133,16 +133,12 @@ if __name__ == '__main__':
 			power      = sys.argv[3],
 			startTime  = sys.argv[4]
 		)
-		print('- Success: {} {} {}'.format(timestamp, details, value))
+		print('- Success: {} {} {}'.format(*result))
 
 		# GENERATE CALLBACK
-		callback = eth_abi.encode_abi(['uint256', 'string', 'uint256'], [timestamp, details, value]).hex()
-		with open('{path}{file}'.format(path=outFolder, file=callbackFile), 'w') as file:
+		callback = eth_abi.encode_abi([ 'uint256', 'string', 'uint256' ], [ *result ]).hex()
+		with open('{path}{file}'.format(path=outputDir, file=callbackFile), 'w') as file:
 			file.write('0x{}'.format(callback))
-
-	except AttributeError as e:
-		print('Error: Invalid appName {}'.format(sys.argv[1]))
-		print(e)
 
 	except IndexError as e:
 		print('Error: missing arguments')

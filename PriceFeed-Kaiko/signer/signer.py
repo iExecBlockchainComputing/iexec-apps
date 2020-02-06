@@ -12,11 +12,11 @@ from eth_account.messages import defunct_hash_message
 keccak256 = w3.soliditySha3
 
 # FOR DEBUGING
-os.environ['enclave_key'] = '0x912cf4c9298141d745320abdb656c27d58778a5b2d4290186c0185ed9acda6d6'
-os.environ['taskid']      = '0x171d4a18b30912aaef6c0baa08027607b9359fe1afbe4b4b158e829acd29aa12'
-os.environ['worker']      = '0x1cb25226FeCeE496f246DDd1D735276B2E168B5a'
+# os.environ['enclave_key'] = '0x912cf4c9298141d745320abdb656c27d58778a5b2d4290186c0185ed9acda6d6'
+# os.environ['taskid']      = '0x171d4a18b30912aaef6c0baa08027607b9359fe1afbe4b4b158e829acd29aa12'
+# os.environ['worker']      = '0x1cb25226FeCeE496f246DDd1D735276B2E168B5a'
 
-root            = '/home/amxx/Work/iExec/code/iexec-apps/PriceFeed-Kaiko/'
+root            = '/'
 sconeDir        = '{}scone/'.format(root)
 outputDir       = '{}iexec_out/'.format(root)
 callbackFile    = 'callback.iexec'
