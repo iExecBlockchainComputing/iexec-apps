@@ -28,9 +28,7 @@ class Lib:
 	def getAPIKey():
 		file = os.environ.get('IEXEC_DATASET_FILENAME') or 'key.txt'
 		path = '{root}{file}'.format(root=inputDir, file=file)
-		print(path)
 		try:
-
 			with open(path, 'r') as file:
 				apiKey = file.read().strip()
 				if not re.search('^[0-9a-zA-Z]{1,128}$', apiKey):
