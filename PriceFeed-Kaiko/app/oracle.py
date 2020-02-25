@@ -10,11 +10,10 @@ import sha3
 import sys
 import urllib.request
 
-root                = ''
-inFolder            = '{}iexec_in/'.format(root)
-outFolder           = '{}scone/'.format(root)
-callbackFilePath    = '{}callback.iexec'.format(outFolder)
-determinismFilePath = '{}determinism.iexec'.format(outFolder)
+root         = '/'
+inputDir     = '{}iexec_in/'.format(root)
+outputDir    = '{}scone/'.format(root)
+callbackFile = 'callback.iexec'
 
 class Lib:
 	def parseValue(rawValue, ethType, power):
@@ -27,8 +26,9 @@ class Lib:
 		return '&'.join('{}={}'.format(k,v) for k,v in args.items())
 
 	def getAPIKey():
-		file = 'key.txt'
-		path = '{root}/{file}'.format(root=inFolder, file=file)
+		file = os.environ.get('IEXEC_DATASET_FILENAME') or 'key.txt'
+		path = '{root}{file}'.format(root=inputDir, file=file)
+		print(path)
 		try:
 
 			with open(path, 'r') as file:
@@ -68,7 +68,7 @@ class PriceFeed:
 			'spot_direct_exchange_rate/{baseAsset}/{quoteAsset}/recent'.format(baseAsset=baseAsset, quoteAsset=quoteAsset),
 			Lib.formatArgs({
 				'interval': '1m',
-				'limit':  	720,
+				'limit':    720,
 			})
 		)
 
@@ -88,36 +88,23 @@ class PriceFeed:
 			raise Exception('API response parsing failure: {}'.format(e))
 
 
-class Entrypoints:
-	pricefeed = PriceFeed.run
-
 # Example usage:
-# pricefeed btc usd 9
+# btc usd 9
 if __name__ == '__main__':
-	print("PriceFeed started")
+	print('PriceFeed started')
 	try:
 		# EXECUTE CALL
-		(timestamp, details, value) = PriceFeed.run(
-			baseAsset  = sys.argv[2],
-			quoteAsset = sys.argv[3],
-			power      = sys.argv[4],
+		result = PriceFeed.run(
+			baseAsset  = sys.argv[1],
+			quoteAsset = sys.argv[2],
+			power      = sys.argv[3],
 		)
-		print('- Success: {} {} {}'.format(timestamp, details, value))
+		print('- Success: {} {} {}'.format(*result))
 
 		# GENERATE CALLBACK
-		callback = eth_abi.encode_abi(['uint256', 'string', 'uint256'], [timestamp, details, value]).hex()
-		with open(callbackFilePath, 'w') as callbackFile:
-			callbackFile.write('0x{}'.format(callback))
-
-		# GENERATE DETERMINISM
-		determinism = sha3.keccak_256()
-		determinism.update(bytes.fromhex(callback))
-		with open(determinismFilePath, 'w') as determinismFile:
-			determinismFile.write('0x{}'.format(determinism.hexdigest()))
-
-	except AttributeError as e:
-		print('Error: Invalid appName {}'.format(sys.argv[1]))
-		print(e)
+		callback = eth_abi.encode_abi([ 'uint256', 'string', 'uint256' ], [ *result ]).hex()
+		with open('{path}{file}'.format(path=outputDir, file=callbackFile), 'w') as file:
+			file.write('0x{}'.format(callback))
 
 	except IndexError as e:
 		print('Error: missing arguments')
@@ -125,4 +112,4 @@ if __name__ == '__main__':
 	except Exception as e:
 		print('Execution Failure: {}'.format(e))
 
-	print("PriceFeed completed")
+	print('PriceFeed completed')

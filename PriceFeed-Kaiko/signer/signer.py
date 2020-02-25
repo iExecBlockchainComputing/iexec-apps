@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
+import hashlib
 import json
 import os
 import pathlib
 import traceback
+import shutil
 from web3.auto import w3
 from eth_account.messages import defunct_hash_message
 
@@ -23,8 +25,21 @@ enclaveSigFile  = 'enclaveSig.iexec'
 
 
 
-def isFile(path):
-	return pathlib.Path(path).is_file()
+def isFile(filename):
+	return pathlib.Path(filename).is_file()
+
+def sha256sum(filename):
+	h  = hashlib.sha256()
+	b  = bytearray(128*1024)
+	mv = memoryview(b)
+	with open(filename, 'rb', buffering=0) as f:
+		for n in iter(lambda : f.readinto(mv), 0):
+			h.update(mv[:n])
+	return h.hexdigest()
+
+def sha256sumDir(path):
+	filenames = sorted(str(filename) for filename in pathlib.Path(path).rglob('*') if isFile(filename))
+	return hashlib.sha256('\n'.join('{} {}'.format(sha256sum(filename), filename) for filename in filenames).encode()).hexdigest()
 
 class Signer:
 	def __init__(self, key):
@@ -37,10 +52,10 @@ class Signer:
 		signature = w3.eth.account.signHash(defunct_hash_message(message), private_key=self.pk).signature
 
 		return {
-			'result': digest, # TODO: rename to resultDigest and notify core
-			'resultHash':   hash.hex(),
-			'resultSalt':   seal.hex(), # TODO: rename to resultSeal and notify core
-			'signature':    signature.hex(),
+			'result':     digest, # TODO: rename to resultDigest and notify core
+			'resultHash': hash.hex(),
+			'resultSalt': seal.hex(), # TODO: rename to resultSeal and notify core
+			'signature':  signature.hex(),
 		}
 
 
@@ -48,35 +63,33 @@ class Signer:
 if __name__ == '__main__':
 
 	try:
+		# Copy everything from sconeDir to outputDir
+		shutil.copytree(sconeDir, outputDir, dirs_exist_ok=True)
+
+		# If callback, compute custom digest overload determinism
 		if isFile('{path}{file}'.format(path=sconeDir, file=callbackFile)):
 			with open('{path}{file}'.format(path=sconeDir, file=callbackFile), 'r') as file:
-				callback = file.read()
-				digest   = keccak256([ 'bytes' ], [ callback ]).hex()
+				digest = keccak256([ 'bytes' ], [ file.read() ]).hex()
+			with open('{path}{file}'.format(path=outputDir, file=determinismFile), 'w') as file:
+				file.write(digest)
 
+		# Else, if determinism, get app specific digest
 		elif isFile('{path}{file}'.format(path=sconeDir, file=determinismFile)):
 			with open('{path}{file}'.format(path=sconeDir, file=determinismFile), 'r') as file:
-				callback = None
-				digest   = file.read()
+				digest = file.read()
 
+		# Else, compute digest from files
 		else:
-			raise Exception('ERROR: no callback and no determinism available')
-
-		data = Signer(os.environ['enclave_key']).signContribution(
-			worker = os.environ['worker'],
-			taskid = os.environ['taskid'],
-			digest = digest
-		)
-
-		if callback:
-			with open('{path}{file}'.format(path=outputDir, file=callbackFile), 'w') as file:
-				file.write(callback)
-
-		with open('{path}{file}'.format(path=outputDir, file=determinismFile), 'w') as file:
-			file.write(digest)
+			digest = '0x{}'.format(sha256sumDir(sconeDir))
 
 		with open('{path}{file}'.format(path=outputDir, file=enclaveSigFile), 'w') as file:
-			file.write(json.dumps(data))
-
+			file.write(json.dumps(
+				Signer(os.environ['enclave_key']).signContribution(
+					worker = os.environ['worker'],
+					taskid = os.environ['taskid'],
+					digest = digest
+				)
+			))
 
 	except Exception as ex:
 		traceback.print_exc()
