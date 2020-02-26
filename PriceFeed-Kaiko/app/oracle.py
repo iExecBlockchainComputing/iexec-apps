@@ -26,7 +26,9 @@ class Lib:
 		return '&'.join('{}={}'.format(k,v) for k,v in args.items())
 
 	def getAPIKey():
-		file = os.environ.get('IEXEC_DATASET_FILENAME') or 'key.txt'
+		# Dataset file is a zip that is extracted before the entrypoint. read the key.txt file extracted from it
+		# file = os.environ.get('IEXEC_DATASET_FILENAME')
+		file = 'key.txt'
 		path = '{root}{file}'.format(root=inputDir, file=file)
 		try:
 			with open(path, 'r') as file:
