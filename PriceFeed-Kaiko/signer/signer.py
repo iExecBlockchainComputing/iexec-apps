@@ -28,6 +28,15 @@ enclaveSigFile  = 'enclaveSig.iexec'
 def isFile(filename):
 	return pathlib.Path(filename).is_file()
 
+def copytree(src, dst, symlinks=False, ignore=None):
+	for item in os.listdir(src):
+		s = os.path.join(src, item)
+		d = os.path.join(dst, item)
+		if os.path.isdir(s):
+			shutil.copytree(s, d, symlinks, ignore)
+		else:
+			shutil.copy2(s, d)
+
 def sha256sum(filename):
 	h  = hashlib.sha256()
 	b  = bytearray(128*1024)
@@ -64,7 +73,9 @@ if __name__ == '__main__':
 
 	try:
 		# Copy everything from sconeDir to outputDir
-		shutil.copytree(sconeDir, outputDir, dirs_exist_ok=True)
+		# shutil.copytree(sconeDir, outputDir, dirs_exist_ok=True)
+		# workaround for 3.7 where "dirs_exist_ok" is not available
+		copytree(sconeDir, outputDir)
 
 		# If callback, compute custom digest overload determinism
 		if isFile('{path}{file}'.format(path=sconeDir, file=callbackFile)):
@@ -84,9 +95,9 @@ if __name__ == '__main__':
 
 		with open('{path}{file}'.format(path=outputDir, file=enclaveSigFile), 'w') as file:
 			file.write(json.dumps(
-				Signer(os.environ['enclave_key']).signContribution(
-					worker = os.environ['worker'],
-					taskid = os.environ['taskid'],
+				Signer(os.environ.get('enclave_key')).signContribution(
+					worker = os.environ.get('worker'),
+					taskid = os.environ.get('taskid'),
 					digest = digest
 				)
 			))
