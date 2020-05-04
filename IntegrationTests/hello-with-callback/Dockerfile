@@ -3,6 +3,8 @@ FROM python:3.7.3-alpine3.10
 ### install apk packages
 RUN apk add --no-cache bash build-base gcc libgcc
 
+RUN pip3 install web3
+
 ### copy the code inside the image
 COPY ./src /app
 COPY ./entrypoint.sh /entrypoint.sh
