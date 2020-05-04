@@ -9,11 +9,15 @@ import re
 import sha3
 import sys
 import urllib.request
+from web3.auto import w3
+
+keccak256 = w3.soliditySha3
 
 root         = '/'
 inputDir     = '{}iexec_in/'.format(root)
-outputDir    = '{}scone/'.format(root)
+outputDir    = '{}scone/iexec_out'.format(root)
 callbackFile = 'callback.iexec'
+completedComputeFile = 'completed-compute.iexec'
 
 class Lib:
 	def parseValue(rawValue, ethType, power):
@@ -93,6 +97,10 @@ class PriceFeed:
 if __name__ == '__main__':
 	print('PriceFeed started')
 	try:
+		dir = os.path.join(outputDir)
+		if not os.path.exists(dir):
+			os.mkdir(dir)
+
 		# EXECUTE CALL
 		result = PriceFeed.run(
 			baseAsset  = sys.argv[1],
@@ -103,8 +111,15 @@ if __name__ == '__main__':
 
 		# GENERATE CALLBACK
 		callback = eth_abi.encode_abi([ 'uint256', 'string', 'uint256' ], [ *result ]).hex()
-		with open('{path}{file}'.format(path=outputDir, file=callbackFile), 'w') as file:
-			file.write('0x{}'.format(callback))
+		callback = '0x{}'.format(callback)
+		print('- Callback (written to callback.iexec, should match finalize `result`): {}'.format(callback))
+		with open('{path}/{file}'.format(path=outputDir, file=callbackFile), 'w+') as file:
+			file.write(callback)
+			digest = keccak256([ 'bytes' ], [ callback ]).hex()
+			print('- Digest (not written, but should match reveal `resultDigest`): {}'.format(digest))
+
+		# touch 'completed-compute.iexec' file at end of compute
+		open('{path}/{file}'.format(path=outputDir, file=completedComputeFile), 'a').close()
 
 	except IndexError as e:
 		print('Error: missing arguments')
