@@ -2,6 +2,8 @@
 
 ## Build app, get MrEnclve, docker push, iexec app deploy, iexec order publish --app
 
+### iExec format (1.1.1 revision)
+
 ```docker image build -t iexechub/trusted-kaiko-pricefeed:1.1.1 .```
 
 ```
@@ -9,6 +11,19 @@
 MREnclave: bbd5f48fdbc7f21613bd15bf826e450147798ad474c70facf66091d3a9d73bf2|fd0b78847ed35838bd31a2a7af928468|16e7c11e75448e31c94d023e40ece7429fb17481bc62f521c8f70da9c48110a1
 #####################################################
 ```
+
+### ADO format (1.1.2 revision)
+
+```docker image build -t iexechub/trusted-kaiko-pricefeed:1.1.2 .```
+
+```
+#####################################################
+MREnclave: 834d5cd8e06892bf63aba3897606fb1b8b8b28d4848e93cbdf168aec2f39c275|a9e35165edb0c37144d383852fa962a3|16e7c11e75448e31c94d023e40ece7429fb17481bc62f521c8f70da9c48110a1
+#####################################################
+```
+
+### Initialize and deploy app
+
 ```
 iexec app init --wallet-file xx
 # Add app uri & MrEnclave before next step
