@@ -2,11 +2,11 @@
 
 ## Build app, get MrEnclve, docker push, iexec app deploy, iexec order publish --app
 
-```docker image build -t iexechub/trusted-kaiko-pricefeed:1.1.0 .```
+```docker image build -t iexechub/trusted-kaiko-pricefeed:1.1.1 .```
 
 ```
 #####################################################
-MREnclave: e0dd3af87cc7588b10f13dd3973bcc976d604eb3875714a38078e4728988552a|a5f6a9414186dbc8980dda7dffccee18|16e7c11e75448e31c94d023e40ece7429fb17481bc62f521c8f70da9c48110a1
+MREnclave: bbd5f48fdbc7f21613bd15bf826e450147798ad474c70facf66091d3a9d73bf2|fd0b78847ed35838bd31a2a7af928468|16e7c11e75448e31c94d023e40ece7429fb17481bc62f521c8f70da9c48110a1
 #####################################################
 ```
 ```
@@ -62,10 +62,10 @@ iexec order publish --dataset --wallet-file xx --chain goerli
 
 ## Run
 
-* params: ```python3 /app/oracle.py pricefeed btc usd 9```
+* params: ```python3 /app/oracle.py btc usd 9```
 * tag: ```0x0000000000000000000000000000000000000000000000000000000000000001```
 
-Goerli run: https://explorer.iex.ec/goerli/task/0x58125c350edd1ee275826ff32e74e5946af4dd7d73c955e8d4220f03808c81d7
+Goerli run: https://explorer.iex.ec/goerli/task/0xc99c65a885a2671d91d7bb5987ce7ae48f24d518e53819d86f8aa0e8f5d04f93
 
 ## Oracle receiver
 
