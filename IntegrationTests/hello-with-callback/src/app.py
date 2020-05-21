@@ -1,26 +1,25 @@
 import os
 import sys
+import json
 from web3.auto import w3
 
 print("Started compute hello-with-callback")
 
-dir = os.path.join("/iexec_out")
+iexec_out = os.environ['IEXEC_OUT']
+computed_json_file = iexec_out + '/computed.json'
+
+dir = os.path.join(iexec_out)
 if not os.path.exists(dir):
     os.mkdir(dir)
 
 hexChar = "a"
-
 if len(sys.argv) > 1:
     hexChar = sys.argv[1]
+callback_data = '0x000000000000000000000000000000000000000000000000000000000000000{}'.format(hexChar)
 
-with open("iexec_out/callback.iexec", "w+") as fout:
-   callback = '0x000000000000000000000000000000000000000000000000000000000000000{}'.format(hexChar)
-   fout.write(callback)
-   print('Callback: {} (written to callback.iexec)'.format(callback))
-   digest = keccak256([ 'bytes' ], [ callback ]).hex()
-   print('Digest: {} (not written, but should match reveal `resultDigest`)'.format(digest))
+with open(computed_json_file, 'w+') as f:
+    computed_json = { "callback-data" : callback_data}
+    json.dump(computed_json, f)
+    print(computed_json)
 
-# touch 'completed-compute.iexec' file at end of compute
-open('/iexec_out/completed-compute.iexec', 'a').close()
-
-print("Ended compute hello-callback")
+print("Ended compute hello-callback ")
