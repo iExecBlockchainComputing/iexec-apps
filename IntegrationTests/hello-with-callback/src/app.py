@@ -1,16 +1,16 @@
 import os
 import sys
 import json
-from web3.auto import w3
+
 
 print("Started compute hello-with-callback")
 
 iexec_out = os.environ['IEXEC_OUT']
 computed_json_file = iexec_out + '/computed.json'
 
-dir = os.path.join(iexec_out)
-if not os.path.exists(dir):
-    os.mkdir(dir)
+iexec_out_dir = os.path.join(iexec_out)
+if not os.path.exists(iexec_out_dir):
+    os.mkdir(iexec_out_dir)
 
 hexChar = "a"
 if len(sys.argv) > 1:
