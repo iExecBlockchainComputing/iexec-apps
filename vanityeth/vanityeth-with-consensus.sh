@@ -1,12 +1,13 @@
 #!/bin/bash
 
 vanityDefaultResultFile=VanityEth-log-*.txt
-vanityResult=/iexec_out/keypair.txt
-consensusFile=/iexec_out/determinism.iexec
+vanityResult="$IEXEC_OUT/keypair.txt"
+deterministicTrace="$IEXEC_OUT/deterministic-trace.txt"
+computedJsonFile="$IEXEC_OUT/computed.json"
 
 vanityPattern=$1
 
-rm -f $vanityDefaultResultFile $vanityResult $consensusFile
+rm -f $vanityDefaultResultFile $vanityResult $deterministicTrace
 
 vanityeth -i $vanityPattern -l &> /dev/null
 
@@ -20,12 +21,12 @@ if [[ -f $vanityResult ]]; then
 	echo "(private key inside "$vanityResult")"
 
 	if [[ $publicAddress = "0x"$vanityPattern* ]]; then
-		echo "Pattern "$vanityPattern" found">> $consensusFile
-		echo $publicAddressLength >> $consensusFile
+		echo "Pattern "$vanityPattern" found">> $deterministicTrace
+		echo $publicAddressLength >> $deterministicTrace
 	fi
 else
 	echo "Bad input params"
-	echo "Bad input params" >> $consensusFile
+	echo "Bad input params" >> $deterministicTrace
 fi
 
-
+echo "{ \"deterministic-output-path\": \"$deterministicTrace\" }" >> $computedJsonFile
