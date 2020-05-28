@@ -14,4 +14,4 @@ RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT /entrypoint.sh
 
-#docker image build -t nexus.iex.ec/hello-with-callback:0.0.1 .
+# docker image build -t nexus.iex.ec/hello-with-callback:3.0.0 .
