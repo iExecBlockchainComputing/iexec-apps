@@ -84,7 +84,7 @@ class PriceFeed:
 		try:
 			data      = response.get('data')[0]
 			timestamp = data.get('timestamp')
-			details   = '-'.join([ baseAsset, quoteAsset, power ])
+			details   = 'Price-{base}/{quote}-{power}'.format(base=baseAsset.upper(), quote=quoteAsset.upper(), power=power)
 			rawValue  = data.get('price')
 			value     = Lib.parseValue(rawValue, 'uint256', power)
 			return (timestamp, details, value)
