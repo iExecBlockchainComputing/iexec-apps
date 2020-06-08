@@ -1,30 +1,27 @@
 import os
 import sys
 import json
-from pyfiglet import Figlet
+import eth_abi
 
 iexec_out = os.environ['IEXEC_OUT']
 iexec_in = os.environ['IEXEC_IN']
 
 # Do whatever you want
-text = "Hello, World!"
+data = "Hello, World!"
 if len(sys.argv) > 1:
-    text = 'Hello, {}!'.format(sys.argv[1])
-text = Figlet().renderText(text) + text # Let's add some art for e.g.
+    data = 'Hello, {}!'.format(sys.argv[1])
 
 # Eventually use some confidential assets
 if os.path.exists(iexec_in + '/dataset.txt'):
     with open(iexec_in + '/dataset.txt', 'r') as dataset:
-        text = text + '\nConfidential dataset: ' + dataset.read()
+        print('Confidential dataset: ' + dataset.read())
 
-# Append some results
-with open(iexec_out + '/result.txt', 'w+') as fout:
-    fout.write(text)
-    print(text)
-
-# Declare compute is over
+# Send callback data to smart-contract
+callback_data = eth_abi.encode_abi([ 'string'], [ data ]).hex()
+print('Offchain computing for Smart-Contracts [data:{}, callback_data:{}]'.format(data, callback_data))
 with open(iexec_out + '/computed.json', 'w+') as f:
-    json.dump({ "deterministic-output-path" : iexec_out + '/result.txt' }, f)
+    json.dump({ "callback-data" : callback_data}, f)
+
 
 ## Try:
 # Basic:

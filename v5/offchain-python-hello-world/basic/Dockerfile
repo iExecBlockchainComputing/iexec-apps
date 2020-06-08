@@ -1,7 +1,7 @@
 FROM python:3.7.3
 
-### install python3 dependencies you need
-RUN pip3 install pyfiglet
+### install some python3 dependencies
+RUN pip3 install eth_abi
 
 COPY ./src /app
 

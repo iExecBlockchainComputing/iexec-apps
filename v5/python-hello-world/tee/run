@@ -1,10 +1,12 @@
 #!/bin/sh
 cd $(dirname $0)
 
-rm -rf /tmp/iexec_out
-mkdir -p /tmp/iexec_out
+IEXEC_OUT=/tmp/iexec_out
 
-docker run --rm -e IEXEC_OUT=/iexec_out -v /tmp/iexec_out:/iexec_out --device /dev/isgx tee-python-hello-world:4.0.0 $@
+rm -rf $IEXEC_OUT
+mkdir -p $IEXEC_OUT
+
+docker run --rm -e IEXEC_OUT=/iexec_out -e IEXEC_IN=/iexec_in -v $IEXEC_OUT:/iexec_out -v $(pwd)/confidential-assets:/iexec_in --device /dev/isgx tee-python-hello-world:1.0.0 $@
 
 echo
-find /tmp/iexec_out/
+find $IEXEC_OUT
