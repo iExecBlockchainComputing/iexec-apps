@@ -22,7 +22,7 @@ with open(iexec_out + '/result.txt', 'w+') as fout:
     fout.write(text)
     print(text)
 
-# Declare compute is over
+# Declare everything is computed
 with open(iexec_out + '/computed.json', 'w+') as f:
     json.dump({ "deterministic-output-path" : iexec_out + '/result.txt' }, f)
 
