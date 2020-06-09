@@ -1,0 +1,23 @@
+
+]python:S5720"@Rename "rawValue" to "self" or add the missing "self" parameter.(Úèæìúÿÿÿÿ
+Tpython:S5720"<Rename "args" to "self" or add the missing "self" parameter.(Š•ÛÝ
+[python:S5720.">Rename "region" to "self" or add the missing "self" parameter.(ú¨þêøÿÿÿÿ
+6python:S5719 "Add a "self" or class parameter(á‡Õr
+mpython:S100"QRename method "parseValue" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Úèæìúÿÿÿÿ
+opython:S117"SRename this parameter "ethType" to match the regular expression ^[_a-z][a-z0-9_]*$.(Úèæìúÿÿÿÿ
+ppython:S117"TRename this parameter "rawValue" to match the regular expression ^[_a-z][a-z0-9_]*$.(Úèæìúÿÿÿÿ
+hpython:S100"QRename method "formatArgs" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Š•ÛÝ
+fpython:S100 "PRename method "getAPIKey" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(á‡Õr
+spython:S117'"WRename this local variable "apiKey" to match the regular expression ^[_a-z][a-z0-9_]*$.(Õš·¡ýÿÿÿÿ
+Upython:S112)">Replace this generic exception class with a more specific one.(ÖÎª»
+Zpython:S112,">Replace this generic exception class with a more specific one.(ÿÅïòùÿÿÿÿ
+rpython:S100."VRename method "fetchMarketData" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ú¨þêøÿÿÿÿ
+Ypython:S5720E"ARename "baseAsset" to "self" or add the missing "self" parameter.(Ì‹ø´
+^python:S5720O"ARename "baseAsset" to "self" or add the missing "self" parameter.(‹´«æýÿÿÿÿ
+gpython:S100E"PRename method "fetchRate" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(Ì‹ø´
+lpython:S117E"URename this parameter "baseAsset" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ì‹ø´
+mpython:S117E"VRename this parameter "quoteAsset" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ì‹ø´
+qpython:S117O"URename this parameter "baseAsset" to match the regular expression ^[_a-z][a-z0-9_]*$.(‹´«æýÿÿÿÿ
+rpython:S117O"VRename this parameter "quoteAsset" to match the regular expression ^[_a-z][a-z0-9_]*$.(‹´«æýÿÿÿÿ
+upython:S117X"YRename this local variable "rawValue" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÏÜ—žþÿÿÿÿ
+Upython:S112\">Replace this generic exception class with a more specific one.(Õï¸Æ
