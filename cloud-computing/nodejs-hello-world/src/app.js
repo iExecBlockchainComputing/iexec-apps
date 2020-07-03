@@ -1,38 +1,39 @@
-const fs = require('fs');
-var figlet = require('figlet');
+const fsPromises = require('fs').promises;
+const figlet = require('figlet');
 
-const iexec_out = process.env.IEXEC_OUT
-const iexec_in = process.env.IEXEC_IN
+const iexecOut = process.env.IEXEC_OUT;
+const iexecIn = process.env.IEXEC_IN;
+const datasetFilepath = `${iexecIn}/${process.env.IEXEC_DATASET_FILENAME}`;
 
-// Write hello to fs
-var text = "Hello, World!"
-if (process.argv.length > 2){
-  text = 'Hello, ' + process.argv[2] + '!'
-}
-text = figlet.textSync(text) + '\n' + text // Let's add some art for e.g.
+(async () => {
+  try {
+    // Write hello to fs
+    let text = process.argv.length > 2 ? `Hello, ${process.argv[2]}!` : 'Hello, World';
+    text = `${figlet.textSync(text)}\n${text}`; // Let's add some art for e.g.
 
-// Eventually use some confidential assets
-if (fs.existsSync(iexec_in + '/dataset.txt')) {
-  var dataset = fs.readFileSync(iexec_in + '/dataset.txt');
-  text = text + '\nConfidential dataset: ' + dataset
-}
-
-// Append some results
-fs.writeFileSync(iexec_out + "/result.txt", text, {flag: 'w+'}, (err) => {
-  if(err) {
-      throw err;
+    // Eventually use some confidential assets
+    try {
+      const dataset = await fsPromises.readFile(datasetFilepath);
+      text = `${text}\nConfidential dataset: ${dataset}`;
+    } catch (e) {
+      // dataset does not exists
+    }
+    // Append some results
+    await fsPromises.writeFile(`${iexecOut}/result.txt`, text);
+    console.log(text);
+    // Declare everything is computed
+    const computedJsonObj = {
+      'deterministic-output-path': `${iexecOut}/result.txt`,
+    };
+    await fsPromises.writeFile(
+      `${iexecOut}/computed.json`,
+      JSON.stringify(computedJsonObj),
+    );
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
   }
-});
-console.log(text);
-
-// Declare everything is computed
-var computedJsonObj = { "deterministic-output-path" : iexec_out + "/result.txt" }
-fs.writeFile(iexec_out + "/computed.json", JSON.stringify(computedJsonObj), {flag: 'w+'}, (err) => {
-  if(err) {
-      throw err;
-  }
-  process.exit(0)
-});
+})();
 
 /* Try
 Basic:
