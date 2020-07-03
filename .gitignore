@@ -1,2 +1,5 @@
 **/iexec_in
 **/iexec_out
+
+.idea/*
+offchain-tee-kaiko-pricefeed/tee/confidential-assets/*
