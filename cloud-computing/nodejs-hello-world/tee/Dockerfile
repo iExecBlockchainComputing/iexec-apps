@@ -1,6 +1,6 @@
 FROM sconecuratedimages/sconecli:alpine3.7-scone3.0 AS scone
 
-FROM sconecuratedimages/apps:node-10-alpine
+FROM sconecuratedimages/apps:node-10.14-alpine
 
 COPY --from=scone   /opt/scone/scone-cli    /opt/scone/scone-cli
 COPY --from=scone   /usr/local/bin/scone    /usr/local/bin/scone
