@@ -4,19 +4,9 @@ import os
 import re
 import sys
 import urllib.request
-from web3.auto import w3
-
-keccak256 = w3.soliditySha3
-
-root         = '/'
-inputDir     = '{}iexec_in/'.format(root)
-outputDir    = '{}scone/iexec_out'.format(root)
-callbackFile = 'callback.iexec'
-completedComputeFile = 'completed-compute.iexec'
 
 iexec_out = os.environ['IEXEC_OUT']
 iexec_in = os.environ['IEXEC_IN']
-dataset_filepath = iexec_in + '/' + os.environ['IEXEC_DATASET_FILENAME']
 
 class Lib:
 	def parseValue(rawValue, ethType, power):
@@ -29,10 +19,9 @@ class Lib:
 		return '&'.join('{}={}'.format(k,v) for k,v in args.items())
 
 	def getAPIKey():
-		# Dataset file is a zip that is extracted before the entrypoint. read the key.txt file extracted from it
 		try:
-			with open(dataset_filepath, 'r') as file:
-				apiKey = file.read().strip()
+			with open(iexec_in + '/' + 'key.txt', 'r') as dataset_file:
+				apiKey = dataset_file.read().strip()
 				if not re.search('^[0-9a-zA-Z]{1,128}$', apiKey):
 					raise Exception('Invalid API key')
 				return apiKey
@@ -92,6 +81,9 @@ class PriceFeed:
 # btc usd 9
 if __name__ == '__main__':
 	print('PriceFeed started')
+	success = False
+	data = (0, '', 0) # default returned value to avoid attack on scheduler
+
 	try:
 		# EXECUTE CALL
 		data = PriceFeed.run(
@@ -99,16 +91,8 @@ if __name__ == '__main__':
 			quoteAsset = sys.argv[2],
 			power      = sys.argv[3],
 		)
+		success = True
 		print('- Success: {} {} {}'.format(*data))
-
-		# GENERATE CALLBACK
-		callback_data = eth_abi.encode_abi(['uint256', 'string', 'uint256'], [*data]).hex()
-		callback_data = '0x{}'.format(callback_data)
-		print('Offchain computing for Smart-Contracts [data:{}, callback_data:{}]'.format(data, callback_data))
-
-		with open(iexec_out + '/computed.json', 'w+') as f:
-			json.dump({ "callback-data" : callback_data}, f)
-
 
 	except IndexError as e:
 		print('Error: missing arguments')
@@ -116,4 +100,15 @@ if __name__ == '__main__':
 	except Exception as e:
 		print('Execution Failure: {}'.format(e))
 
-	print('PriceFeed completed')
+	# GENERATE CALLBACK
+	callback_data = eth_abi.encode_abi(['uint256', 'string', 'uint256'], [*data]).hex()
+	callback_data = '0x{}'.format(callback_data)
+	print('Offchain Computing for Smart-Contracts [data:{}, callback_data:{}]'.format(data, callback_data))
+
+	with open(iexec_out + '/computed.json', 'w+') as f:
+		json.dump({ "callback-data" : callback_data}, f)
+
+	if success:
+		print('PriceFeed completed')
+	else:
+		print('PriceFeed failed')
