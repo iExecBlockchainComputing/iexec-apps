@@ -1,0 +1,4 @@
+#!/bin/sh
+cd $(dirname $0)
+
+docker image build -f ../standard/Dockerfile -t python-hello-world:1.0.0 .. $@

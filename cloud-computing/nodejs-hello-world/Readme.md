@@ -3,11 +3,11 @@
 * Basic
 
 Build:
-`./basic/build`
+`./standard/build`
 
 Run locally:
-`./basic/run`
-`./basic/run Alice`
+`./standard/run`
+`./standard/run Alice`
 
 
 * Tee
