@@ -1,0 +1,3 @@
+#!/bin/sh
+cd $(dirname $0)
+docker image build -f ../tee/Dockerfile -t offchain-tee-kaiko-pricefeed:5.0.0 .. $@
