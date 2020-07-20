@@ -13,13 +13,13 @@ if len(sys.argv) > 1:
 text = Figlet().renderText(text) + text # Let's add some art for e.g.
 
 # Eventually use some confidential assets
-if os.path.exists(iexec_in + '/dataset.txt'):
-    with open(iexec_in + '/dataset.txt', 'r') as dataset:
-        text = text + '\nConfidential dataset: ' + dataset.read()
+if os.path.exists(iexec_in + '/confidential-asset.txt'):
+    with open(iexec_in + '/confidential-asset.txt', 'r') as f:
+        text = text + '\nConfidential asset: ' + f.read()
 
 # Append some results
-with open(iexec_out + '/result.txt', 'w+') as fout:
-    fout.write(text)
+with open(iexec_out + '/result.txt', 'w+') as f:
+    f.write(text)
     print(text)
 
 # Declare everything is computed
