@@ -3,7 +3,7 @@ const figlet = require('figlet');
 
 const iexecOut = process.env.IEXEC_OUT;
 const iexecIn = process.env.IEXEC_IN;
-const datasetFilepath = `${iexecIn}/${process.env.IEXEC_DATASET_FILENAME}`;
+const confidentialFilepath = `${iexecIn}/confidential-asset.txt`;
 
 (async () => {
   try {
@@ -13,10 +13,10 @@ const datasetFilepath = `${iexecIn}/${process.env.IEXEC_DATASET_FILENAME}`;
 
     // Eventually use some confidential assets
     try {
-      const dataset = await fsPromises.readFile(datasetFilepath);
-      text = `${text}\nConfidential dataset: ${dataset}`;
+      const confidentialFile = await fsPromises.readFile(confidentialFilepath);
+      text = `${text}\nConfidential asset: ${confidentialFile}`;
     } catch (e) {
-      // dataset does not exists
+      // confidential asset does not exist
     }
     // Append some results
     await fsPromises.writeFile(`${iexecOut}/result.txt`, text);

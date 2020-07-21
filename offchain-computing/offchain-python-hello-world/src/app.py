@@ -12,9 +12,9 @@ if len(sys.argv) > 1:
     data = 'Hello, {}!'.format(sys.argv[1])
 
 # Eventually use some confidential assets
-if os.path.exists(iexec_in + '/dataset.txt'):
-    with open(iexec_in + '/dataset.txt', 'r') as dataset:
-        print('Confidential dataset: ' + dataset.read())
+if os.path.exists(iexec_in + '/confidential-asset.txt'):
+    with open(iexec_in + '/confidential-asset.txt', 'r') as f:
+        print('Confidential asset: ' + f.read())
 
 # Send callback data to smart-contract
 callback_data = eth_abi.encode_abi([ 'string'], [ data ]).hex()
