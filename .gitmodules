@@ -1,0 +1,3 @@
+[submodule "cloud-computing/iexec-face-swap"]
+	path = cloud-computing/iexec-face-swap
+	url = https://github.com/iExecBlockchainComputing/iexec-face-swap

@@ -1,9 +1,18 @@
-# iexec-apps
+# iExec Apps
+
+*Note:
+If you want to clone this repository, please use:*
+
+`git clone --recurse-submodules https://github.com/iExecBlockchainComputing/iexec-apps`
+
+# Readme
 
 Are you a developer? Retrieve here curated iExec applications sources.
 
 * For developers needing Cloud Computing:
+
 `cd cloud-computing/`
 
-* For fevelopers needing Off-chain Computing:
+* For developers needing Off-chain Computing:
+
 `cd offchain-computing/`
