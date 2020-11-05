@@ -1,5 +1,5 @@
 #FROM python:3.9.0-alpine3.12
-FROM sconecuratedimages/apps:python-3.7.3-alpine3.10-scone3.0
+FROM sconecuratedimages/public-apps:python-3.7.3-alpine3.10-scone3.0
 
 # prepare tooling
 RUN apk add gcc
