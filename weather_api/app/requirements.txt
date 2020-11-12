@@ -1,0 +1,3 @@
+requests
+ciso8601==1.0.1
+opencage

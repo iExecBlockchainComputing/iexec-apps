@@ -1,0 +1,35 @@
+{
+  "description": "My iExec ressource description, must be at least 150 chars long in order to pass the validation checks. Describe your application, dataset or workerpool to your users",
+  "license": "MIT",
+  "author": "?",
+  "social": {
+    "website": "?",
+    "github": "?"
+  },
+  "logo": "logo.png",
+  "buyConf": {
+    "params": "",
+    "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trust": "0",
+    "callback": "0x0000000000000000000000000000000000000000"
+  },
+  "app": {
+    "owner": "0xe597d6fD63A56e645DbD680C56599038e5E02Be3",
+    "name": "BankCardPayment",
+    "type": "DOCKER",
+    "multiaddr": "registry.hub.docker.com/thomasvangurp/price-feed:1.0.0",
+    "checksum": "0x78495ddcb012dd32091cfa80a757c240d3dcc0366db64869c902e6802b043daa",
+    "mrenclave": ""
+  },
+  "order": {
+    "apporder": {
+      "app": "0x4f29393e0e9842DdEaf49a0AC2e7fc66CFA00a33",
+      "appprice": "0",
+      "volume": "1000000",
+      "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "datasetrestrict": "0x0000000000000000000000000000000000000000",
+      "workerpoolrestrict": "0x0000000000000000000000000000000000000000",
+      "requesterrestrict": "0x0000000000000000000000000000000000000000"
+    }
+  }
+}
