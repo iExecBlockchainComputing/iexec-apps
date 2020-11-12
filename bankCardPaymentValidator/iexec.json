@@ -1,0 +1,35 @@
+{
+  "description": "My iExec ressource description, must be at least 150 chars long in order to pass the validation checks. Describe your application, dataset or workerpool to your users",
+  "license": "MIT",
+  "author": "?",
+  "social": {
+    "website": "?",
+    "github": "?"
+  },
+  "logo": "logo.png",
+  "buyConf": {
+    "params": "",
+    "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trust": "0",
+    "callback": "0x0000000000000000000000000000000000000000"
+  },
+  "app": {
+    "owner": "0x3591CCE5B7318dCAA4597ABe846EF7Df7C5BCDcC",
+    "name": "DwollaCardValidator",
+    "type": "DOCKER",
+    "multiaddr": "registry.hub.docker.com/emmaodia/dwolla-card-validator:1.0.0",
+    "checksum": "0x131600405f0e8c32340a359b493d170d582c6bf911a38694947e65bd92efa559",
+    "mrenclave": ""
+  },
+  "order": {
+    "apporder": {
+      "app": "0x71bA4A5aDE91b7e05577bFC17C71cad1c71ecbe3",
+      "appprice": "0",
+      "volume": "1000000",
+      "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "datasetrestrict": "0x0000000000000000000000000000000000000000",
+      "workerpoolrestrict": "0x0000000000000000000000000000000000000000",
+      "requesterrestrict": "0x0000000000000000000000000000000000000000"
+    }
+  }
+}
