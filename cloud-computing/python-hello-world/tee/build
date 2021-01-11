@@ -1,3 +1,32 @@
 #!/bin/sh
 cd $(dirname $0)
-docker image build -f ../tee/Dockerfile -t tee-python-hello-world .. $@
+ROOT=$(pwd)
+TMP=$ROOT/tmp
+
+for i in "$@"
+do
+case $i in
+    --key=*)
+    KEY="${i#*=}"
+    shift
+    ;;
+    -p|--production)
+    IS_PROD=true
+    shift
+esac
+done
+
+if [ ! -z $IS_PROD ]; then
+  if [ ! -z $KEY ]; then
+      echo "Building production image.."
+      mkdir -p $TMP
+      cp $KEY $TMP/signer-key.pem
+      docker image build -f Dockerfile-production -t tee-python-hello-world .. $@
+      rm -rf $TMP
+  else
+    echo "usage: -p --key=/path/to/key"
+  fi
+else
+  echo "Building image.."
+  docker image build -f ../tee/Dockerfile -t tee-python-hello-world .. $@
+fi

@@ -4,3 +4,6 @@
 .idea
 
 /offchain-computing/offchain-tee-kaiko-pricefeed/tee/confidential-assets/
+
+*.pem
+tmp/*
