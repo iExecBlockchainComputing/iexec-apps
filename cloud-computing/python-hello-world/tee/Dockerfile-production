@@ -1,5 +1,5 @@
 FROM sconecuratedimages/public-apps:python-3.7.3-alpine3.10-scone3.0 as signed
-COPY ./tee/signer-key.pem /signer-key.pem
+COPY ./tee/tmp/signer-key.pem /signer-key.pem
 # sign python interpreter
 RUN scone-signer sign --production --dlopen 2 --heap 1G --key /signer-key.pem /usr/bin/python3
 
