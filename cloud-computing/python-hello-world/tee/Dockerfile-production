@@ -1,11 +1,11 @@
-FROM sconecuratedimages/public-apps:python-3.7.3-alpine3.10-scone3.0 as signed
+FROM sconecuratedimages/public-apps:python-3.7.3-alpine3.10-scone3.0-v1 as signed
 COPY ./tee/tmp/signer-key.pem /signer-key.pem
 # sign python interpreter
 RUN scone-signer sign --production --dlopen 2 --heap 1G --key /signer-key.pem /usr/bin/python3
 
 
 # Multi stage required for not leaking signer key
-FROM sconecuratedimages/public-apps:python-3.7.3-alpine3.10-scone3.0
+FROM sconecuratedimages/public-apps:python-3.7.3-alpine3.10-scone3.0-v1
 # replace the signed interpreter
 COPY --from=signed /usr/bin/python3 /usr/bin/python3
 # make sure environment variables in the image correspond to the values
