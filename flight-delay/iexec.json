@@ -1,0 +1,35 @@
+{
+  "description": "My iExec ressource description, must be at least 150 chars long in order to pass the validation checks. Describe your application, dataset or workerpool to your users",
+  "license": "MIT",
+  "author": "?",
+  "social": {
+    "website": "?",
+    "github": "?"
+  },
+  "logo": "logo.png",
+  "buyConf": {
+    "params": "",
+    "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "trust": "0",
+    "callback": "0x0000000000000000000000000000000000000000"
+  },
+  "app": {
+    "owner": "0xf3Ba773Af9e30B8187E2Abbd0B4F3218273127D0",
+    "name": "flightDelay",
+    "type": "DOCKER",
+    "multiaddr": "registry.hub.docker.com/nikhil3000/flight-delay:1.0.1",
+    "checksum": "0x866f12aee5381b2ab2b029b678f0c2dbc125ee06db7f045eeaefcb0998a589f5",
+    "mrenclave": ""
+  },
+  "order": {
+    "apporder": {
+      "app": "0x2bEe1A8d963D9f3d8Da6Db5A5e23aA4dB537811B",
+      "appprice": "0",
+      "volume": "1000000",
+      "tag": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "datasetrestrict": "0x0000000000000000000000000000000000000000",
+      "workerpoolrestrict": "0x0000000000000000000000000000000000000000",
+      "requesterrestrict": "0x0000000000000000000000000000000000000000"
+    }
+  }
+}
