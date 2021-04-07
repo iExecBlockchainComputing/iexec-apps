@@ -1,4 +1,4 @@
-FROM nexus.iex.ec/sconecuratedimages-public-apps:python-3.7.3-alpine3.10-scone3.0
+FROM sconecuratedimages/public-apps:python-3.7.3-alpine3.10-scone3.0
 
 ### install python3 dependencies you need
 RUN SCONE_MODE=sim pip3 install pyfiglet
