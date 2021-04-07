@@ -7,27 +7,32 @@ import urllib.request
 
 iexec_out = os.environ['IEXEC_OUT']
 iexec_in = os.environ['IEXEC_IN']
+dataset_filepath = iexec_in + '/' + os.environ['IEXEC_DATASET_FILENAME']
 
 class Lib:
+	@staticmethod
 	def parseValue(rawValue, ethType, power):
 		if re.search('^u?int[0-9]*$', ethType):
 			return round(float(rawValue) * 10 ** int(power))
 		else:
 			return rawValue
 
+	@staticmethod
 	def formatArgs(args):
 		return '&'.join('{}={}'.format(k,v) for k,v in args.items())
 
+	@staticmethod
 	def getAPIKey():
 		try:
-			with open(iexec_in + '/' + 'key.txt', 'r') as dataset_file:
+			with open(dataset_filepath, 'r') as dataset_file:
 				apiKey = dataset_file.read().strip()
 				if not re.search('^[0-9a-zA-Z]{1,128}$', apiKey):
 					raise Exception('Invalid API key')
 				return apiKey
-		except FileNotFoundError:
+		except (FileNotFoundError, IsADirectoryError):
 			raise Exception('Missing API key dataset')
 
+	@staticmethod
 	def fetchMarketData(region, endpoint, params):
 		print('Request https://{region}.market-api.kaiko.io/v1/data/trades.v1/{endpoint}?{params}'.format(
 			region   = region,
@@ -51,6 +56,7 @@ class Lib:
 		)
 
 class PriceFeed:
+	@staticmethod
 	def fetchRate(baseAsset, quoteAsset):
 		return Lib.fetchMarketData(
 			'us',
@@ -61,6 +67,7 @@ class PriceFeed:
 			})
 		)
 
+	@staticmethod
 	def run(baseAsset, quoteAsset, power):
 		response = PriceFeed.fetchRate(
 			baseAsset  = baseAsset,
