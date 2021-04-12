@@ -5,6 +5,7 @@ import eth_abi
 
 iexec_out = os.environ['IEXEC_OUT']
 iexec_in = os.environ['IEXEC_IN']
+dataset_filepath = iexec_in + '/' + os.environ['IEXEC_DATASET_FILENAME']
 
 # Do whatever you want
 data = "Hello, World!"
@@ -12,9 +13,9 @@ if len(sys.argv) > 1:
     data = 'Hello, {}!'.format(sys.argv[1])
 
 # Eventually use some confidential assets
-if os.path.exists(iexec_in + '/confidential-asset.txt'):
-    with open(iexec_in + '/confidential-asset.txt', 'r') as f:
-        print('Confidential asset: ' + f.read())
+if os.path.isfile(dataset_filepath):
+    with open(dataset_filepath, 'r') as f:
+        print('Dataset ({}): {}'.format(dataset_filepath, f.read()))
 
 # Send callback data to smart-contract
 callback_data = eth_abi.encode_abi([ 'string'], [ data ]).hex()
