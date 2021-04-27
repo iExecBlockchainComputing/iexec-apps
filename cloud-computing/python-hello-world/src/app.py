@@ -14,7 +14,7 @@ def do_some_computation():
     greeting = f'Hello, {name}!'
     # Let's add some art for e.g.
     art = Figlet().renderText(greeting)
-    return f'{art}\n{greeting}'
+    return art + greeting
 
 
 def handle_dataset():
@@ -29,7 +29,7 @@ def handle_dataset():
     iexec_in = os.environ['IEXEC_IN']
     dataset_filename = os.environ['IEXEC_DATASET_FILENAME']
     dataset_filepath = iexec_in + '/' + dataset_filename
-    text = f'Dataset ({dataset_filepath}): '
+    text = f'\nDataset ({dataset_filepath}): '
     if os.path.isfile(dataset_filepath):
         with open(dataset_filepath) as f:
             text = text + f.read()
@@ -48,12 +48,12 @@ def handle_input_files():
     """
     iexec_in = os.environ['IEXEC_IN']
     iexec_input_files_number = int(os.environ['IEXEC_INPUT_FILES_NUMBER'])
-    text = 'Input files:'
+    text = ''
     for i in range(1, iexec_input_files_number + 1):
-        file_path = iexec_in + "/" + os.environ['IEXEC_INPUT_FILE_NAME_' + i]
+        file_path = iexec_in + "/" + os.environ['IEXEC_INPUT_FILE_NAME_' + str(i)]
         if os.path.isfile(file_path):
             with open(file_path) as f:
-                text + f'\nInput file ({file_path}): {f.read()}'
+                text += f'\nInput file [{i}] ({file_path}): {f.read()}'
     return text
 
 
@@ -77,5 +77,5 @@ if __name__ == '__main__':
     computation_text = do_some_computation()
     dataset_text = handle_dataset()
     input_files_text = handle_input_files()
-    result = f'{computation_text}\n{dataset_text}\n{input_files_text}'
+    result = f'{computation_text}\n{dataset_text}\n{input_files_text}\n'
     save_result(result)
