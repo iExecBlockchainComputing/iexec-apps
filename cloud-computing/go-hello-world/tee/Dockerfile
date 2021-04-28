@@ -1,5 +1,4 @@
-FROM registry.scontain.com:5050/sconecuratedimages/crosscompilers
-
+FROM registry.scontain.com:5050/sconecuratedimages/crosscompilers:latest-scone3.0.0
 RUN mkdir /app
 COPY ./src /app/
 
