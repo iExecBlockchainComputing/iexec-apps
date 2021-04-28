@@ -5,7 +5,6 @@ COPY ./src /app/
 
 RUN apk update
 RUN apk add go git curl
-ENV SCONE_HEAP=1G
 RUN go build -o /app/helloworld -compiler gccgo -buildmode=exe -gccgoflags -g /app/helloworld.go
 
 ###  protect file system with Scone with old procedure
