@@ -25,7 +25,7 @@ fi
 ENTRYPOINT=$(cat ./entrypoint) # `node /app/app.js` or `python /app/app.py`
 
 export SCONE_MODE=sim
-export SCONE_HEAP=1G
+export SCONE_HEAP=4G
 
 APP_FOLDER=$1
 
@@ -51,7 +51,7 @@ scone fspf addf /fspf.pb $APP_FOLDER $APP_FOLDER
 
 scone fspf encrypt /fspf.pb > ./keytag
 
-MRENCLAVE="$(SCONE_HEAP=1G SCONE_HASH=1 $ENTRYPOINT)"
+MRENCLAVE="$(SCONE_HEAP=4G SCONE_HASH=1 $ENTRYPOINT)"
 FSPF_TAG=$(cat ./keytag | awk '{print $9}')
 FSPF_KEY=$(cat ./keytag | awk '{print $11}')
 FINGERPRINT="$FSPF_KEY|$FSPF_TAG|$MRENCLAVE|$ENTRYPOINT"

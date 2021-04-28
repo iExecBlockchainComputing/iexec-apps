@@ -18,9 +18,11 @@ func main() {
     // if our program was unable to read the file
     // print out the reason why it can't
     if err != nil {
+        fmt.Println("READ IEXEC_IN FILE ERROR")
         fmt.Println(err)
     }
 
+    fmt.Print("READ IEXEC_IN FILE OK")
     // if it was successful in reading the file then
     // print out the contents as a string
     fmt.Print(string(input))
@@ -28,6 +30,7 @@ func main() {
     // Append some results
     err = ioutil.WriteFile(iexec_out + "/result.txt", input, 0)
         if err != nil {
+            fmt.Println("WRITE FILE FAILED")
             log.Fatal(err)
         }
 
@@ -37,7 +40,9 @@ func main() {
     dataBytes := []byte(dataString)
     err = ioutil.WriteFile(iexec_out + "/computed.json", dataBytes, 0)
         if err != nil {
+            fmt.Println("DECLARE FAILED")
             log.Fatal(err)
         }
+    fmt.Print("EVERYTHING IS OK")
 
 }
