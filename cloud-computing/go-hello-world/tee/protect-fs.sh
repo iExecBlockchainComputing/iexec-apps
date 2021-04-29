@@ -21,8 +21,7 @@ then
     exit 1
 fi
 
-#INTERPRETER=$(awk '{print $1}' ./entrypoint) # node or python
-ENTRYPOINT=$(cat ./entrypoint) # `node /app/app.js` or `python /app/app.py`
+ENTRYPOINT=$(cat ./entrypoint) # `/app/helloworld`
 
 export SCONE_MODE=sim
 export SCONE_HEAP=4G
@@ -43,15 +42,13 @@ scone fspf addr /fspf.pb /etc/ssl   --authenticated --kernel /etc/ssl
 scone fspf addf /fspf.pb /etc/ssl   /etc/ssl
 scone fspf addr /fspf.pb /sbin      --authenticated --kernel /sbin
 scone fspf addf /fspf.pb /sbin      /sbin
-#scone fspf addr /fspf.pb /samples      --authenticated --kernel /samples
-#scone fspf addf /fspf.pb /samples      /samples
 printf "\n### Protecting code found in folder \"$APP_FOLDER\"\n\n"
 scone fspf addr /fspf.pb $APP_FOLDER --authenticated --kernel $APP_FOLDER
 scone fspf addf /fspf.pb $APP_FOLDER $APP_FOLDER
 
 scone fspf encrypt /fspf.pb > ./keytag
 
-MRENCLAVE="$(SCONE_HEAP=4G SCONE_HASH=1 $ENTRYPOINT)"
+MRENCLAVE="$(SCONE_HASH=1 $ENTRYPOINT)"
 FSPF_TAG=$(cat ./keytag | awk '{print $9}')
 FSPF_KEY=$(cat ./keytag | awk '{print $11}')
 FINGERPRINT="$FSPF_KEY|$FSPF_TAG|$MRENCLAVE|$ENTRYPOINT"

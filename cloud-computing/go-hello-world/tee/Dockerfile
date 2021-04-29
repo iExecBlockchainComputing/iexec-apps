@@ -1,11 +1,9 @@
-FROM registry.scontain.com:5050/sconecuratedimages/crosscompilers
+FROM registry.scontain.com:5050/sconecuratedimages/crosscompilers:latest-scone3.0.0
 
-RUN mkdir /app
-COPY ./src /app/
+RUN apk --update add go=1.9.4-r0 git curl
 
-RUN apk update
-RUN apk add go git curl
-ENV SCONE_HEAP=4G
+COPY ./src /app
+
 RUN go build -o /app/helloworld -compiler gccgo -buildmode=exe -gccgoflags -g /app/helloworld.go
 
 ###  protect file system with Scone with old procedure
