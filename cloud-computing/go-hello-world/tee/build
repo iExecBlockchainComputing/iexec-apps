@@ -1,0 +1,3 @@
+#!/bin/sh
+cd $(dirname $0)
+docker image build -f ../tee/Dockerfile -t tee-go-hello-world .. $@

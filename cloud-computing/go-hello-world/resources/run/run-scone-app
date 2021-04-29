@@ -1,0 +1,18 @@
+#!/bin/bash
+
+### TODO on each build: update mrenclave in session
+
+#cd $(dirname $0)
+
+docker-compose down > /dev/null
+docker network create scone-net > /dev/null
+echo "Starting CAS & LAS:"
+docker-compose up -d
+sleep 5
+
+MY_SCONE_APP=tee-go-hello-world
+echo "Starting $MY_SCONE_APP"
+docker run --rm  --network=scone-net --name=my-scone-app --device=/dev/isgx -e SCONE_VERSION=1 -e SCONE_CAS_ADDR="cas" -e SCONE_LAS_ADDR="las" -e SCONE_CONFIG_ID="1/service" $MY_SCONE_APP
+
+docker-compose down
+docker network rm scone-net
