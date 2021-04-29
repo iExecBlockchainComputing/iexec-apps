@@ -24,7 +24,7 @@ fi
 ENTRYPOINT=$(cat ./entrypoint) # `/app/helloworld`
 
 export SCONE_MODE=sim
-export SCONE_HEAP=4G
+export SCONE_HEAP=1G
 
 APP_FOLDER=$1
 
