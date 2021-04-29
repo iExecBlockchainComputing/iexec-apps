@@ -21,8 +21,7 @@ then
     exit 1
 fi
 
-#INTERPRETER=$(awk '{print $1}' ./entrypoint) # node or python
-ENTRYPOINT=$(cat ./entrypoint) # `node /app/app.js` or `python /app/app.py`
+ENTRYPOINT=$(cat ./entrypoint) # `/app/helloworld`
 
 export SCONE_MODE=sim
 export SCONE_HEAP=3G
