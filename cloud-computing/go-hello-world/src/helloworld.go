@@ -13,11 +13,13 @@ func main() {
     dataset_filename := os.Getenv("IEXEC_DATASET_FILENAME")
     dataset_filepath := iexec_in + "/" + dataset_filename
 
+	result := ""
+
     // Print a message
     if (len(os.Args) > 1) {
-        fmt.Println("Hello, " + os.Args[1] + "!")
+        result += "Hello, " + os.Args[1] + "!\n"
     } else {
-        fmt.Println("Hello, World!")
+        result += "Hello, World!\n"
     }
 
     // read in the contents of the dataset
@@ -25,15 +27,17 @@ func main() {
     if err != nil {
         // if our program was unable to read the file
         // print out the reason why it can't
-        fmt.Println("Error reading dataset file -", err)
+        result += "Error reading dataset file - " + err.Error()
     } else {
         // if it was successful in reading the file then
         // print out the contents as a string
-        fmt.Println("Dataset (" + dataset_filepath + "):", string(input))
+        result += "Dataset (" + dataset_filepath + "): " + string(input)
     }
 
+	fmt.Println(result)
+
     // Append some results
-    err = ioutil.WriteFile(iexec_out + "/result.txt", input, 0)
+    err = ioutil.WriteFile(iexec_out + "/result.txt", []byte(result), 0)
     if err != nil {
         log.Fatal(err)
     }
