@@ -13,7 +13,7 @@ func main() {
     dataset_filename := os.Getenv("IEXEC_DATASET_FILENAME")
     dataset_filepath := iexec_in + "/" + dataset_filename
 
-	result := ""
+    result := ""
 
     // Print a message
     if (len(os.Args) > 1) {
@@ -34,7 +34,7 @@ func main() {
         result += "Dataset (" + dataset_filepath + "): " + string(input)
     }
 
-	fmt.Println(result)
+    fmt.Println(result)
 
     // Append some results
     err = ioutil.WriteFile(iexec_out + "/result.txt", []byte(result), 0)
