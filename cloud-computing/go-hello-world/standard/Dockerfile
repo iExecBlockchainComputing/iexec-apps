@@ -1,10 +1,10 @@
 # same version as Scone
-FROM golang:1.9.4-alpine3.7
+FROM golang:1.16.0-alpine3.13
 
-RUN apk --update add go=1.9.4-r0 git curl
+RUN apk --update add gcc build-base gcc-go
 
 COPY ./src /app
 
-RUN go build -o /app/helloworld -buildmode=exe -gccgoflags -g /app/helloworld.go
+RUN go build -compiler=gccgo -buildmode=exe -o /app/helloworld /app/helloworld.go
 
 ENTRYPOINT ["/app/helloworld"]
