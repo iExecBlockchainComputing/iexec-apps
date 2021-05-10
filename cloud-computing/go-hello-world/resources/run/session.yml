@@ -14,7 +14,7 @@ access_policy:
 services:
    - name: go-hello-world
      image_name: tee-go-hello-world
-     mrenclaves: [d4906280593115769efef9f46f6b237bc20c338edfcbbf8d2939d58aa76e0e16]
+     mrenclaves: [0ffb1ce764e67185411c0e9983a21a84d6c2ccc3fde7890e26107389fdda83c2]
      command: "/app/helloworld"
      environment:
          SCONE_MODE: hw

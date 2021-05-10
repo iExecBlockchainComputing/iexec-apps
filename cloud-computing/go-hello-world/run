@@ -6,14 +6,14 @@ IEXEC_OUT=/tmp/iexec_out
 rm -rf $IEXEC_OUT
 mkdir -p $IEXEC_OUT
 
+
 docker run --rm \
         -e IEXEC_OUT=/iexec_out \
         -e IEXEC_IN=/iexec_in \
-        -e IEXEC_DATASET_FILENAME=confidential-asset.txt \
+        -e IEXEC_DATASET_FILENAME=Lorem-ipsum.txt \
         -v $IEXEC_OUT:/iexec_out \
-        -v $(pwd)/confidential-assets:/iexec_in \
-        --device /dev/isgx \
-        tee-go-hello-world $@
+        -v $(pwd)/resources/dataset:/iexec_in \
+        go-hello-world $@
 
 echo
 find $IEXEC_OUT

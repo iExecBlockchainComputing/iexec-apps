@@ -49,7 +49,7 @@ func main() {
     }
 
     // Create computed.json file
-    dataString := `{"deterministic-output-path\": "` + iexecOut + `/result.txt"}`
+    dataString := `{"deterministic-output-path": "` + iexecOut + `/result.txt"}`
     err = ioutil.WriteFile(iexecOut + "/computed.json", []byte(dataString), 0)
     if err != nil {
         log.Fatal(err)
