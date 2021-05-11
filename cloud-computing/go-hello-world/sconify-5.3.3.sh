@@ -6,7 +6,7 @@ docker run -it --rm \
             sconify_iexec \
                 --name=goHelloWorld \
                 --from=go-hello-world \
-                --to=tee-go-hello-world:dev-tee-5.3.3 \
+                --to=tee-go-hello-world \
                 --binary-fs \
                 --host-path=/etc/hosts \
                 --host-path=/etc/resolv.conf \

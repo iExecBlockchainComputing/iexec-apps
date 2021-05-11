@@ -21,7 +21,7 @@ services:
         networks:
           - scone-net
     scone-cli:
-        image: registry.scontain.com:5050/sconecuratedimages/iexec-sconify-image:5.3.1
+        image: registry.scontain.com:5050/sconecuratedimages/iexec-sconify-image:5.3.3
         container_name: scone-cli
         command: bash -c "sleep 5 && scone session create /session.yml --cas cas --only_for_testing-disable-attestation-verification"
         volumes:
