@@ -29,8 +29,8 @@ Once the execution ends, the result should be found in the folder
 
 ## TEE (protected) mode
 To convert the application into **TEE** mode, first, it needs to be
-build in **Standard** mode as instructed in the section above.
-Then the produced image is converted using `sconify.sh` script into
+built in **Standard** mode as instructed in the section above.
+Then the standard image is converted using `sconify.sh` script into
 a newly created TEE enabled image `tee-nodejs-hello-world`:
 
 ### Build (conversion)
