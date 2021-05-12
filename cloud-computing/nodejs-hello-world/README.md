@@ -11,7 +11,7 @@ application:
 docker image build -t nodejs-hello-world .
 ```
 **IMPORTANT:** /!\ Please note that the base node image should be in alpine if
-it will be converted into TEE mode.**
+it will be converted into TEE mode.
 
 ### Run
 The application can be tested locally to make sure it is well setup:
