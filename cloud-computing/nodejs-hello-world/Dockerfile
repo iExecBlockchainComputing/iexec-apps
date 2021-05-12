@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:14-alpine3.10
 
 ### install your dependencies
 RUN mkdir /app && cd /app && npm install figlet@1.x
