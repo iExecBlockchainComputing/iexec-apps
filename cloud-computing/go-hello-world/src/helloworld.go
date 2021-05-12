@@ -37,7 +37,7 @@ func main() {
             result += "Dataset (" + datasetFilepath + "): " + string(input)
         }
     } else {
-        result += "No dataset present\n"
+        result += "No dataset was found\n"
     }
 
     fmt.Println(result)

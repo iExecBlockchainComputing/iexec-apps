@@ -18,9 +18,6 @@ services:
      command: "/app/helloworld"
      environment:
          SCONE_MODE: hw
-#         JAVA_TOOL_OPTIONS: "-Xmx256m"
-#         LD_LIBRARY_PATH: "/usr/lib/jvm/java-11-openjdk/lib/server:/usr/lib/jvm/java-11-openjdk/lib:/usr/lib/jvm/java-11-openjdk/../lib"
-#     pwd: /
 
 images:
   - name: service_image
@@ -29,3 +26,4 @@ security:
   attestation:
     tolerate: [hyperthreading, software-hardening-needed, insecure-igpu, outdated-tcb, debug-mode]
     ignore_advisories: ["INTEL-SA-00161", "INTEL-SA-00289", "INTEL-SA-00381", "INTEL-SA-00389"]
+    # ignore_advisories: ["INTEL-SA-00161", "INTEL-SA-00289", "INTEL-SA-00334", "INTEL-SA-00381", "INTEL-SA-00389"]
