@@ -10,14 +10,15 @@ const datasetFilepath = `${iexecIn}/${datasetFilename}`;
   try {
     // Write hello to fs
     let text = process.argv.length > 2 ? `Hello, ${process.argv[2]}!` : 'Hello, World';
-    text = `${figlet.textSync(text)}\n${text}`; // Let's add some art for e.g.
+    text = `${figlet.textSync(text)}\n${text}\n`; // Let's add some art for e.g.
 
     // Eventually use some confidential assets
     try {
       const datasetContent = await fsPromises.readFile(datasetFilepath);
-      text = `${text}\nDataset (${datasetFilepath}): ${datasetContent}`;
+      text += `Dataset (${datasetFilepath}): ${datasetContent}\n`;
     } catch (e) {
       // confidential asset does not exist
+      text += `No dataset was found\n`
     }
     // Append some results
     await fsPromises.writeFile(`${iexecOut}/result.txt`, text);
@@ -35,11 +36,3 @@ const datasetFilepath = `${iexecIn}/${datasetFilename}`;
     process.exit(1);
   }
 })();
-
-/* Try
-Basic:
-mkdir -p /tmp/iexec_out && IEXEC_OUT=/tmp/iexec_out IEXEC_IN=/tmp/iexec_in node app.js Alice
-
-Tee:
-mkdir -p /tmp/iexec_out && IEXEC_OUT=/tmp/iexec_out IEXEC_IN=../tee/confidential-assets node app.js Alice
-*/

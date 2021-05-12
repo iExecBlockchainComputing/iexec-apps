@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:14
 
 ### install your dependencies
 RUN mkdir /app && cd /app && npm install figlet@1.x
