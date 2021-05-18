@@ -12,12 +12,13 @@ access_policy:
    - CREATOR
 
 services:
-   - name: nodejs-hello-world
-     image_name: tee-nodejs-hello-world
-     mrenclaves: [0ffb1ce764e67185411c0e9983a21a84d6c2ccc3fde7890e26107389fdda83c2]
+   - name: service
+     image_name: service_image
+     mrenclaves: [5f7645b0f4c733c98c31f8daa2c6827c4e9bdc22b6ffac65699e10a0f1015340]
      command: "node /app/app.js"
      environment:
-         SCONE_MODE: hw
+      IEXEC_IN: /iexec_in
+      IEXEC_OUT: /iexec_out
 
 images:
   - name: service_image
@@ -25,4 +26,4 @@ images:
 security:
   attestation:
     tolerate: [hyperthreading, software-hardening-needed, insecure-igpu, outdated-tcb, debug-mode]
-    ignore_advisories: ["INTEL-SA-00161", "INTEL-SA-00289", "INTEL-SA-00381", "INTEL-SA-00389"]
+    ignore_advisories: ["INTEL-SA-00161", "INTEL-SA-00289", "INTEL-SA-00334", "INTEL-SA-00381", "INTEL-SA-00389"]

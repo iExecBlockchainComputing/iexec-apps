@@ -43,7 +43,7 @@ The script can edited to change parameters like **heap size**, new
 image name, sources folder, ...
 
 ```
-./sconify.sh
+bash sconify.sh
 ```
 
 ### Run
