@@ -1,0 +1,28 @@
+name: 1
+version: "0.3"
+
+# Access control:
+#   - only the data owner (CREATOR) can read or update the session
+#   - even the data owner cannot read the session secrets (i.e., the volume key and tag) or delete the session
+
+access_policy:
+  read:
+   - CREATOR
+  update:
+   - CREATOR
+
+services:
+   - name: python-hello-world
+     image_name: tee-python-hello-world
+     mrenclaves: [0ffb1ce764e67185411c0e9983a21a84d6c2ccc3fde7890e26107389fdda83c2]
+     command: "node /app/app.js"
+     environment:
+         SCONE_MODE: hw
+
+images:
+  - name: service_image
+
+security:
+  attestation:
+    tolerate: [hyperthreading, software-hardening-needed, insecure-igpu, outdated-tcb, debug-mode]
+    ignore_advisories: ["INTEL-SA-00161", "INTEL-SA-00289", "INTEL-SA-00381", "INTEL-SA-00389"]

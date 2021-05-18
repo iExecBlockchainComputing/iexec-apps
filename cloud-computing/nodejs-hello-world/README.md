@@ -10,8 +10,8 @@ application:
 ```
 docker image build -t nodejs-hello-world .
 ```
-**IMPORTANT:** /!\ Please note that the base node image should be in alpine if
-it will be converted into TEE mode.
+**IMPORTANT:** /!\ Please note that the base node image should be 
+alpine based if it will be converted into TEE mode.
 
 ### Run
 The application can be tested locally to make sure it is well setup:
@@ -28,6 +28,9 @@ docker run \
 ```
 Once the execution ends, the result should be found in the folder
 `/tmp/iexec_out`.
+```
+cat /tmp/iexec_out/result.txt
+```
 
 ## TEE (protected) mode
 To convert the application into **TEE** mode, first, it needs to be
@@ -61,23 +64,3 @@ To get the MREnclave value of the TEE application:
 ```
 docker run -it --rm -e SCONE_HASH=1 tee-nodejs-hello-world
 ```
-
-<!-- ```
-docker run -it --rm \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            registry.scontain.com:5050/sconecuratedimages/iexec-sconify-image:5.3.3 \
-            sconify_iexec \
-                --name=nodeHelloWorld \
-                --from=nodejs-hello-world \
-                --to=nexus.iex.ec/tee-nodejs-hello-world:6.2.0 \
-                --binary-fs \
-                --fs-dir=/app \
-                --host-path=/etc/hosts \
-                --host-path=/etc/resolv.conf \
-                --binary="/usr/local/bin/node" \
-                --heap="1G" \
-                --dlopen="2" \
-                --no-color \
-                --verbose \
-                --command="node /app/app.js"
-``` -->
