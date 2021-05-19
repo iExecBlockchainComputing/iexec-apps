@@ -48,6 +48,10 @@ bash sconify.sh
 
 ### Run
 (TODO test with CAS and session)
+
+First of all, Intel® SGX driver needs to be present on the host machine.
+These [instructions](https://github.com/intel/linux-sgx-driver) provide
+information about how to install it.
 The application can be tested locally to make sure it is well setup:
 ```
 rm -rf /tmp/iexec_out && \
