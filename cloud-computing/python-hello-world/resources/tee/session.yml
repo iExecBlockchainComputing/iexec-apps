@@ -14,8 +14,8 @@ access_policy:
 services:
    - name: service
      image_name: service_image
-     mrenclaves: [5e0955204071b0f9d108bc7244ab25e331550046849f739f736c9536574fffb0]
-     command: "/app/helloworld"
+     mrenclaves: [eca3ace86f1e8a5c47123c8fd271319e9eb25356803d36666dc620f30365c0c1]
+     command: "python3 /app/app.py"
      environment:
       IEXEC_IN: /iexec_in
       IEXEC_OUT: /iexec_out
