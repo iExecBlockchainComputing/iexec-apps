@@ -4,9 +4,9 @@
 --binary-fs \
 --host-path=/etc/hosts \
 --host-path=/etc/resolv.conf \
---binary="/app/helloworld" \
---heap="1G" \
---dlopen="2" \
+--binary=/app/helloworld \
+--heap=1G \
+--dlopen=2 \
 --no-color \
 --verbose \
---command="/app/helloworld"
+--command=/app/helloworld
