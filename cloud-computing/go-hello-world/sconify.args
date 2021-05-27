@@ -1,6 +1,6 @@
 --name=goHelloWorld \
---from=go-hello-world \
---to=tee-go-hello-world \
+--from=${IMG_FROM} \
+--to=${IMG_TO} \
 --binary-fs \
 --host-path=/etc/hosts \
 --host-path=/etc/resolv.conf \
