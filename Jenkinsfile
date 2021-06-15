@@ -1,6 +1,6 @@
 @Library('jenkins-library') _
 
 // Build native docker image
-buildSimpleDocker(dockerfilePath: 'cloud-computing/go-hello-world/Dockerfile',
+buildSimpleDocker(buildContext: 'cloud-computing/go-hello-world',
   dockerImageRepositoryName: 'go-hello-world',
   imageprivacy: 'public')
