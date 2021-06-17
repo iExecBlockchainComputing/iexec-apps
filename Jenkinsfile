@@ -56,7 +56,7 @@ buildSimpleDocker(buildContext: 'cloud-computing/go-hello-world',
       }
 
       stage('Trigger TEE production image build') {
-          if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main') {
+          if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'v6.0') {
               sconeSigning(
                       IMG_FROM: "$nativeImage",
                       IMG_TO: "$productionImage",
