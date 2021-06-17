@@ -6,7 +6,7 @@
 
 docker run -it --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            registry.scontain.com:5050/sconecuratedimages/iexec-sconify-image:5.3.3 \
+            registry.scontain.com:5050/sconecuratedimages/iexec-sconify-image:5.3.6 \
             sconify_iexec \
                 --name=nodejsHelloWorld \
                 --from=nodejs-hello-world \
