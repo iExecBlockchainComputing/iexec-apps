@@ -1,0 +1,33 @@
+version: '3.2'
+networks:
+  scone-net:
+    external: true
+
+services:
+    las:
+        image: registry.scontain.com:5050/scone-debug/iexec-las:5.2.1
+        container_name: las
+        devices:
+          - /dev/isgx
+        networks:
+          - scone-net
+    cas:
+        image: registry.scontain.com:5050/scone-debug/iexec-cas:5.2.1
+        container_name: cas
+        devices:
+          - /dev/isgx
+        depends_on:
+          - las
+        networks:
+          - scone-net
+    scone-cli:
+        image: registry.scontain.com:5050/sconecuratedimages/iexec-sconify-image:5.3.6
+        container_name: scone-cli
+        command: bash -c "sleep 5 && scone session create /session.yml --cas cas --only_for_testing-disable-attestation-verification"
+        volumes:
+          - ./session.yml:/session.yml
+        depends_on:
+          - las
+          - cas
+        networks:
+          - scone-net

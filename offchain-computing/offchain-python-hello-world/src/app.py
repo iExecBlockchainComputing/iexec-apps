@@ -3,30 +3,58 @@ import sys
 import json
 import eth_abi
 
-iexec_out = os.environ['IEXEC_OUT']
-iexec_in = os.environ['IEXEC_IN']
-dataset_filepath = iexec_in + '/' + os.environ['IEXEC_DATASET_FILENAME']
 
-# Do whatever you want
-data = "Hello, World!"
-if len(sys.argv) > 1:
-    data = 'Hello, {}!'.format(sys.argv[1])
-
-# Eventually use some confidential assets
-if os.path.isfile(dataset_filepath):
-    with open(dataset_filepath, 'r') as f:
-        print('Dataset ({}): {}'.format(dataset_filepath, f.read()))
-
-# Send callback data to smart-contract
-callback_data = eth_abi.encode_abi([ 'string'], [ data ]).hex()
-print('Offchain computing for Smart-Contracts [data:{}, callback_data:{}]'.format(data, callback_data))
-with open(iexec_out + '/computed.json', 'w+') as f:
-    json.dump({ "callback-data" : callback_data}, f)
+def do_some_computation():
+    """
+    This function simulates some computation in an iExec application. Script
+    arguments (if provided) are accessible via "sys.argv" array. In this case,
+    if the first argument is present, it is used in the greeting message.
+    """
+    name = sys.argv[1] if len(sys.argv) > 1 else "World"
+    greeting = f'Hello, {name}!'
+    return greeting
 
 
-## Try:
-# Basic:
-# mkdir -p /tmp/iexec_out && IEXEC_OUT=/tmp/iexec_out IEXEC_IN=/tmp/iexec_in python3 app.py Alice
-#
-# Tee:
-# mkdir -p /tmp/iexec_out && IEXEC_OUT=/tmp/iexec_out IEXEC_IN=../tee/confidential-assets python3 app.py Alice
+def handle_dataset():
+    """
+    This function shows how to read a dataset file from an iExec application.
+    Datasets are public in standard mode and confidential in TEE mode.
+    The dataset location and filename are needed to be able to read it. Both
+    of which are provided in the following environment variables:
+        - IEXEC_IN: the path to the folder where the dataset is located.
+        - IEXEC_DATASET_FILENAME: the name of the dataset file.
+    """
+    iexec_in = os.environ['IEXEC_IN']
+    dataset_filename = os.environ['IEXEC_DATASET_FILENAME']
+    dataset_filepath = iexec_in + '/' + dataset_filename
+    text = f'\nDataset ({dataset_filepath}): '
+    if os.path.isfile(dataset_filepath):
+        with open(dataset_filepath) as f:
+            text = text + f.read()
+    return text
+
+
+def save_result(result):
+    """
+    This function shows how to save a result in an iExec application. The result
+    file(s) should be written in the folder indicated by the environment variable
+    IEXEC_OUT. After saving the result, the file "computed.json" must be created
+    in the same folder. It must contain, at least, the path to the determinism
+    file (deterministic-output-path).
+    """
+    iexec_out = os.environ['IEXEC_OUT']
+    callback_data = eth_abi.encode_abi(['string'], [result]).hex()
+    print('Callback is ready [data:{}, callback-data:{}]'.format(result, callback_data))
+    # prepare callback to be sent to the smart-contract
+    computed_file_content = {"callback-data": callback_data}
+    print(computed_file_content)
+    with open(iexec_out + '/computed.json', 'w+') as f:
+        json.dump(computed_file_content, f)
+
+
+if __name__ == '__main__':
+    computation_text = do_some_computation()
+    print(computation_text)
+    dataset_text = handle_dataset()
+    print(dataset_text)
+    save_result(computation_text)
