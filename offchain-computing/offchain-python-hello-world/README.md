@@ -28,19 +28,19 @@ docker run \
         -e IEXEC_INPUT_FILE_NAME_2=input-file2.txt \
         -v /tmp/iexec_out:/iexec_out \
         -v $(pwd)/resources/data:/iexec_in \
-        python-hello-world Alice
+        offchain-python-hello-world Alice
 ```
 Once the execution ends, the result should be found in the folder
 `/tmp/iexec_out`.
 ```
-cat /tmp/iexec_out/result.txt
+cat /tmp/iexec_out/computed.json
 ```
 
 ## TEE (protected) mode
 To convert the application into **TEE** mode, first, it needs to be
 built in **Standard** mode as instructed in the section above.
 Then the standard image is converted using `sconify.sh` script into
-a newly created TEE enabled image `tee-python-hello-world`:
+a newly created TEE enabled image `tee-offchain-python-hello-world`:
 
 ### Build (conversion)
 The script can edited to change parameters like **heap size**, new
@@ -66,9 +66,9 @@ docker run \
         -v /tmp/iexec_out:/iexec_out \
         -v $(pwd)/resources/data:/iexec_in \
         --device /dev/isgx \
-        tee-python-hello-world Alice
+        tee-offchain-python-hello-world Alice
 ```
 To get the MREnclave value of the TEE application:
 ```
-docker run -it --rm -e SCONE_HASH=1 tee-python-hello-world
+docker run -it --rm -e SCONE_HASH=1 tee-offchain-python-hello-world
 ```
