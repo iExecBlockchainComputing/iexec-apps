@@ -1,8 +1,8 @@
 @Library('jenkins-library') _
 
-buildSimpleDocker(buildContext: 'cloud-computing/go-hello-world',
-  dockerImageRepositoryName: 'go-hello-world',
+def goImageName = 'go-hello-world'
+buildSimpleDocker_v2(buildContext: 'cloud-computing/go-hello-world',
+  dockerImageRepositoryName: goImageName,
   imageprivacy: 'public')
-
-sconeBuildAllTee(imageName: 'go-hello-world',
+sconeBuildAllTee(imageName: goImageName,
   sconifyArgsPath: 'cloud-computing/go-hello-world/sconify.args')
