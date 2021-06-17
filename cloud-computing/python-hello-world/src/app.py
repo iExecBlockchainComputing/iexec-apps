@@ -69,13 +69,18 @@ def save_result(text):
     result_filepath = iexec_out + '/result.txt'
     with open(result_filepath, 'w+') as f:
         f.write(text)
+    computed_file_content = {"deterministic-output-path": result_filepath}
+    print(computed_file_content)
     with open(iexec_out + '/computed.json', 'w+') as f:
-        json.dump({"deterministic-output-path": result_filepath}, f)
+        json.dump(computed_file_content, f)
 
 
 if __name__ == '__main__':
     computation_text = do_some_computation()
+    print(computation_text)
     dataset_text = handle_dataset()
+    print(dataset_text)
     input_files_text = handle_input_files()
+    print(input_files_text)
     result = f'{computation_text}\n{dataset_text}\n{input_files_text}\n'
     save_result(result)
