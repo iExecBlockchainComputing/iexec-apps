@@ -8,7 +8,7 @@ does not use TEE capabilities.
 Standard mode application is built just like any other dockerized
 application:
 ```
-docker image build -t offchain-python-hello-world .
+docker image build -f docker/Dockerfile -t offchain-python-hello-world .
 ```
 **IMPORTANT:** /!\ Please note that the base python image should be
 alpine based if the application will be converted into TEE mode.
