@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Until the correct image is made available, do this workaround:
-# docker image pull registry.scontain.com:5050/sconecuratedimages/iexec:node-14.4.0-alpine3.11
-# docker image tag registry.scontain.com:5050/sconecuratedimages/iexec:node-14.4.0-alpine3.11 registry.scontain.com:5050/sconecuratedimages/node:14.4.0-alpine3.11
-
 docker run -it --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
             registry.scontain.com:5050/sconecuratedimages/iexec-sconify-image:5.3.6 \
