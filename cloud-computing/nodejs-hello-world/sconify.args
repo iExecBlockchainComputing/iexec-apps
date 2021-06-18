@@ -1,0 +1,13 @@
+--name=nodejsHelloWorld \
+--from=${IMG_FROM} \
+--to=${IMG_TO} \
+--binary-fs \
+--fs-dir=/app \
+--host-path=/etc/hosts \
+--host-path=/etc/resolv.conf \
+--binary="/usr/local/bin/node" \
+--heap="1G" \
+--dlopen="2" \
+--no-color \
+--verbose \
+--command="node /app/app.js"
