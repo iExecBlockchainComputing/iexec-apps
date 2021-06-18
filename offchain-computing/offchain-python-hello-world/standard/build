@@ -1,4 +1,0 @@
-#!/bin/sh
-cd $(dirname $0)
-
-docker image build -f ../standard/Dockerfile -t offchain-python-hello-world .. $@

@@ -5,8 +5,8 @@ docker run -it --rm \
             registry.scontain.com:5050/sconecuratedimages/iexec-sconify-image:5.3.6 \
             sconify_iexec \
                 --name=pythonHelloWorld \
-                --from=python-hello-world \
-                --to=tee-python-hello-world \
+                --from=offchain-python-hello-world \
+                --to=tee-offchain-python-hello-world \
                 --binary-fs \
                 --fs-dir=/app \
                 --host-path=/etc/hosts \

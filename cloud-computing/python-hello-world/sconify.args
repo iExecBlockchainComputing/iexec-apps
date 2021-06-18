@@ -1,0 +1,13 @@
+--name=pythonHelloWorld \
+--from=python-hello-world \
+--to=tee-python-hello-world \
+--binary-fs \
+--fs-dir=/app \
+--host-path=/etc/hosts \
+--host-path=/etc/resolv.conf \
+--binary="/usr/local/bin/python3.7" \
+--heap="1G" \
+--dlopen="2" \
+--no-color \
+--verbose \
+--command="python3 /app/app.py"

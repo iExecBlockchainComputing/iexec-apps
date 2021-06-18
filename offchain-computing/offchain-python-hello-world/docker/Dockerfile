@@ -1,6 +1,6 @@
-FROM python:3.7.3-alpine3.10
+FROM python:3.7-alpine3.10
 
-### install some python3 dependencies
+### install needed python3 dependencies
 RUN apk add gcc musl-dev
 RUN pip3 install eth_abi
 
