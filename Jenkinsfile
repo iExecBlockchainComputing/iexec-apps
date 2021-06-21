@@ -9,14 +9,14 @@ def tasks = [:]
                 sconifyArgsPath: 'cloud-computing/nodejs-hello-world/sconify.args')
     }
 }*/
-/*tasks["task_go"] = {
+tasks["task_go"] = {
     stage ("Build Go Hello World"){
         def nativeImage = buildSimpleDocker_v2(buildContext: 'cloud-computing/go-hello-world',
                 dockerImageRepositoryName: 'go-hello-world', imageprivacy: 'public')
         sconeBuildAllTee(nativeImage: nativeImage, targetImageRepositoryName: 'go-hello-world',
                 sconifyArgsPath: 'cloud-computing/go-hello-world/sconify.args')
     }
-}*/
+}
 tasks["task_python"] = {
     stage ("Build Python Hello World"){
         def nativeImage = buildSimpleDocker_v2(buildContext: 'offchain-computing/offchain-python-hello-world',
