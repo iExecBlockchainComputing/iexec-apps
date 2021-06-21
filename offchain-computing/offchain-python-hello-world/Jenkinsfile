@@ -1,7 +1,7 @@
 @Library('jenkins-library@1.0.2') _
 
 // Build native docker image
-buildSimpleDocker(buildContext: 'cloud-computing/offchain-python-hello-world',
+buildSimpleDocker(buildContext: 'offchain-computing/offchain-python-hello-world',
   dockerImageRepositoryName: 'offchain-python-hello-world',
   imageprivacy: 'public')
 
@@ -10,7 +10,7 @@ buildSimpleDocker(buildContext: 'cloud-computing/offchain-python-hello-world',
 
       def sconifyToolImageName = 'scone-production/iexec-sconify-image'
       def sconifyToolImageVersion = '5.3.6'
-      def sconifyToolArgsPath = 'cloud-computing/offchain-python-hello-world/sconify.args'
+      def sconifyToolArgsPath = 'offchain-computing/offchain-python-hello-world/sconify.args'
 
       def gitShortCommit = sh(
               script: 'git rev-parse --short HEAD',
