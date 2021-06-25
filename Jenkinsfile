@@ -1,14 +1,14 @@
 @Library('jenkins-library') _
 
 def tasks = [:]
-/*tasks["task_nodejs"] = {
+tasks["task_nodejs"] = {
     stage ("Build NodeJs Hello World"){
         def nativeImage = buildSimpleDocker_v2(buildContext: 'cloud-computing/nodejs-hello-world',
                 dockerImageRepositoryName: 'nodejs-hello-world', imageprivacy: 'public')
         sconeBuildAllTee(nativeImage: nativeImage, targetImageRepositoryName: 'nodejs-hello-world',
                 sconifyArgsPath: 'cloud-computing/nodejs-hello-world/sconify.args')
     }
-}*/
+}
 tasks["task_go"] = {
     stage ("Build Go Hello World"){
         def nativeImage = buildSimpleDocker_v2(buildContext: 'cloud-computing/go-hello-world',
