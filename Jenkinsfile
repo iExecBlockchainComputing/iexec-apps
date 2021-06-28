@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@1.0.4') _
 
 def tasks = [:]
 tasks["task_nodejs"] = {
