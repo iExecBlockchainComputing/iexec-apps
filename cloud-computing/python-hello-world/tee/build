@@ -1,3 +1,0 @@
-#!/bin/sh
-cd $(dirname $0)
-docker image build -f ../tee/Dockerfile -t tee-python-hello-world .. $@

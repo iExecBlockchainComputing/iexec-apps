@@ -1,0 +1,12 @@
+--name=goHelloWorld \
+--from=${IMG_FROM} \
+--to=${IMG_TO} \
+--binary-fs \
+--host-path=/etc \
+--host-path=/opt \
+--binary="/app/helloworld" \
+--heap="1G" \
+--dlopen="2" \
+--no-color \
+--verbose \
+--command="/app/helloworld"

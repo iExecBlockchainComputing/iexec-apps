@@ -1,0 +1,29 @@
+name: 1
+version: "0.3"
+
+# Access control:
+#   - only the data owner (CREATOR) can read or update the session
+#   - even the data owner cannot read the session secrets (i.e., the volume key and tag) or delete the session
+
+access_policy:
+  read:
+   - CREATOR
+  update:
+   - CREATOR
+
+services:
+   - name: service
+     image_name: service_image
+     mrenclaves: [eca3ace86f1e8a5c47123c8fd271319e9eb25356803d36666dc620f30365c0c1]
+     command: "python3 /app/app.py"
+     environment:
+      IEXEC_IN: /iexec_in
+      IEXEC_OUT: /iexec_out
+
+images:
+  - name: service_image
+
+security:
+  attestation:
+    tolerate: [hyperthreading, software-hardening-needed, insecure-igpu, outdated-tcb, debug-mode]
+    ignore_advisories: ["INTEL-SA-00161", "INTEL-SA-00289", "INTEL-SA-00334", "INTEL-SA-00381", "INTEL-SA-00389"]
