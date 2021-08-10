@@ -1,0 +1,13 @@
+--name=offchain-tee-kaiko-pricefeed \
+--from=offchain-tee-kaiko-pricefeed:temp-non-tee \
+--to=offchain-tee-kaiko-pricefeed::tee-debug \
+--binary-fs \
+--fs-dir=/app \
+--host-path=/etc/hosts \
+--host-path=/etc/resolv.conf \
+--binary="/usr/local/bin/python3.7" \
+--heap="1G" \
+--dlopen="2" \
+--no-color \
+--verbose \
+--command="python /app/app.py"

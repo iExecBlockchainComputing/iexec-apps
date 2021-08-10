@@ -1,3 +1,0 @@
-#!/bin/sh
-cd $(dirname $0)
-docker image build --no-cache --force-rm -f ../tee/Dockerfile -t offchain-tee-kaiko-pricefeed .. $@

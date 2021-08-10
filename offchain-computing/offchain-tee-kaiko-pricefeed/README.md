@@ -1,105 +1,71 @@
+# Offchain Python Kaiko Pricefeed app
 
+## Standard mode
+By default, the application is built in **Standard** mode which
+does not use TEE capabilities.
 
-## Build app, get MrEnclve, docker tag & push, iexec app deploy, iexec order publish --app
-
-### Docker Build & Push
-
-`./tee/build`
-
-### Deploy app
-
+### Build
+Standard mode application is built just like any other dockerized
+application:
 ```
-"app": {
-    "owner": "0x15Bd06807eF0F2284a9C5baeAA2EF4d5a88eB72A",
-    "name": "offchain-tee-kaiko-pricefeed",
-    "type": "DOCKER",
-    "multiaddr": "docker.io/iexechub/offchain-tee-kaiko-pricefeed:5.0.1",
-    "checksum": "0x0000000000000000000000000000000000000000000000000000000000000000",
-    "mrenclave": "4a39755a6a07cf885d7d3c7358bef277c7233746d283f4a48491b87d772b4199|958742b031be41d52d4f11ab2afc063a|2a421b3b7a6f771c3a602f49ce05b6a75793312b8e2c61c673fe7085a16cf138|python /app/app.py"
-}
-ℹ Using chain [goerli]
-✔ Deployed new app at address 0xa78bf0FF3661b96A97bDd7a1382360fce5F1eFdD
-
-iexec app init --wallet-file xx
-# Add app uri & MrEnclave before next step
-iexec app deploy --wallet-file xx --chain goerli
+docker image build -f docker/Dockerfile -t offchain-tee-kaiko-pricefeed .
 ```
+**IMPORTANT:** /!\ Please note that the base python image should be
+alpine based if the application will be converted into TEE mode.
 
-## Create confidential asset (key.txt), iexec dataset encrypt, ipfs add encrypted-dataset.zip, iexec dataset push-secret, iexec dataset deploy, iexec order publish --dataset
-
+### Run
+The application can be tested locally to make sure it is well setup:
 ```
-ls /home/alice/iexec
-├── iexec.json
-├── chain.json
+rm -rf $IEXEC_OUT && \
+docker run \
+        --rm \
+        -e IEXEC_IN=/iexec_in \
+        -e IEXEC_OUT=/iexec_out \
+        -e IEXEC_DATASET_FILENAME=key.txt \
+        -v $IEXEC_OUT:/iexec_out 
+        -v $(pwd)/confidential-assets:/iexec_in
+        offchain-tee-kaiko-pricefeed
 ```
-
-Secret: ```/home/alice/iexec/dataset/original/key.txt```
-
-```iexec dataset encrypt --algorithm scone```
+Once the execution ends, the result should be found in the folder
+`$IEXEC_OUT`.
 ```
-├── iexec.json
-├── chain.json
-├── datasets
-│   ├── encrypted
-│   │   └── dataset_key.txt.zip
-│   └── original
-│       └── key.txt
+cat $IEXEC_OUT/computed.json
 ```
 
-### Deploy Dataset
+## TEE (protected) mode
+To convert the application into **TEE** mode, first, it needs to be
+built in **Standard** mode as instructed in the section above.
+Then the standard image is converted using `sconify.sh` script into
+a newly created TEE enabled image `offchain-tee-kaiko-pricefeed:tee-debug`:
 
-Make ```dataset_key.txt.zip``` publicly available (IPFS, Raw Github)
-
-```
-//master branch
-"dataset": {
-    "owner": "0x15Bd06807eF0F2284a9C5baeAA2EF4d5a88eB72A",
-    "name": "encrypted-kaiko-pricefeed-api-key",
-    "multiaddr": "https://raw.githubusercontent.com/iExecBlockchainComputing/iexec-apps/master/offchain-computing/offchain-tee-kaiko-pricefeed/tee/datasets/encrypted/dataset_key.txt.zip",
-    "checksum": "0x0000000000000000000000000000000000000000000000000000000000000000"
-}
-ℹ Using chain [goerli]
-✔ Deployed new dataset at address 0xc544573dEf12c71F0bA8bCF992d3Ed9590586452
-```
-
+### Build (conversion)
+The script can edited to change parameters like **heap size**, new
+image name, sources folder, ...
 
 ```
-iexec dataset init --wallet-file xx
-# Add dataset uri before next step
-iexec dataset deploy --wallet-file xx --chain goerli
-
-iexec dataset push-secret 0xdataset --secret-path /home/alice/iexec/.secrets/datasets/dataset.secret --keystoredir=/home/alice/wallets --wallet-file=wallet.json --password=xx --chain kovan
+bash sconify.sh
 ```
 
+### Run
+(TODO test with CAS and session)
+
+First, Intel® SGX driver needs to be present on the host machine.
+These [instructions](https://github.com/intel/linux-sgx-driver) provide
+information about how to install it.
+The application can be tested locally to make sure it is well setup:
 ```
-## Orders
-
-iexec order init --app --wallet-file xx --chain goerli
-iexec order sign --app --wallet-file xx --chain goerli
-iexec order publish --app --wallet-file xx --chain goerli
-
-iexec order init --dataset --wallet-file xx --chain goerli
-# Add app restriction before next step
-iexec order sign --dataset --wallet-file xx --chain goerli
-iexec order publish --dataset --wallet-file xx --chain goerli
+rm -rf $IEXEC_OUT && \
+docker run \
+        --rm \
+        -e IEXEC_IN=/iexec_in \
+        -e IEXEC_OUT=/iexec_out \
+        -e IEXEC_DATASET_FILENAME=key.txt \
+        -v $IEXEC_OUT:/iexec_out 
+        -v $(pwd)/confidential-assets:/iexec_in
+        --device /dev/isgx
+        offchain-tee-kaiko-pricefeed
 ```
-
-## Run
-
+To get the MREnclave value of the TEE application:
 ```
-iexec app run 0xa78bf0FF3661b96A97bDd7a1382360fce5F1eFdD --dataset 0xc544573dEf12c71F0bA8bCF992d3Ed9590586452 --workerpool 0xEb6c3FA8522f2C342E94941C21d3947c099e6Da0 --params '{"iexec_args": "eth usd 9"}' --tag 0x0000000000000000000000000000000000000000000000000000000000000001 --callback 0xB2bb24cEa9aA32c0555F934C57145414286b70f0 --password whatever --force
-```
-
-
-* params: ```btc usd 9```
-* tag: ```0x0000000000000000000000000000000000000000000000000000000000000001```
-
-Goerli run: https://v5.explorer.iex.ec/goerli/deal/0xa78e36abe5f106b4bc9ce95cb9d77a3a99fb336ca891c6926f05b0143aed42b3
-
-## Oracle receiver
-
-Goerli:
-```
-# Unsafe callback - 0x2760E0CE853b3FfE8d55A6642e597D466A00C8f0
-# Safe callback -   0xB2bb24cEa9aA32c0555F934C57145414286b70f0
+docker run -it --rm -e SCONE_HASH=1 offchain-tee-kaiko-pricefeed
 ```
