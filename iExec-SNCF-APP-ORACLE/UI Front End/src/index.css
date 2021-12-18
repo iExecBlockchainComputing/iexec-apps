@@ -1,0 +1,420 @@
+@import url("https://use.typekit.net/rkh5rvy.css");
+body {
+  padding: 30px;
+  font-family: azo-sans-web, sans-serif!important;
+  font-size: 1rem!important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+}
+
+div {
+  text-align: left!important;
+}
+
+h2 {
+  font-weight: 500!important;
+  font-size:2em;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+
+
+
+.input-group {
+  padding: 15px 0px;
+}
+
+input {
+  font-size: 0.9em;
+}
+input:focus {
+  background: #fff;
+  color: #0A0F19;
+  box-shadow: 2px 0px 5px #FFD90F!important;
+  
+}
+
+
+
+input::placeholder {
+  color: #848891!important;
+}
+
+button {
+  border-radius:50px!important;
+  background:#ffe600!important;
+  color:white;
+  border: 0px!important;
+  padding-left: 30px!important;
+  padding-right: 40px!important;
+  padding-top: 7px!important;
+  font-size: 0.8em!important;
+  margin: 0px 0px!important;
+}
+
+button:hover {
+  
+  border:none!important;
+  background-color:#181A1C!important;
+  color:#FECE1A!important;
+}
+button:focus {
+  color: #FECE1A!important;
+  background-color:#181A1C!important;
+}
+.buttons {
+  border-radius:50px!important;
+  border:none!important;
+  background-color:#181A1C!important;
+  color:#FECE1A!important;
+  padding-left: 40px!important;
+  padding-right: 40px!important;
+  font-size: 0.8em!important;
+  margin: 0px 0px!important;
+
+}
+div.ant-input-number {
+  margin-top: 20px;
+  display:block!important;
+  width:80%;
+
+}
+div.ant-input-number:focus {
+  background: #fff;
+  color: #0A0F19;
+  box-shadow: 2px 0px 5px #FFD90F;
+
+}
+
+
+.subtext {
+  font-size:0.8em;
+  font-style:italic;
+}
+
+.input-group > p {
+  margin-bottom:5px;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.side {
+  padding-right:10%!important;
+}
+.left {
+  flex-basis: 50%;
+}
+.right {
+  flex-basis:50%;
+}
+
+.image {
+  width:100%;
+}
+.inputbet:hover,.inputbet:focus {
+  box-shadow: 2px 0px 5px #FFD90F;
+}
+.bet{
+  margin-top: 50px;
+  width:100px;
+  padding-left: 18px!important;
+}
+
+.section {
+  border-top: #363F53 1px solid;
+  padding-top: 10px;
+}
+
+.prize-title {
+  font-size: 5em;
+  line-height:1;
+}
+
+.metric {
+  font-size: 0.9em;
+  line-height: 1.1;
+  font-weight:500;
+}
+
+.value {
+  font-size:1.7em;
+  font-weight: 500;
+  line-height: 1;
+  margin-top:5px;  
+  margin-bottom:2px;
+}
+
+
+
+.extra {
+  font-size:0.9em;
+  opacity: 0.8;
+}
+
+.bloc {
+  flex-basis:50%;
+  padding-right:5%;
+}
+
+.letslight {
+  font-weight:500;
+}
+
+.total-tix {
+  font-size: 0.7em;
+}
+
+
+
+.action {
+  border-radius:5px;
+  background-color: rgba(204,224,255,0.08);
+  padding:15px;
+  display:flex;
+  
+  /* height:200px; */
+}
+
+
+
+
+
+.price-info {
+  margin-top:10px!important;
+  text-align: center!important;
+}
+
+
+.logo { 
+  height: 100px;
+  padding-top: 0;}
+
+.flight-card-sm {
+  width: 45rem;
+  height: auto;
+  padding: 0!important;
+}
+
+.flight-details{
+  width: 100%;
+  height: auto;
+}
+.grid-container {
+  display: grid;
+  text-align: left;
+  grid-gap: 10px;
+}
+.grid-container > div {
+  text-align: left;
+  font-size: 11px;
+}
+
+
+
+
+
+
+.flight-card-lg {
+  padding: 20px 20px 15px;
+}
+.list-detail{
+  font-weight: 500;
+  font-size: 14px;
+  color: #222;
+  margin-top: 0px;
+  padding-bottom: 4px;
+}
+
+
+
+
+  .time {
+    color:#747C89;
+    font-size: 18px;
+    padding: 8px 0 9px;
+    font-weight: 600;
+  }
+
+  .date, 
+  .location-details,
+  .detail-text {
+    color:#747C89;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+.trip-locations{
+
+  color:#747C89;
+}
+  .middle-col {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .container {
+    border: 2px solid #cccccc;
+    padding: 16px;
+    width: 50%;
+    margin: auto;
+    margin-Top: 20px;
+    border-Radius: 24px;
+    background:#FECE1A;
+    
+  }
+  .containercustomized{
+    padding-top:20px;
+    position:relative;
+    background:#FECE1A;
+  }
+
+.secondary-section {
+  background:#FECE1A;
+}
+.secondary-section .title {
+  border-bottom: 1px solid #181A1C;
+}
+.container-table {
+  margin-bottom: 0px;
+}
+.flight-column {
+  background-color:white;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding-bottom:20px;
+  margin:0 auto;
+  text-align:center;
+}
+.flight-column h3 {
+  background-color:#181A1C;
+  text-transform:uppercase;
+  text-align: center;
+  color:#FECE1A;
+  padding:40px 0px;
+  font-size: 36px;
+  margin-top:0px;
+  margin-bottom:0px;
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 10px 10px 0px 0px;
+  border-radius: 10px 10px 0px 0px;
+}
+.flight-column .list{
+  list-style:none;
+  margin:20px 50px;
+}
+.flight-column .list li{
+  font-weight:lighter;
+  color:#747C89;
+  font-size:20px;
+  border-bottom:1px solid #747C89;
+  padding:25px 0px;
+}
+.flight-column .list li.price {
+  text-align: center;
+  font-size:31px;
+  background-color:white;
+  color:#747C89;
+  margin-top:25px;
+}
+
+
+
+
+.animated{-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;-ms-animation-fill-mode:both;-o-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation-duration:1s;-moz-animation-duration:1s;-ms-animation-duration:1s;-o-animation-duration:1s;animation-duration:1s;}.animated.hinge{-webkit-animation-duration:1s;-moz-animation-duration:1s;-ms-animation-duration:1s;-o-animation-duration:1s;animation-duration:1s;}@-webkit-keyframes flash {
+	0%, 50%, 100% {opacity: 1;}	25%, 75% {opacity: 0;}
+}
+
+
+@-webkit-keyframes fadeInDown {
+	0% {
+		opacity: 0;
+		-webkit-transform: translateY(-20px);
+	}
+	
+	100% {
+		opacity: 1;
+		-webkit-transform: translateY(0);
+	}
+}
+
+@-moz-keyframes fadeInDown {
+	0% {
+		opacity: 0;
+		-moz-transform: translateY(-20px);
+	}
+	
+	100% {
+		opacity: 1;
+		-moz-transform: translateY(0);
+	}
+}
+
+@-o-keyframes fadeInDown {
+	0% {
+		opacity: 0;
+		-o-transform: translateY(-20px);
+	}
+	
+	100% {
+		opacity: 1;
+		-o-transform: translateY(0);
+	}
+}
+
+@keyframes fadeInDown {
+	0% {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+	
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.fadeInDown {
+	-webkit-animation-name: fadeInDown;
+	-moz-animation-name: fadeInDown;
+	-o-animation-name: fadeInDown;
+	animation-name: fadeInDown;
+}
+
+.status{
+  position: absolute; 
+  bottom:0; 
+  left: 10px;;
+  top: 30px;;
+  color: #f8f8f8;
+  font-size: 18px;
+  font-weight: 600;
+  
+  /* animation-name: bounce; 
+  animation-duration: 0.5s;
+  animation-direction: alternate;
+  animation-timing-function: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  animation-iteration-count: infinite; */
+  
+}
+.statusbutton{
+  position: absolute; 
+  bottom:0; 
+  left: 0px;;
+  top: 40px;;
+}
+.banner{
+  position: relative;
+}
+.firsttitle{
+  display: block;
+}
