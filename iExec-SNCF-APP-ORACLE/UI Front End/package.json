@@ -1,12 +1,12 @@
 {
-  "name": "@flightpronostics/react-app",
+  "name": "@trainpronostics/react-app",
   "version": "1.0.0",
-  "homepage": "https://iexecblockchaincomputing.github.io/flight-pronostics-ui",
+  "homepage": "https://iexecblockchaincomputing.github.io/train-pronostics-ui",
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "last 2 chrome version",
+      "last 2 firefox version",
+      "last 2 safari version"
     ],
     "development": [
       "last 1 chrome version",
@@ -16,6 +16,10 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.16.5",
+    "@babel/plugin-syntax-bigint": "^7.8.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@ethersproject/address": "^5.0.5",
     "@ethersproject/bignumber": "^5.0.8",
     "@ethersproject/bytes": "^5.0.5",
@@ -31,15 +35,15 @@
     "axios": "^0.20.0",
     "bnc-notify": "^1.5.0",
     "bootstrap": "^5.1.1",
-    "buffer": "^6.0.3",
+    "browserslist": "^4.19.1",
     "burner-provider": "^1.0.38",
     "cids": "^1.1.9",
-    "cross-fetch": "^3.1.4",
+    "customize-cra": "^1.0.0",
     "dotenv": "^8.2.0",
     "eth-hooks": "^1.1.2",
     "ethers": "^5.0.31",
-    "iexec": "^6.0.1",
-    "ipfs": "^0.60.2",
+    "iexec": "^7.0.0",
+    "ipfs": "^0.61.0",
     "isomorphic-fetch": "^3.0.0",
     "jsonpath": "^1.1.1",
     "moment": "^2.29.1",
@@ -47,6 +51,7 @@
     "postcss": "^8.2.6",
     "qrcode.react": "^1.0.0",
     "react": "^16.14.0",
+    "react-app-rewired": "^2.1.9",
     "react-blockies": "^1.4.1",
     "react-bootstrap": "^1.6.4",
     "react-css-theme-switcher": "^0.2.2",
@@ -54,7 +59,7 @@
     "react-qr-reader": "^2.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",
-    "start": "^5.1.0",
+    "react-spinners": "^0.11.0",
     "web3modal": "^1.9.1",
     "yup": "^0.32.11"
   },
@@ -72,10 +77,10 @@
     "extends": "react-app"
   },
   "scripts": {
-    "build": "react-scripts build",
+    "build": "react-app-rewired build",
     "eject": "react-scripts eject",
-    "start": "react-scripts start",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "test": "react-app-rewired test",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "lint": "eslint --config ./.eslintrc.js --ignore-path ./.eslintignore ./src/**/*"
