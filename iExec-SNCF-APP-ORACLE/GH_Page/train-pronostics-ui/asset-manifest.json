@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/train-pronostics-ui/static/css/main.060aeaaf.chunk.css",
+    "main.js": "/train-pronostics-ui/static/js/main.5d0752e9.chunk.js",
+    "main.js.map": "/train-pronostics-ui/static/js/main.5d0752e9.chunk.js.map",
+    "runtime-main.js": "/train-pronostics-ui/static/js/runtime-main.3062e5ad.js",
+    "runtime-main.js.map": "/train-pronostics-ui/static/js/runtime-main.3062e5ad.js.map",
+    "static/css/2.cd26dbc7.chunk.css": "/train-pronostics-ui/static/css/2.cd26dbc7.chunk.css",
+    "static/js/2.4b3225bc.chunk.js": "/train-pronostics-ui/static/js/2.4b3225bc.chunk.js",
+    "static/js/2.4b3225bc.chunk.js.map": "/train-pronostics-ui/static/js/2.4b3225bc.chunk.js.map",
+    "index.html": "/train-pronostics-ui/index.html",
+    "precache-manifest.2f0922962c27f6533c0f2ac894fd0542.js": "/train-pronostics-ui/precache-manifest.2f0922962c27f6533c0f2ac894fd0542.js",
+    "service-worker.js": "/train-pronostics-ui/service-worker.js",
+    "static/css/2.cd26dbc7.chunk.css.map": "/train-pronostics-ui/static/css/2.cd26dbc7.chunk.css.map",
+    "static/css/main.060aeaaf.chunk.css.map": "/train-pronostics-ui/static/css/main.060aeaaf.chunk.css.map",
+    "static/js/2.4b3225bc.chunk.js.LICENSE.txt": "/train-pronostics-ui/static/js/2.4b3225bc.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3062e5ad.js",
+    "static/css/2.cd26dbc7.chunk.css",
+    "static/js/2.4b3225bc.chunk.js",
+    "static/css/main.060aeaaf.chunk.css",
+    "static/js/main.5d0752e9.chunk.js"
+  ]
+}
